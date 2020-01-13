@@ -38,7 +38,7 @@ TEST_DIAL = (
         ('1', '1'),
         )
 
-RAND_TESTS = 50
+RAND_TESTS = 500
 
 
 def test_tiny_random():
@@ -47,7 +47,7 @@ def test_tiny_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(1, 999)
+        random = randint(1, 9999)
         result = rf_info.Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))
@@ -61,7 +61,7 @@ def test_small_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(1000, 999999)
+        random = randint(10000, 999999)
         result = rf_info.Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))

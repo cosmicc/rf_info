@@ -16,7 +16,7 @@ def remove_all_butfirst(s, substr):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(rf_info.__version__))
+    parser.add_argument('--version', '-v', action='version', version='%(prog)s {}'.format(rf_info.__version__))
     parser.add_argument('frequency', action='store', help='Radio Frequency to get information about')
     parser.add_argument('suffix', nargs='?', default='hz', help='Hz, Khz, Mhz, Ghz')
     args = parser.parse_args()
@@ -43,9 +43,9 @@ def main():
         else:
             if value is not None:
                 print('%s: %s' % (key.title(), value))
-    print('raw:')
-    for key, value in result.items():
-        print(f'{key}: {value}')
+    # print('raw:')
+    # for key, value in result.items():
+    #     print(f'{key}: {value}')
     print(' ')
     return 0
 
