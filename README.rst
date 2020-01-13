@@ -28,7 +28,7 @@ rf-info
 
 
 
-Radio Frequency Information
+Command Line & Python Library for getting Information about a Radio Frequency
 
 
 * Free software: MIT license
@@ -49,7 +49,6 @@ Returns information about a radio frequency (US only for now)
 - Amateur Radio Details (Type, Class, Max Power), - Not yet Implimented
 - Wavelength  
 - Waveguide Band Name
-- Meters
 
 Usage
 -------
@@ -81,9 +80,7 @@ returns only itu_band
 Todo
 -------
 
-- Convert to dictionary lookups instead of if/thens
 - Amateur Radio Details
-- Wavelength Range
 - WIFI bandtypes
 - Cellular bandtpes
 - Sattelite bandtypes
