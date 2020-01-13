@@ -2,8 +2,7 @@
 
 import argparse
 import sys
-from rf_info import frequency
-from rf_info import __version__
+import rf_info
 
 
 def remove_all_butfirst(s, substr):
@@ -17,12 +16,12 @@ def remove_all_butfirst(s, substr):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(rf_info.__version__))
     parser.add_argument('frequency', action='store', help='Radio Frequency to get information about')
     parser.add_argument('suffix', nargs='?', default='hz', help='Hz, Khz, Mhz, Ghz')
     args = parser.parse_args()
 
-    result = frequency(str(args.frequency), args.suffix).__dict__
+    result = rf_info.Frequency(str(args.frequency), args.suffix).__dict__
     print(' ')
     for key, value in result.items():
         if key.lower() == 'band_use':
