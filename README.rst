@@ -2,28 +2,28 @@
 rf-info
 =======
 
-.. image:: https://img.shields.io/github/v/release/cosmicc/radio_frequency.svg?include_prereleases 
-        :target: https://github.com/cosmicc/radio_frequency
+.. image:: https://img.shields.io/github/v/release/cosmicc/rf-info.svg?include_prereleases 
+        :target: https://github.com/cosmicc/rf-info
         
-.. image:: https://img.shields.io/pypi/v/radio_frequency.svg
-        :target: https://pypi.python.org/pypi/radio_frequency
+.. image:: https://img.shields.io/pypi/v/rf-info.svg
+        :target: https://pypi.python.org/pypi/rf-info
 
-.. image:: https://pyup.io/repos/github/cosmicc/radio_frequency/python-3-shield.svg
-        :target: https://pyup.io/repos/github/cosmicc/radio_frequency/
+.. image:: https://pyup.io/repos/github/cosmicc/rf-info/python-3-shield.svg
+        :target: https://pyup.io/repos/github/cosmicc/rf-info/
         :alt: Python 3
         
-.. image:: https://img.shields.io/github/license/cosmicc/radio_frequency.svg
-        :target: https://github.com/cosmicc/radio_frequency
+.. image:: https://img.shields.io/github/license/cosmicc/rf-info.svg
+        :target: https://github.com/cosmicc/rf-info
 
-.. image:: https://img.shields.io/travis/cosmicc/radio_frequency.svg
-        :target: https://travis-ci.org/cosmicc/radio_frequency
+.. image:: https://img.shields.io/travis/cosmicc/rf-info.svg
+        :target: https://travis-ci.org/cosmicc/rf-info
 
-.. image:: https://readthedocs.org/projects/radio-frequency/badge/?version=latest
+.. image:: https://readthedocs.org/projects/rf-info/badge/?version=latest
         :target: https://radio-frequency.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/cosmicc/radio_frequency/shield.svg
-     :target: https://pyup.io/repos/github/cosmicc/radio_frequency/
+.. image:: https://pyup.io/repos/github/cosmicc/rf-info/shield.svg
+     :target: https://pyup.io/repos/github/cosmicc/rf-info/
      :alt: Updates
 
 
