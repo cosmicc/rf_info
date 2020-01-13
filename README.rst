@@ -32,7 +32,7 @@ Command line & Python library for obtaining details about a radio frequency
 
 
 * Free software: MIT license
-* Documentation: https://rfi-info.readthedocs.io.
+* Documentation: https://rf-info.readthedocs.io.
 
 
 Features
