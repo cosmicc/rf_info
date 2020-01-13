@@ -66,17 +66,19 @@ hz, Khz, Mhz, Ghz
 
 
 Command Line:
+
 rfi-info <frequency> [<suffix>]
 
 
 Python:
+
 from rf-info import Frequency
 
 freq = Frequency('112.434.000')
 
 Then: 
 
-freq.dict
+freq.info()
 
 returns a dictionary:
 {'dial': '144.125', 'hz': ('144,125 hz', 144125), 'khz': ('144.125 Khz', 144.125), 'mhz': ('0.144125 Mhz', 0.144125), 'ghz': ('0.000144125 Ghz', 0.000144125), 'wavelength': '2,081m', 'band_use': (), 'itu_band': 'Low Frequency', 'itu_abbr': 'LF', 'itu_num': 5, 'ieee_band': None, 'ieee_description': None, 'nato_band': 'A', 'waveguide_band': None, 'amateur_band': (False,)}

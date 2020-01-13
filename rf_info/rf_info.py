@@ -113,3 +113,7 @@ class Frequency():
             self.band_use = tuple()
         else:
             self.band_use = tuple(self.band_use)
+
+
+    def info(self):
+        return self.__dict__
