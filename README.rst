@@ -28,7 +28,7 @@ rf-info
 
 
 
-Command Line & Python Library for getting Information about a Radio Frequency
+Command line & Python library for obtaining details about a radio frequency
 
 
 * Free software: MIT license
@@ -50,13 +50,24 @@ Returns information about a radio frequency (US only for now)
 - Wavelength  
 - Waveguide Band Name
 
+Let mw know if there is anything you would like to see added,
+or if someone would like to donate some EU/Other band info to add ;-)
+
 Usage
 -------
 Frequency format examples:
-62.761.000, 89910000, 23,450,000, 12,634.534
+89910000, 23,450,000, 12,634.534
+
+Also supports "Radio Dial" frequency representation (Dotted notation):
+124.125.000, 198.000.050, 1.500.125.000
+
+Suffix examples:
+hz, Khz, Mhz, Ghz
+
 
 Command Line:
 rfi-info <frequency> [<suffix>]
+
 
 Python:
 from rf-info import Frequency
@@ -65,26 +76,27 @@ freq = Frequency('112.434.000')
 
 Then: 
 
-freq.__dict__
+freq.dict
 
 returns a dictionary:
-{ frequency: '89.900 Mhz', band_desc: 'Very High Frequency', band_type: None, meters: None, itu_abbr: 'VHF', itu_num: 8, ieee: 'VHF', nato: 'A', broadcast: 'FM Radio' }
+{'dial': '144.125', 'hz': ('144,125 hz', 144125), 'khz': ('144.125 Khz', 144.125), 'mhz': ('0.144125 Mhz', 0.144125), 'ghz': ('0.000144125 Ghz', 0.000144125), 'wavelength': '2,081m', 'band_use': (), 'itu_band': 'Low Frequency', 'itu_abbr': 'LF', 'itu_num': 5, 'ieee_band': None, 'ieee_description': None, 'nato_band': 'A', 'waveguide_band': None, 'amateur_band': (False,)}
 
-or
+or you can get individual items directly:
 
 freq.itu_band
+freq.wavelength
 
-returns only itu_band 
 
 
 Todo
 -------
 
 - Amateur Radio Details
-- WIFI bandtypes
-- Cellular bandtpes
-- Sattelite bandtypes
-- GMRS & CB Specific Channels
+- WIFI band details
+- Cellular band details
+- Sattelite band details
+- GMRS, CB, & WIFI Specific Channels
+- Add more reserved frequency details
 
 Credits
 -------
