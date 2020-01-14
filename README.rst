@@ -61,7 +61,7 @@ Usage
 Frequency format examples:
 89910000, 23,450,000, 12,634.534
 
-Also supports "Radio Dial" frequency representation (Dotted notation):
+Also supports "Radio Display" frequency representation (Dotted notation):
 124.125.000, 198.000.050, 1.500.125.000
 
 Suffix examples:
