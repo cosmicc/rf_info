@@ -32,7 +32,7 @@ Command line & Python library for obtaining details about a radio frequency
 
 
 * Free software: MIT license
-* Documentation: https://rfi-info.readthedocs.io.
+* Documentation: https://rf-info.readthedocs.io.
 
 
 Features
@@ -41,16 +41,16 @@ Features
 Returns information about a radio frequency (US only for now)
 
 - Band Use 
+- Wavelength
 - ITU Band Description 
 - ITU Band Abbreviation
 - ITU Band Number
 - IEEE Band Name
 - NATO Band Name
-- Amateur Radio Details (Type, Class, Max Power), - Not yet Implimented
-- Wavelength  
 - Waveguide Band Name
+- Amateur Radio Details (Type, Class, Max Power), - Not yet Implimented  
 
-Let mw know if there is anything you would like to see added,
+Let me know if there is additional details you would like to see added,
 or if someone would like to donate some EU/Other band info to add ;-)
 
 Usage
@@ -67,7 +67,7 @@ hz, Khz, Mhz, Ghz
 
 Command Line:
 
-rfi-info <frequency> [<suffix>]
+rf-info <frequency> [<suffix>]
 
 
 Python:
@@ -81,11 +81,13 @@ Then:
 freq.info()
 
 returns a dictionary:
+
 {'dial': '144.125', 'hz': ('144,125 hz', 144125), 'khz': ('144.125 Khz', 144.125), 'mhz': ('0.144125 Mhz', 0.144125), 'ghz': ('0.000144125 Ghz', 0.000144125), 'wavelength': '2,081m', 'band_use': (), 'itu_band': 'Low Frequency', 'itu_abbr': 'LF', 'itu_num': 5, 'ieee_band': None, 'ieee_description': None, 'nato_band': 'A', 'waveguide_band': None, 'amateur_band': (False,)}
 
 or you can get individual items directly:
 
 freq.itu_band
+
 freq.wavelength
 
 
