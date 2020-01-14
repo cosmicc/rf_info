@@ -2,13 +2,6 @@ from .rf_data import ITU, IEEE, NATO, WAVEGUIDE, BROADCAST, SERVICES, HAM
 from math import trunc
 
 
-def float_trunc(number, digits):
-    if isinstance(number, str):
-        number = float(number)
-    stepper = 10.0 ** abs(digits)
-    return trunc(stepper * number) / stepper
-
-
 def remove_all_butfirst(s, substr):
     try:
         first_occurrence = s.index(substr) + len(substr)
@@ -19,7 +12,8 @@ def remove_all_butfirst(s, substr):
 
 
 def parse_freq(freq, suffix):
-    argfreq = freq.replace('.', '').replace(',', '').replace('_', '').replace(' ', '')
+    nfreq = freq
+    argfreq = nfreq.replace('.', '').replace(',', '').replace('_', '').replace(' ', '')
     if suffix.lower() == 'khz':
         multp = (100, 1000)
     elif suffix.lower() == 'mhz':
@@ -27,13 +21,21 @@ def parse_freq(freq, suffix):
     elif suffix.lower() == 'ghz':
         multp = (100000000, 1000000000)
     else:
-        return int(argfreq)
+        if argfreq.isnumeric():
+            return int(argfreq)
+        else:
+            raise ValueError('Invalid Frequency Specified')
+            exit(1)
     if '.' in freq:
-        argfreq = float(remove_all_butfirst(freq.replace(',', '').replace('_', '').replace(' ', ''), '.'))
+        print('!!!!!!!!!!!!')
+        argfreq = float(remove_all_butfirst(nfreq.replace(',', '').replace('_', '').replace(' ', ''), '.'))
         argfreq = str(argfreq * multp[0]).replace('.', '')
     else:
         argfreq = int(argfreq) * multp[1]
-    return int(argfreq)
+    if argfreq.isnumeric():
+        return int(argfreq)
+    else:
+        raise ValueError('Invalid Frequency Specified')
 
 
 class Frequency():

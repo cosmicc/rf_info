@@ -19,10 +19,3 @@ class RangeKeyDict:
             return None
         else:
             return result
-
-    def get(self, number, default=None):
-        result = self.__getitem__(number)
-        if result:
-            return result
-        else:
-            return default

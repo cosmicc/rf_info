@@ -34,9 +34,23 @@ TEST_DIAL = (
             ('988,232.000', '988.232.000'),
             ('12,000.000', '12.000.000'),
             ('1', '1'),
+            ('.012', '12'),
+            (.001, '1'),
 )
 
 RAND_TESTS = 500
+
+
+def test_out_of_range():
+    with pytest.raises(Exception) as e:
+        freq = 1359239234234
+        assert rf_info.Frequency(freq)
+    assert str(e.value) == "Frequency Out of Range"
+
+    with pytest.raises(Exception) as e:
+        freq = -234
+        assert rf_info.Frequency(freq)
+    assert str(e.value) == "Frequency Out of Range"
 
 
 def test_tiny_random():
