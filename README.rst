@@ -14,6 +14,9 @@ rf-info
         
 .. image:: https://img.shields.io/github/license/cosmicc/rf_info.svg
         :target: https://github.com/cosmicc/rf_info
+        
+.. image:: https://coveralls.io/repos/github/cosmicc/rf_info/badge.svg?branch=master
+        :target: https://coveralls.io/github/cosmicc/rf_info?branch=master
 
 .. image:: https://img.shields.io/travis/cosmicc/rf_info.svg
         :target: https://travis-ci.org/cosmicc/rf_info
