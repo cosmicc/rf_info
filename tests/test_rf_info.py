@@ -50,7 +50,7 @@ def test_out_of_range():
     with pytest.raises(Exception) as e:
         freq = -234
         assert rf_info.Frequency(freq)
-    assert str(e.value) == "Frequency Out of Range"
+    assert str(e.value) == "Invalid Frequency Specified"
 
 
 def test_tiny_random():
