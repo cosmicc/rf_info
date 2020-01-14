@@ -1,0 +1,24 @@
+language: python
+
+python:
+    - '3.8'
+    - '3.7'
+    - '3.6'
+    - '3.8-dev'
+    - 'nightly'
+    - 'pypy3'
+install: pip3 install -U tox-travis
+script: tox
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: cosmicc
+  password:
+    secure: Ifa6wasa9 
+  on:
+    tags: true
+    repo: cosmicc/rf_info
+    python: 3.8
+deployment:
+  password:
+    secure: CtmsBfzZn/V7L2Hnz112K5jjXkjkC+yEysERLeI8bvlQlzR6a+SilQ9PRo8a8nyxTiGS8uQvngLsC1ThX95QSaOc8e3sCvo6DbcHgF2sThqgIbkNcsI3/3n353XlhkPPwX3ELx8JG0usFRYZY4DnIgDJsRWiTuoYgtQDfoWthg43Ez7mruE4oPHpvQQNpG9WKH6tOFbDcPL5KgoHZ36XnrmMzlgosRLLSMuSzXptPr5r7B5j9WRBROBmoy4uLiPS8vXA6X5dAx7S9nl1FScVvnxxnKEBurz6zFAJECDCBh3EOJqDn4G/kXHyoAOvP6gsKPZ9AtlibDdzG5lFO6mTYrh8CA6X5jgkTOSc+KoJNsf6YTupmaKqWxtaYj2OJCykeC2BEI/cLMDBFHy49xTEx0z4r7uO9kbcNc3GHiFDoDQGTu4VyRunrUKfFAysZaK2kldoOmyUk4qiSSEDgHvJrnfXAjJNqdD2TFObh1roN3qA3CaBvyzTwEhzfe46XC/gq20JHol1c9GTf0JBpM5yP5f4k201VKjoY5TrRaqw/VUCzT4XgcxyhCwGivSOQYJhzqP5tnX5bpH9kpwHFBKqEPwJ48NLq+FlEy1fgFtslqBneKti92YE/J2E7wWOJBkjt5FC+jGY/nAvMb+dTYCCzXOnV592C9cD/hNM+/yj+js=
