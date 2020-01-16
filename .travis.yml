@@ -1,28 +1,21 @@
-# Config file for automatic testing at travis-ci.org
-
 language: python
 python:
-  - 3.8
-  - 3.7
-  - 3.6
-  - "3.8-dev"  # 3.8 development branch
-  - "nightly"  # nightly build
-  - "pypy3"
-
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+- 3.8
+- 3.7
+- 3.6
+- 3.8-dev
+- nightly
+- pypy3
 install: pip install -U tox-travis
-
 script: tox
 after_success:
-  - coveralls
-
-# $ travis encrypt --add deploy.password
+- coveralls
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
   user: cosmicc
   password:
-    secure: ELlRka4MgXgROG2NXbi5myxCOUfe+L233Dekf5OArjVMxfPpXDZfBRgJoOSCu1hbw2N/ShZAOCvxuKfaN9nENssbtan3V0ECeqxOtvbu93keqvdc2CCgVyj2vehQhHB9mmtX    hQoE6Q5juz0JNSxbFrjCiQIlt0IFz3Ggc3olp9DpRTX7rnA0yyBzYzXP5bN2Y7w1EhH7kwgUMBXTUNaFP8paC8ba7ug/WVuecpVzZW2J8sfN1pEphgX+gdL7jaAczHbWUOnxy5DrkiP+okFH    HB1X1JxXWH1ZoEESFpWdovwKw7zNdNHwrawqdHn6/oxOtS+Ruoky7VegG60CHABd4mtuHN+9k7XBUXsmVQV71/tDzc7YiTXFI0JgJi+u5+fQ/v6RaeVDLRzYKzHZ3+7a2AutOCOufq389Q8n    wgbfqWG/f+E7iFoHDugaadc9QgZ2tPD3YSeQ9xUcYrxPCyHPJagkVs6C8MJm2upE0jx7MSXLXBFIVIoW3ymYYiUxl5h+MaiJQ0+J3WxrdxO1DEaToyfTSOxVvg3BsW1q7dgj4Oer86wDyqlZ    uHId3wozBLZp8UsKd19o1eoeCHebq3qZJ1JSRHXSzP0MK/V0ivGDWQ5pqNckaM3uds0mDjGeBV3/FvhFVtAAFfYGh5qZYl2wmUvfKucMA0fuaOuHNi/ltdw=
+    secure: I9j6IyTlnZ0YWB6jEX3fFBSUxPSih75ZWrYXWS2S7fnHJeObAa87eJtaf0pzNsoA7hUDv0LDt90W5sy1mIRHp8ODRZnnSZtxRioP2ByLOqlFLxEARxjBRBde3bsbXAq+9OnUdwPfhNlJRayoGtwGyXdofIGi4qNNowap8Pf6UrHIiNV0Xsf8Xe5otpz4uuzo1qua1hbBk5CYRkJrhLdEhqw9bYlFGmQpvLZNTy8ZgUvI/peoXvPVO0PkqLiN4SInbGadyaGejNcmXCi7d+50wmhWCBl4g4mBgyHicIw6vvyYOlA6T1H78c2Am+CRSjQgnTHp6pZ75WzrIXV6/mLuenIxIk67ayFKS4fh+c1pArzPYWi0RJ1LTNz2x51Rn1If5af4EMOfWJGMgNEVT6o6K0HrzWzI6K7LORpkyZCOEU0rf8zFXzDvHVa3CLLmvaOI2BDuWeet6THwv7i2KxIETEMdsm1ZVUFAU5PTtK30v6pmb/V/Jdd4csewyJU+A+N4LO8DTtKr7+sRnMp13JNr1CtJgsDxTV1yoNizZ4QdCulFtE0vcO6MxoS5RUpNoRpxFFqPgxprtJUF1DOND9l4PMTQfGbpNkOFjiN29ZM+M2ST7cx8tV0LnjgjVQOU6+8/82UjVPyYKV8MbZr8n7zZD1OhA3OmjOJAZ8xF/WEGnq8=
   on:
     tags: true
     repo: cosmicc/rf-info
