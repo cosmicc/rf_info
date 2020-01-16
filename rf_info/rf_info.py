@@ -1,34 +1,37 @@
-from .rf_us_data import ITU, IEEE, NATO, WAVEGUIDE, BROADCAST, SERVICES, HAM
+from .rf_us_data import BROADCAST, HAM, IEEE, ITU, NATO, SERVICES, WAVEGUIDE
+
 
 def remove_all_butfirst(s, substr):
-            first_occurrence = s.index(substr) + len(substr)
-            return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
+    first_occurrence = s.index(substr) + len(substr)
+    return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
 
-        def parse_freq(freq, unit):
-            argfreq = freq.replace('.', '').replace(',', '').replace('_', '').replace(' ', '')
-            if unit.lower() == 'khz':
-                mindigits = 3
-            elif unit.lower() == 'mhz':
-                mindigits = 6
-            elif unit.lower() == 'ghz':
-                mindigits = 9
-            elif unit.lower() == 'hz':
-                if argfreq.isnumeric():
-                    return int(argfreq)
-                else:
-                    raise ValueError('Invalid Frequency Specified')
-            else:
-                raise ValueError('Invalid Unit Specified')
-            if '.' in freq:
-                nfreq = remove_all_butfirst(freq, '.').split('.')
-                while len(nfreq[1]) < mindigits:
-                    nfreq[1] = nfreq[1] + '0'
-                return int(''.join(nfreq))
-            else:
-                for each in range(mindigits):
-                    argfreq = argfreq + '0'
-                argfreq = str(int(argfreq))
-                return int(argfreq)
+
+def parse_freq(freq, unit):
+    argfreq = freq.replace('.', '').replace(',', '').replace('_', '').replace(' ', '')
+    if unit.lower() == 'khz':
+        mindigits = 3
+    elif unit.lower() == 'mhz':
+        mindigits = 6
+    elif unit.lower() == 'ghz':
+        mindigits = 9
+    elif unit.lower() == 'hz':
+        if argfreq.isnumeric():
+            return int(argfreq)
+        else:
+            raise ValueError('Invalid Frequency Specified')
+    else:
+        raise ValueError('Invalid Unit Specified')
+    if '.' in freq:
+        nfreq = remove_all_butfirst(freq, '.').split('.')
+        while len(nfreq[1]) < mindigits:
+            nfreq[1] = nfreq[1] + '0'
+        return int(''.join(nfreq))
+    else:
+        for each in range(mindigits):
+            argfreq = argfreq + '0'
+        argfreq = str(int(argfreq))
+        return int(argfreq)
+
 
 class Frequency():
     def __init__(self, freq, unit='hz'):
@@ -97,8 +100,11 @@ class Frequency():
     def info(self):
         return self.__dict__
 
+    def __repr__(self):
+        return "Frequency('{}')".format(self.display)
+
     def __str__(self):
-        return self.display
+        return f'{self.display} - {self.hz[0]}'
 
     def __int__(self):
         return int(self.hz[1])
