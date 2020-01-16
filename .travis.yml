@@ -6,8 +6,11 @@ python:
 - 3.8-dev
 - nightly
 - pypy3
-install: pip install -U tox-travis
-script: tox
+install: 
+- pip install -r requirements_dev.txt
+- pip install coveralls  
+
+script: coverage run --source rf_info -m pytest 
 after_success:
 - coveralls
 deploy:
