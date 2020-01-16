@@ -25,7 +25,7 @@ deploy:
     secure: ELlRka4MgXgROG2NXbi5myxCOUfe+L233Dekf5OArjVMxfPpXDZfBRgJoOSCu1hbw2N/ShZAOCvxuKfaN9nENssbtan3V0ECeqxOtvbu93keqvdc2CCgVyj2vehQhHB9mmtX    hQoE6Q5juz0JNSxbFrjCiQIlt0IFz3Ggc3olp9DpRTX7rnA0yyBzYzXP5bN2Y7w1EhH7kwgUMBXTUNaFP8paC8ba7ug/WVuecpVzZW2J8sfN1pEphgX+gdL7jaAczHbWUOnxy5DrkiP+okFH    HB1X1JxXWH1ZoEESFpWdovwKw7zNdNHwrawqdHn6/oxOtS+Ruoky7VegG60CHABd4mtuHN+9k7XBUXsmVQV71/tDzc7YiTXFI0JgJi+u5+fQ/v6RaeVDLRzYKzHZ3+7a2AutOCOufq389Q8n    wgbfqWG/f+E7iFoHDugaadc9QgZ2tPD3YSeQ9xUcYrxPCyHPJagkVs6C8MJm2upE0jx7MSXLXBFIVIoW3ymYYiUxl5h+MaiJQ0+J3WxrdxO1DEaToyfTSOxVvg3BsW1q7dgj4Oer86wDyqlZ    uHId3wozBLZp8UsKd19o1eoeCHebq3qZJ1JSRHXSzP0MK/V0ivGDWQ5pqNckaM3uds0mDjGeBV3/FvhFVtAAFfYGh5qZYl2wmUvfKucMA0fuaOuHNi/ltdw=
   on:
     tags: true
-    repo: cosmicc/radio_frequency
+    repo: cosmicc/rf-info
     python: 3.8
 deployment:
   password:
