@@ -2,49 +2,44 @@ from .rf_data import ITU, IEEE, NATO, WAVEGUIDE, BROADCAST, SERVICES, HAM
 
 
 def remove_all_butfirst(s, substr):
-    try:
-        first_occurrence = s.index(substr) + len(substr)
-    except ValueError:
-        return s
-    else:
-        return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
+    first_occurrence = s.index(substr) + len(substr)
+    return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
 
 
-def parse_freq(freq, suffix):
-    nfreq = freq
-    argfreq = nfreq.replace('.', '').replace(',', '').replace('_', '').replace(' ', '')
-    if suffix.lower() == 'khz':
-        multp = (100, 1000)
-    elif suffix.lower() == 'mhz':
-        multp = (100000, 1000000)
-    elif suffix.lower() == 'ghz':
-        multp = (100000000, 1000000000)
-    else:
+def parse_freq(freq, unit):
+    argfreq = freq.replace('.', '').replace(',', '').replace('_', '').replace(' ', '')
+    if unit.lower() == 'khz':
+        mindigits = 3
+    elif unit.lower() == 'mhz':
+        mindigits = 6
+    elif unit.lower() == 'ghz':
+        mindigits = 9
+    elif unit.lower() == 'hz':
         if argfreq.isnumeric():
             return int(argfreq)
         else:
             raise ValueError('Invalid Frequency Specified')
-            exit(1)
+    else:
+        raise ValueError('Invalid Unit Specified')
     if '.' in freq:
-        argfreq = float(remove_all_butfirst(nfreq.replace(',', '').replace('_', '').replace(' ', ''), '.'))
-        argfreq = str(argfreq * multp[0]).replace('.', '')
+        nfreq = remove_all_butfirst(freq, '.').split('.')
+        while len(nfreq[1]) < mindigits:
+            nfreq[1] = nfreq[1] + '0'
+        return int(''.join(nfreq))
     else:
-        argfreq = int(argfreq) * multp[1]
-    if argfreq.isnumeric():
+        for each in range(mindigits):
+            argfreq = argfreq + '0'
+        argfreq = str(int(argfreq))
         return int(argfreq)
-    else:
-        raise ValueError('Invalid Frequency Specified')
 
 
 class Frequency():
 
-    def __init__(self, freq, suffix='hz'):
-        if isinstance(freq, float):
-            intfreq = parse_freq(str(freq), suffix)
-        elif isinstance(freq, str):
-            intfreq = parse_freq(freq, suffix)
-        elif isinstance(freq, int) and type(freq) != bool:
-            intfreq = parse_freq(str(freq), suffix)
+    def __init__(self, freq, unit='hz'):
+        if unit == '':
+            unit = 'hz'
+        if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:
+            intfreq = parse_freq(str(freq), unit)
         else:
             raise TypeError('Invalid Frequency Type')
         if intfreq < 1 or intfreq > 999999999999:
@@ -52,7 +47,7 @@ class Frequency():
 
         strfreq = str(intfreq)[::-1]
         strfreq = '.'.join(strfreq[i:i + 3] for i in range(0, len(strfreq), 3))
-        self.dial = strfreq[::-1]
+        self.display = strfreq[::-1]
 
         self.hz = ('{:,} hz'.format(int(intfreq)), (int(intfreq)))
         self.khz = ('{:,} Khz'.format(float(intfreq / 1000)), (float(intfreq / 1000)))
@@ -71,8 +66,6 @@ class Frequency():
         elif meter < 0.01:
             sub = int(str(meter).split('.')[1]) * 1000
             self.wavelength = f'{str(sub)[:2]}mm'
-        else:
-            self.wavelength = 'N/A'
         self.band_use = []
 
         if BROADCAST[intfreq] is not None and BROADCAST[intfreq]:
@@ -81,22 +74,13 @@ class Frequency():
         if SERVICES[intfreq] is not None and SERVICES[intfreq]:
             self.band_use.append(SERVICES[intfreq])
 
-        if itu is not None:
-            self.itu_band = itu[2]
-            self.itu_abbr = itu[1]
-            self.itu_num = itu[0]
-        else:
-            self.itu_band = itu
-            self.itu_abbr = itu
-            self.itu_num = itu
+        self.itu_band = itu[2]
+        self.itu_abbr = itu[1]
+        self.itu_num = itu[0]
 
         if ieee is not None:
-            if ieee:
-                self.ieee_band = ieee[0]
-                self.ieee_description = ieee[1]
-            else:
-                self.ieee_band = None
-                self.ieee_description = None
+            self.ieee_band = ieee[0]
+            self.ieee_description = ieee[1]
         else:
             self.ieee_band = None
             self.ieee_description = None

@@ -6,25 +6,16 @@ import sys
 import rf_info
 
 
-def remove_all_butfirst(s, substr):
-    try:
-        first_occurrence = s.index(substr) + len(substr)
-    except ValueError:
-        return s
-    else:
-        return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
-
-
 def main():
-    sys.tracebacklimit = 0  # Disable showing tracebacks
+    # sys.tracebacklimit = 0  # Disable showing tracebacks
     parser = argparse.ArgumentParser()
     parser.add_argument('--version', '-v', action='version', version='%(prog)s {}'.format(rf_info.__version__))
     parser.add_argument('frequency', action='store', help='Radio Frequency to get information about')
     parser.add_argument('--raw', '-r', action='store_true', help='Includes raw output (for debugging)')
-    parser.add_argument('suffix', nargs='?', default='hz', help='Hz, Khz, Mhz, Ghz')
+    parser.add_argument('unit', nargs='?', default='hz', help='hz, khz, Mhz, Ghz')
     args = parser.parse_args()
 
-    result = rf_info.Frequency(str(args.frequency), args.suffix).__dict__
+    result = rf_info.Frequency(str(args.frequency), str(args.unit).lower()).__dict__
     print(' ')
     for key, value in result.items():
         if key.lower() == 'band_use':

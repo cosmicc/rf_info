@@ -67,7 +67,7 @@ Also supports "Radio Display" frequency representation (Dotted notation):
 124.125.000, 198.000.050, 1.500.125.000
 
 Suffix examples:
-hz, Khz, Mhz, Ghz
+hz, khz, Mhz, Ghz (Case Insensitive)
 
 
 Command Line:

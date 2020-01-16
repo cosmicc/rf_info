@@ -4,9 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+bump2version = "*"
+wheel = "*"
+watchdog = "*"
+pip = "*"
+flake8 = "*"
+tox = "*"
+coverage = "*"
+sphinx = "*"
+twine = "*"
+pytest = "*"
+pytest-runner = "*"
+hypothesis = "*"
 
 [dev-packages]
 hypothesis = "*"
-
-[requires]
-python_version = "3.7"
