@@ -132,9 +132,4 @@ class Frequency():
             raise TypeError
 
     def __len__(self):
-        return len(str(self.hz[1])
-
-
-
-
-
+        return len(str(self.hz[1]))
