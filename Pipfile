@@ -19,3 +19,5 @@ hypothesis = "*"
 
 [dev-packages]
 hypothesis = "*"
+coveralls = "*"
+pyyaml = "*"
