@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os
+# import os
 import pytest
 from rf_info import rf_info
 from random import randint
@@ -257,6 +257,7 @@ def test_integers(a):
     assert result.ghz[1] == a / 1000000000
 
 
+'''
 def test_cli():
     template = '{0:20s} | {1:20s} | {2:2s}'
     print(' ')
@@ -266,3 +267,4 @@ def test_cli():
         ok = 'OK' if exit_status == 0 else f'XX ({exit_status})'
         print(template.format(str(freq), unit, ok))
         assert exit_status == 0
+'''
