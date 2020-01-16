@@ -104,7 +104,37 @@ class Frequency():
         return "Frequency('{}')".format(self.display)
 
     def __str__(self):
-        return f'{self.display} - {self.hz[0]}'
+        return f'{self.hz[0]} - {self.display}'
 
     def __int__(self):
         return int(self.hz[1])
+
+    def __add__(self, other):
+        if isinstance(other, Frequency):
+            return Frequency(self.hz[1] + other.hz[1])
+        elif isinstance(other, int):
+            return Frequency(self.hz[1] + other)
+        elif isinstance(other, str):
+            otherf = Frequency(other)
+            return Frequency(self.hz[1] + otherf.hz[1])
+        else:
+            raise TypeError
+
+    def __add__(self, other):
+        if isinstance(other, Frequency):
+            return Frequency(self.hz[1] - other.hz[1])
+        elif isinstance(other, int):
+            return Frequency(self.hz[1] - other)
+        elif isinstance(other, str):
+            otherf = Frequency(other)
+            return Frequency(self.hz[1] - otherf.hz[1])
+        else:
+            raise TypeError
+
+    def __len__(self):
+        return len(str(self.hz[1])
+
+
+
+
+
