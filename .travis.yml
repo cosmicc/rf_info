@@ -18,7 +18,7 @@ deploy:
     secure: I9j6IyTlnZ0YWB6jEX3fFBSUxPSih75ZWrYXWS2S7fnHJeObAa87eJtaf0pzNsoA7hUDv0LDt90W5sy1mIRHp8ODRZnnSZtxRioP2ByLOqlFLxEARxjBRBde3bsbXAq+9OnUdwPfhNlJRayoGtwGyXdofIGi4qNNowap8Pf6UrHIiNV0Xsf8Xe5otpz4uuzo1qua1hbBk5CYRkJrhLdEhqw9bYlFGmQpvLZNTy8ZgUvI/peoXvPVO0PkqLiN4SInbGadyaGejNcmXCi7d+50wmhWCBl4g4mBgyHicIw6vvyYOlA6T1H78c2Am+CRSjQgnTHp6pZ75WzrIXV6/mLuenIxIk67ayFKS4fh+c1pArzPYWi0RJ1LTNz2x51Rn1If5af4EMOfWJGMgNEVT6o6K0HrzWzI6K7LORpkyZCOEU0rf8zFXzDvHVa3CLLmvaOI2BDuWeet6THwv7i2KxIETEMdsm1ZVUFAU5PTtK30v6pmb/V/Jdd4csewyJU+A+N4LO8DTtKr7+sRnMp13JNr1CtJgsDxTV1yoNizZ4QdCulFtE0vcO6MxoS5RUpNoRpxFFqPgxprtJUF1DOND9l4PMTQfGbpNkOFjiN29ZM+M2ST7cx8tV0LnjgjVQOU6+8/82UjVPyYKV8MbZr8n7zZD1OhA3OmjOJAZ8xF/WEGnq8=
   on:
     tags: true
-    repo: cosmicc/rf-info
+    repo: cosmicc/rf_info
     python: 3.8
 deployment:
   password:
