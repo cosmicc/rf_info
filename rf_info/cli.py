@@ -15,13 +15,14 @@ def remove_all_butfirst(s, substr):
         return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
 
 
-def main():
+def main(argv):
     sys.tracebacklimit = 0  # Disable showing tracebacks
     parser = argparse.ArgumentParser()
     parser.add_argument('--version', '-v', action='version', version='%(prog)s {}'.format(rf_info.__version__))
     parser.add_argument('frequency', action='store', help='Radio Frequency to get information about')
+    parser.add_argument('--raw', '-r', action='store_true', help='Includes raw output (for debugging)')
     parser.add_argument('suffix', nargs='?', default='hz', help='Hz, Khz, Mhz, Ghz')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     result = rf_info.Frequency(str(args.frequency), args.suffix).__dict__
     print(' ')
@@ -45,12 +46,16 @@ def main():
         else:
             if value is not None:
                 print('%s: %s' % (key.title(), value))
-    # print('raw:')
-    # for key, value in result.items():
-    #     print(f'{key}: {value}')
     print(' ')
+    if args.raw:
+        print('Raw:')
+        for key, value in result.items():
+            print(f'{key}: {value}')
+        print(' ')
+        print(result)
+        print(' ')
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv))

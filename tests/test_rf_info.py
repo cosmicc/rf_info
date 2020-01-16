@@ -3,6 +3,8 @@
 import pytest
 from rf_info import rf_info
 from random import randint
+from rf_info import cli
+
 
 TEST_BROADCAST = (
                  ('89.900.000', 'FM Radio'),
@@ -165,3 +167,11 @@ def test_ieee():
         ok = 'OK' if result.ieee_band == expected else 'XX'
         print(template.format(str(f), str(result.ieee_band), ok))
         assert result.ieee_band == expected
+
+
+def test_cli():
+    for (freq, expected) in TEST_DIAL:
+        with pytest.raises(SystemExit) as e:
+            cli.main(freq)
+            print(f'Exit: {e}')
+
