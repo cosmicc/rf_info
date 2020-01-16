@@ -6,26 +6,23 @@ python:
   - 3.7
   - 3.6
   - "3.8-dev"  # 3.8 development branch
-  - "nightly"  # nightly build  
-  - "pypy3"  
+  - "nightly"  # nightly build
+  - "pypy3"
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
 
-# Command to run tests, e.g. python setup.py test
 script: tox
 after_success:
   - coveralls
-# Assuming you have installed the travis-ci CLI tool, after you
-# create the Github repo and add it to Travis, run the
-# following command to finish PyPI deployment setup:
+
 # $ travis encrypt --add deploy.password
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
   user: cosmicc
   password:
-    secure:
+    secure: ELlRka4MgXgROG2NXbi5myxCOUfe+L233Dekf5OArjVMxfPpXDZfBRgJoOSCu1hbw2N/ShZAOCvxuKfaN9nENssbtan3V0ECeqxOtvbu93keqvdc2CCgVyj2vehQhHB9mmtX    hQoE6Q5juz0JNSxbFrjCiQIlt0IFz3Ggc3olp9DpRTX7rnA0yyBzYzXP5bN2Y7w1EhH7kwgUMBXTUNaFP8paC8ba7ug/WVuecpVzZW2J8sfN1pEphgX+gdL7jaAczHbWUOnxy5DrkiP+okFH    HB1X1JxXWH1ZoEESFpWdovwKw7zNdNHwrawqdHn6/oxOtS+Ruoky7VegG60CHABd4mtuHN+9k7XBUXsmVQV71/tDzc7YiTXFI0JgJi+u5+fQ/v6RaeVDLRzYKzHZ3+7a2AutOCOufq389Q8n    wgbfqWG/f+E7iFoHDugaadc9QgZ2tPD3YSeQ9xUcYrxPCyHPJagkVs6C8MJm2upE0jx7MSXLXBFIVIoW3ymYYiUxl5h+MaiJQ0+J3WxrdxO1DEaToyfTSOxVvg3BsW1q7dgj4Oer86wDyqlZ    uHId3wozBLZp8UsKd19o1eoeCHebq3qZJ1JSRHXSzP0MK/V0ivGDWQ5pqNckaM3uds0mDjGeBV3/FvhFVtAAFfYGh5qZYl2wmUvfKucMA0fuaOuHNi/ltdw=
   on:
     tags: true
     repo: cosmicc/radio_frequency

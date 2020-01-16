@@ -1,5 +1,4 @@
 from .rf_data import ITU, IEEE, NATO, WAVEGUIDE, BROADCAST, SERVICES, HAM
-from math import trunc
 
 
 def remove_all_butfirst(s, substr):
@@ -27,7 +26,6 @@ def parse_freq(freq, suffix):
             raise ValueError('Invalid Frequency Specified')
             exit(1)
     if '.' in freq:
-        print('!!!!!!!!!!!!')
         argfreq = float(remove_all_butfirst(nfreq.replace(',', '').replace('_', '').replace(' ', ''), '.'))
         argfreq = str(argfreq * multp[0]).replace('.', '')
     else:

@@ -3,19 +3,19 @@ rf-info
 =======
 
 
-.. image:: https://img.shields.io/github/v/release/cosmicc/rf_info.svg?include_prereleases 
+.. image:: https://img.shields.io/github/v/release/cosmicc/rf_info.svg?include_prereleases
         :target: https://github.com/cosmicc/rf_info
-        
+
 .. image:: https://img.shields.io/pypi/v/rf_info.svg
         :target: https://pypi.python.org/pypi/rf_info
 
 .. image:: https://pyup.io/repos/github/cosmicc/rf_info/python-3-shield.svg
         :target: https://pyup.io/repos/github/cosmicc/rf_info/
         :alt: Python 3
-        
+
 .. image:: https://img.shields.io/github/license/cosmicc/rf_info.svg
         :target: https://github.com/cosmicc/rf_info
-        
+
 .. image:: https://coveralls.io/repos/github/cosmicc/rf_info/badge.svg?branch=master
         :target: https://coveralls.io/github/cosmicc/rf_info?branch=master
 
@@ -37,6 +37,7 @@ Command line & Python library for obtaining details about a radio frequency
 
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
+* Python 3.6, 3.7, 3.8 & pypy3 tested
 
 
 Features
@@ -44,15 +45,15 @@ Features
 
 Returns information about a radio frequency (US only for now)
 
-- Band Use 
+- Band Use
 - Wavelength
-- ITU Band Description 
+- ITU Band Description
 - ITU Band Abbreviation
 - ITU Band Number
 - IEEE Band Name
 - NATO Band Name
 - Waveguide Band Name
-- Amateur Radio Details (Type, Class, Max Power), - Not yet Implimented  
+- Amateur Radio Details (Type, Class, Max Power), - Not yet Implimented
 
 Let me know if there is additional details you would like to see added,
 or if someone would like to donate some EU/Other band info to add ;-)
@@ -80,7 +81,7 @@ from rf-info import Frequency
 
 freq = Frequency('112.434.000')
 
-Then: 
+Then:
 
 freq.info()
 
