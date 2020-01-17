@@ -45,6 +45,14 @@ class Frequency():
             from .data.us_data import ALLOCATIONS
         elif country.lower() == 'uk':
             from .data.uk_data import ALLOCATIONS
+        elif country.lower() == 'gr':
+            from .data.gr_data import ALLOCATIONS
+        elif country.lower() == 'sp':
+            from .data.sp_data import ALLOCATIONS
+        elif country.lower() == 'au':
+            from .data.au_data import ALLOCATIONS
+        elif country.lower() == 'sa':
+            from .data.au_data import ALLOCATIONS
 
 
         # Parse Frequency and unit inputs

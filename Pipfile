@@ -4,6 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+iso3166 = "*"
+
+[dev-packages]
 bump2version = "*"
 wheel = "*"
 watchdog = "*"
@@ -15,9 +18,6 @@ sphinx = "*"
 twine = "*"
 pytest = "*"
 pytest-runner = "*"
-hypothesis = "*"
-
-[dev-packages]
 hypothesis = "*"
 coveralls = "*"
 pyyaml = "*"
