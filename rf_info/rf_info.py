@@ -34,9 +34,13 @@ def parse_freq(freq, unit):
 
 
 class Frequency():
+
     def __init__(self, freq, unit='hz'):
+        # Hack for pytest to test cli inputs
         if unit == '':
             unit = 'hz'
+
+        # Parse Frequency and unit inputs
         if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:
             self.__intfreq = parse_freq(str(freq), unit)
         else:
@@ -44,15 +48,20 @@ class Frequency():
         if self.__intfreq < 1 or self.__intfreq > 999999999999:
             raise ValueError(f'Frequency Out of Range')
 
-        strfreq = str(self.__intfreq)[::-1]
-        strfreq = '.'.join(strfreq[i:i + 3] for i in range(0, len(strfreq), 3))
-        self.display = strfreq[::-1]
+        # Create Display Frequency
+        dispfreq = str(self.__intfreq)[::-1]
+        while len(dispfreq) < 9:
+            dispfreq = dispfreq + '0'
+        dispfreq = '.'.join(dispfreq[i:i + 3] for i in range(0, len(dispfreq), 3))
+        self.display = dispfreq[::-1]
 
+        # Create Unit frequencies
         self.hz = ('{:,} hz'.format(int(self.__intfreq)), (int(self.__intfreq)))
         self.khz = ('{:,} Khz'.format(float(self.__intfreq / 1000)), (float(self.__intfreq / 1000)))
         self.mhz = ('{:,} Mhz'.format(float(self.__intfreq / 1000000)), (float(self.__intfreq / 1000000)))
         self.ghz = ('{:,} Ghz'.format(float(self.__intfreq / 1000000000)), (float(self.__intfreq / 1000000000)))
 
+        # Create ITU, IEEE, and Wavelength
         itu = ITU[self.__intfreq]
         ieee = IEEE[self.__intfreq]
         meter = 300000000 / self.__intfreq
@@ -65,18 +74,9 @@ class Frequency():
         elif meter < 0.01:
             sub = int(str(meter).split('.')[1]) * 1000
             self.wavelength = f'{str(sub)[:2]}mm'
-        self.band_use = []
-
-        if BROADCAST[self.__intfreq] is not None and BROADCAST[self.__intfreq]:
-            self.band_use.append(BROADCAST[self.__intfreq])
-
-        if SERVICES[self.__intfreq] is not None and SERVICES[self.__intfreq]:
-            self.band_use.append(SERVICES[self.__intfreq])
-
         self.itu_band = itu[2]
         self.itu_abbr = itu[1]
         self.itu_num = itu[0]
-
         if ieee is not None:
             self.ieee_band = ieee[0]
             self.ieee_description = ieee[1]
@@ -84,20 +84,32 @@ class Frequency():
             self.ieee_band = None
             self.ieee_description = None
 
+        # Create NATO and Waveguide
         self.nato_band = NATO[self.__intfreq]
         self.waveguide_band = WAVEGUIDE[self.__intfreq]
+
+        # Create Band Usage
+        self.band_use = []
+        if BROADCAST[self.__intfreq] is not None and BROADCAST[self.__intfreq]:
+            self.band_use.append(BROADCAST[self.__intfreq])
+        if SERVICES[self.__intfreq] is not None and SERVICES[self.__intfreq]:
+            self.band_use.append(SERVICES[self.__intfreq])
+        if len(self.band_use) == 0:
+            self.band_use = tuple()
+        else:
+            self.band_use = tuple(self.band_use)
+
+        # Create Amateur Band Use
         ham = HAM[self.__intfreq]
         if ham is None:
             self.amateur_band = ((False, ))
         else:
             self.amateur_band = ((True, )) + ham
 
-        if len(self.band_use) == 0:
-            self.band_use = tuple()
-        else:
-            self.band_use = tuple(self.band_use)
-
     def info(self):
+        return self.__dict__
+
+    def details(self):
         return self.__dict__
 
     def __repr__(self):
@@ -120,7 +132,7 @@ class Frequency():
         else:
             raise TypeError
 
-    def __add__(self, other):
+    def __sub__(self, other):
         if isinstance(other, Frequency):
             return Frequency(self.hz[1] - other.hz[1])
         elif isinstance(other, int):
