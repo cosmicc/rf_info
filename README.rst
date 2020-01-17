@@ -61,10 +61,10 @@ or if someone would like to donate some EU/Other band info to add ;-)
 Usage
 -------
 Frequency format examples:
-89910000, 23,450,000, 12,634.534
+89910000, 23,450,000, 12,634.534, 12_000_000, 344_500.100
 
 Also supports "Radio Display" frequency representation (Dotted notation):
-124.125.000, 198.000.050, 1.500.125.000
+124.125.000, 198.000.050, 1.500.125.000, .015, 000.012.500
 
 Suffix examples:
 hz, khz, Mhz, Ghz (Case Insensitive)
@@ -95,19 +95,19 @@ freq.itu_band
 
 freq.wavelength
 
-Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency:
+Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object:
 
 new_freq_object = Frequency('000.123.000') + Frequency('7', 'khz')  # Adds 7khz to 123khz
 
 new_freq_object = Frequency('1', 'mhz') + 7000  # Adds 7khz to 1mhz
 
-new_freq_object = Frequency('123.000') - '000.007.000'  # Subtracts 7khz from 123khz
+new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7khz from 123khz
 
 
 Todo
 -------
 
-- Amateur Radio Details
+- Finish Amateur Radio Details
 - WIFI band details
 - Cellular band details
 - Sattelite band details
