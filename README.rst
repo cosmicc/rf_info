@@ -61,10 +61,10 @@ or if someone would like to donate some EU/Other band info to add ;-)
 Usage
 -------
 Frequency format examples:
-89910000, 23,450,000, 12,634.534
+89910000, 23,450,000, 12,634.534, 12_000_000, 344_500.100
 
 Also supports "Radio Display" frequency representation (Dotted notation):
-124.125.000, 198.000.050, 1.500.125.000
+124.125.000, 198.000.050, 1.500.125.000, .015, 000.012.500
 
 Suffix examples:
 hz, khz, Mhz, Ghz (Case Insensitive)
@@ -83,11 +83,11 @@ freq = Frequency('112.434.000')
 
 Then:
 
-freq.info()
+freq.details()
 
 returns a dictionary:
 
-{'dial': '144.125', 'hz': ('144,125 hz', 144125), 'khz': ('144.125 Khz', 144.125), 'mhz': ('0.144125 Mhz', 0.144125), 'ghz': ('0.000144125 Ghz', 0.000144125), 'wavelength': '2,081m', 'band_use': (), 'itu_band': 'Low Frequency', 'itu_abbr': 'LF', 'itu_num': 5, 'ieee_band': None, 'ieee_description': None, 'nato_band': 'A', 'waveguide_band': None, 'amateur_band': (False,)}
+{'display': '144.051.000', 'hz': 144051000, 'khz': 144051.0, 'mhz': 144.051, 'ghz': 0.144051, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'band_use': (), 'amateur_band': (True, 'Class', 'Use', 'General CW and weak signals')}
 
 or you can get individual items directly:
 
@@ -95,12 +95,19 @@ freq.itu_band
 
 freq.wavelength
 
+Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object:
+
+new_freq_object = Frequency('000.123.000') + Frequency('7', 'khz')  # Adds 7khz to 123khz
+
+new_freq_object = Frequency('1', 'mhz') + 7000  # Adds 7khz to 1mhz
+
+new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7khz from 123khz
 
 
 Todo
 -------
 
-- Amateur Radio Details
+- Finish Amateur Radio Details
 - WIFI band details
 - Cellular band details
 - Sattelite band details

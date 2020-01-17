@@ -6,14 +6,16 @@ import sys
 import rf_info
 
 
-def main():
-    # sys.tracebacklimit = 0  # Disable showing tracebacks
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv[1:]
+    sys.tracebacklimit = 0  # Disable showing tracebacks
     parser = argparse.ArgumentParser()
     parser.add_argument('--version', '-v', action='version', version='%(prog)s {}'.format(rf_info.__version__))
-    parser.add_argument('frequency', action='store', help='Radio Frequency to get information about')
+    parser.add_argument('frequency', action='store', help='Radio Frequency')
     parser.add_argument('--raw', '-r', action='store_true', help='Includes raw output (for debugging)')
     parser.add_argument('unit', nargs='?', default='hz', help='hz, khz, Mhz, Ghz')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     result = rf_info.Frequency(str(args.frequency), str(args.unit).lower()).__dict__
     print(' ')
@@ -31,9 +33,6 @@ def main():
                     else:
                         newval = f'{newval}, {each}'
                 print('%s: %s' % (key.title(), newval))
-
-        elif key.lower() == 'hz' or key.lower() == 'khz' or key.lower() == 'mhz' or key.lower() == 'ghz':
-            print('%s: %s' % (key.title(), value[0]))
         else:
             if value is not None:
                 print('%s: %s' % (key.title(), value))
@@ -46,7 +45,3 @@ def main():
         print(result)
         print(' ')
     return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
