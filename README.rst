@@ -45,7 +45,8 @@ Features
 
 Returns information about a radio frequency (Country Specific)
 
-- Band Use
+- Primary Band Allocations
+- Secondary Band Allocations  
 - Wavelength
 - ITU Band Description
 - ITU Band Abbreviation
@@ -92,7 +93,6 @@ returns a dictionary:
 >>> {'display': '144.051.000', 'hz': 144051000, 'khz': 144051.0, 'mhz': 144.051, 'ghz': 0.144051, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'band_use': (), 'amateur_band': (True, 'Class', 'Use', 'General CW and weak signals')}
 
 or you can get individual items directly:
-
 ::
 
 >>> freq.itu_band
@@ -109,12 +109,9 @@ Also supports adding and subtracting frequencies.  Either a frequency object, in
 Todo
 -------
 
-- Finish Amateur Radio Details
-- WIFI band details
-- Cellular band details
-- Sattelite band details
-- GMRS, CB, & WIFI Specific Channels
-- Add more reserved frequency details
+- More WIFI band details (channels)
+- More Cellular band details (channels)
+- More Sattelite band details
 
 Credits
 -------
