@@ -50,7 +50,7 @@ TEST_DISPLAY = (
 )
 
 TEST_UNITS = (
-             ('144.100.000', 'Hz', '144.100.000')
+             ('144.100.000', 'Hz', '144.100.000'),
              ('132.158.000', 'Hz', '132.158.000'),
              ('1,000,000', '', '001.000.000'),
              ('1000', 'HZ', '000.001.000'),
@@ -255,7 +255,7 @@ def test_elements(a):
     assert isinstance(result.details(), dict)
     assert isinstance(str(result), str)
     assert str(result) == f'{result.display} - {result.hz} hz'
-    assert isinstance(str(result), int)
+    assert isinstance(int(result), int)
     assert int(result) == result.hz
     assert isinstance(result.display, str)
     assert isinstance(result.hz, int)
@@ -282,6 +282,10 @@ def test_addition(a, b):
     result = resulta + resultb
     assert isinstance(result.__dict__, dict)
     assert result.hz == resulta.hz + resultb.hz
+    result = resulta + b
+    assert result.hz == resulta.hz + resultb.hz
+    result = resulta + str(b)
+    assert result.hz == resulta.hz + resultb.hz
 
 
 @given(integers(min_value=10000, max_value=MAX), integers(min_value=MIN, max_value=9999))
@@ -291,3 +295,8 @@ def test_subtraction(a, b):
     result = resulta - resultb
     assert isinstance(result.__dict__, dict)
     assert result.hz == resulta.hz - resultb.hz
+    result = resulta - b
+    assert result.hz == resulta.hz - resultb.hz
+    result = resulta - str(b)
+    assert result.hz == resulta.hz - resultb.hz
+
