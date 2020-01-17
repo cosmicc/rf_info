@@ -50,6 +50,7 @@ TEST_DISPLAY = (
 )
 
 TEST_UNITS = (
+             ('144.100.000', 'Hz', '144.100.000')
              ('132.158.000', 'Hz', '132.158.000'),
              ('1,000,000', '', '001.000.000'),
              ('1000', 'HZ', '000.001.000'),
@@ -252,6 +253,10 @@ def test_elements(a):
     assert result.ghz == a / 1_000_000_000
     assert isinstance(result.info(), dict)
     assert isinstance(result.details(), dict)
+    assert isinstance(str(result), str)
+    assert str(result) == f'{result.display} - {result.hz} hz'
+    assert isinstance(str(result), int)
+    assert int(result) == result.hz
     assert isinstance(result.display, str)
     assert isinstance(result.hz, int)
     assert isinstance(result.khz, (int, float))
