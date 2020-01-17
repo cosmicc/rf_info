@@ -56,15 +56,15 @@ class Frequency():
         self.display = dispfreq[::-1]
 
         # Create Unit frequencies
-        self.hz = ('{:,} hz'.format(int(self.__intfreq)), (int(self.__intfreq)))
-        self.khz = ('{:,} Khz'.format(float(self.__intfreq / 1000)), (float(self.__intfreq / 1000)))
-        self.mhz = ('{:,} Mhz'.format(float(self.__intfreq / 1000000)), (float(self.__intfreq / 1000000)))
-        self.ghz = ('{:,} Ghz'.format(float(self.__intfreq / 1000000000)), (float(self.__intfreq / 1000000000)))
+        self.hz = int(self.__intfreq)
+        self.khz = float(self.__intfreq / 1_000)
+        self.mhz = float(self.__intfreq / 1_000_000)
+        self.ghz = float(self.__intfreq / 1_000_000_000)
 
         # Create ITU, IEEE, and Wavelength
         itu = ITU[self.__intfreq]
         ieee = IEEE[self.__intfreq]
-        meter = 300000000 / self.__intfreq
+        meter = 300_000_000 / self.__intfreq
         if meter >= 1:
             self.wavelength = '{:,}'.format(int(meter))
             self.wavelength = f'{self.wavelength}m'
@@ -116,32 +116,33 @@ class Frequency():
         return "Frequency('{}')".format(self.display)
 
     def __str__(self):
-        return f'{self.hz[0]} - {self.display}'
+        return f'{self.display} - {self.hz} hz'
 
     def __int__(self):
-        return int(self.hz[1])
+        return int(self.hz)
 
     def __add__(self, other):
         if isinstance(other, Frequency):
-            return Frequency(self.hz[1] + other.hz[1])
+            return Frequency(self.hz + other.hz)
         elif isinstance(other, int):
-            return Frequency(self.hz[1] + other)
+            return Frequency(self.hz + other)
         elif isinstance(other, str):
             otherf = Frequency(other)
-            return Frequency(self.hz[1] + otherf.hz[1])
+            return Frequency(self.hz + otherf.hz)
         else:
             raise TypeError
 
     def __sub__(self, other):
         if isinstance(other, Frequency):
-            return Frequency(self.hz[1] - other.hz[1])
+            return Frequency(self.hz - other.hz)
         elif isinstance(other, int):
-            return Frequency(self.hz[1] - other)
+            return Frequency(self.hz - other)
         elif isinstance(other, str):
             otherf = Frequency(other)
-            return Frequency(self.hz[1] - otherf.hz[1])
+            return Frequency(self.hz - otherf.hz)
         else:
             raise TypeError
 
     def __len__(self):
-        return len(str(self.hz[1]))
+        return len(str(self.hz))
+

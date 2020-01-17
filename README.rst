@@ -83,11 +83,11 @@ freq = Frequency('112.434.000')
 
 Then:
 
-freq.info()
+freq.details()
 
 returns a dictionary:
 
-{'dial': '144.125', 'hz': ('144,125 hz', 144125), 'khz': ('144.125 Khz', 144.125), 'mhz': ('0.144125 Mhz', 0.144125), 'ghz': ('0.000144125 Ghz', 0.000144125), 'wavelength': '2,081m', 'band_use': (), 'itu_band': 'Low Frequency', 'itu_abbr': 'LF', 'itu_num': 5, 'ieee_band': None, 'ieee_description': None, 'nato_band': 'A', 'waveguide_band': None, 'amateur_band': (False,)}
+{'display': '144.051.000', 'hz': 144051000, 'khz': 144051.0, 'mhz': 144.051, 'ghz': 0.144051, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'band_use': (), 'amateur_band': (True, 'Class', 'Use', 'General CW and weak signals')}
 
 or you can get individual items directly:
 
@@ -95,6 +95,13 @@ freq.itu_band
 
 freq.wavelength
 
+Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency:
+
+new_freq_object = Frequency('000.123.000') + Frequency('7', 'khz')  # Adds 7khz to 123khz
+
+new_freq_object = Frequency('1', 'mhz') + 7000  # Adds 7khz to 1mhz
+
+new_freq_object = Frequency('123.000') - '000.007.000'  # Subtracts 7khz from 123khz
 
 
 Todo

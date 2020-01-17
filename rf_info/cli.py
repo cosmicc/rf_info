@@ -33,9 +33,6 @@ def main(argv=None):
                     else:
                         newval = f'{newval}, {each}'
                 print('%s: %s' % (key.title(), newval))
-
-        elif key.lower() == 'hz' or key.lower() == 'khz' or key.lower() == 'mhz' or key.lower() == 'ghz':
-            print('%s: %s' % (key.title(), value[0]))
         else:
             if value is not None:
                 print('%s: %s' % (key.title(), value))
