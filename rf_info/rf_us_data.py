@@ -1,6 +1,5 @@
 from .rangekeydict import RangeKeyDict
 
-
 HAM = RangeKeyDict({
     (1800000, 1831000): ('Class', 'Use', 'CW, RTTY, and other narrowband modes'),
     (1830000, 1841000): ('Class', 'Use', 'CW, RTTY, and other narrowband modes, Intercontinental QSOs only'),

@@ -145,4 +145,3 @@ class Frequency():
 
     def __len__(self):
         return len(str(self.hz))
-

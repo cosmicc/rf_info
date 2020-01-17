@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-import pytest
 from random import randint
-from rf_info import Frequency, cli
-from hypothesis import given, assume
+
+import pytest
+from hypothesis import given
 from hypothesis.strategies import integers
+from rf_info import Frequency
 
 MIN = 1
 MAX = 999999999999
@@ -62,7 +63,6 @@ TEST_UNITS = (
              ('10', 'gHZ', '10.000.000.000'),
              ('300', 'mhZ', '300.000.000'),
 )
-
 
 
 def test_out_of_range():
@@ -270,7 +270,7 @@ def test_elements(a):
     assert isinstance(result.amateur_band[0], bool)
 
 
-@given(integers(min_value=MIN, max_value=int(MAX/2)), integers(min_value=MIN, max_value=int(MAX/2)))
+@given(integers(min_value=MIN, max_value=int(MAX / 2)), integers(min_value=MIN, max_value=int(MAX / 2)))
 def test_addition(a, b):
     resulta = Frequency(a)
     resultb = Frequency(b)
@@ -286,4 +286,3 @@ def test_subtraction(a, b):
     result = resulta - resultb
     assert isinstance(result.__dict__, dict)
     assert result.hz == resulta.hz - resultb.hz
-
