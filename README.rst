@@ -43,7 +43,7 @@ Command line & Python library for obtaining details about a radio frequency
 Features
 --------
 
-Returns information about a radio frequency (US only for now)
+Returns information about a radio frequency (Country Specific)
 
 - Band Use
 - Wavelength
@@ -55,8 +55,7 @@ Returns information about a radio frequency (US only for now)
 - Waveguide Band Name
 - Amateur Radio Details (Type, Class, Max Power), - Not yet Implimented
 
-Let me know if there is additional details you would like to see added,
-or if someone would like to donate some EU/Other band info to add ;-)
+Supported Countries: US, UK, Spain, Germany, South Africa, Austrailia, Mexico
 
 Usage
 -------
@@ -80,32 +79,31 @@ Python:
 ::
 
 >>> from rf-info import Frequency
-
 >>> freq = Frequency('112.434.000')
 
 Then:
 ::
+
 >>> freq.details()
 
 returns a dictionary:
+::
 
-{'display': '144.051.000', 'hz': 144051000, 'khz': 144051.0, 'mhz': 144.051, 'ghz': 0.144051, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'band_use': (), 'amateur_band': (True, 'Class', 'Use', 'General CW and weak signals')}
+>>> {'display': '144.051.000', 'hz': 144051000, 'khz': 144051.0, 'mhz': 144.051, 'ghz': 0.144051, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'band_use': (), 'amateur_band': (True, 'Class', 'Use', 'General CW and weak signals')}
 
 or you can get individual items directly:
 
 ::
 
 >>> freq.itu_band
-
 >>> freq.wavelength
 
 Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object:
+::
 
-new_freq_object = Frequency('000.123.000') + Frequency('7', 'khz')  # Adds 7khz to 123khz
-
-new_freq_object = Frequency('1', 'mhz') + 7000  # Adds 7khz to 1mhz
-
-new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7khz from 123khz
+>>> new_freq_object = Frequency('000.123.000') + Frequency('7', 'khz')  # Adds 7khz to 123khz
+>>> new_freq_object = Frequency('1', 'mhz') + 7000  # Adds 7khz to 1mhz
+>>> new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7khz from 123khz
 
 
 Todo
