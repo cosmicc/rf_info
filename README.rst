@@ -71,19 +71,21 @@ hz, khz, Mhz, Ghz (Case Insensitive)
 
 
 Command Line:
+::
 
-rf-info <frequency> [<suffix>]
+$ rf-info <frequency> [<suffix>]
 
 
 Python:
+::
 
-from rf-info import Frequency
+>>> from rf-info import Frequency
 
-freq = Frequency('112.434.000')
+>>> freq = Frequency('112.434.000')
 
 Then:
-
-freq.details()
+::
+>>> freq.details()
 
 returns a dictionary:
 
@@ -91,9 +93,11 @@ returns a dictionary:
 
 or you can get individual items directly:
 
-freq.itu_band
+::
 
-freq.wavelength
+>>> freq.itu_band
+
+>>> freq.wavelength
 
 Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object:
 

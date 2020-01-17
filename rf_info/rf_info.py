@@ -1,5 +1,4 @@
-from .rf_us_data import BROADCAST, HAM, IEEE, ITU, NATO, SERVICES, WAVEGUIDE
-
+#!/usr/bin/env python3
 
 def remove_all_butfirst(s, substr):
     first_occurrence = s.index(substr) + len(substr)
@@ -35,10 +34,18 @@ def parse_freq(freq, unit):
 
 class Frequency():
 
-    def __init__(self, freq, unit='hz'):
+    def __init__(self, freq, unit='hz', country='us'):
         # Hack for pytest to test cli inputs
         if unit == '':
             unit = 'hz'
+
+        # Set country and populate data
+        from .data.international import IEEE, ITU, NATO, WAVEGUIDE
+        if country.lower() == 'us':
+            from .data.us_data import ALLOCATIONS
+        elif country.lower() == 'uk':
+            from .data.uk_data import ALLOCATIONS
+
 
         # Parse Frequency and unit inputs
         if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:
