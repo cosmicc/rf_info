@@ -112,7 +112,7 @@ def test_medium_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(1_000_000, MAX)
+        random = randint(1_000_000, 999999999)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))
