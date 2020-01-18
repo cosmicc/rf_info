@@ -290,7 +290,7 @@ def test_elements(a):
     assert isinstance(result.amateur, bool)
     assert isinstance(result.fixed_station, bool)
     assert isinstance(result.mobile_station, bool)
-    assert isinstance(result.broadcast, bool)
+    assert isinstance(result.broadcasting, bool)
     assert isinstance(result.primary_allocation, list)
     assert isinstance(result.secondary_allocation, list)
     assert isinstance(result.allocation_notes, list)

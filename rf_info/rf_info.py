@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from iso3166 import countries
-from .data.international import COUNTRY_MAP
+from .data.countrymap import COUNTRY_MAP
 
 
 def remove_all_butfirst(s, substr):

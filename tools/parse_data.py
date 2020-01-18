@@ -9,22 +9,41 @@ data parsed from: http://www.grss-ieee.org/frequency_allocations.html
 import csv
 import argparse
 from pathlib import Path
+from iso3166 import countries
+
+import sys
+sys.path.insert(1, '/opt/rf_info/rf_info/data')
+
+from countrymap import COUNTRY_MAP
+
+country_map_file = Path('/opt/rf_info/rf_info/data/countrymap.py')
 
 parser = argparse.ArgumentParser()
-parser.add_argument('csv_file', action='store', help='CSV file to parse')
+parser.add_argument('--force', '-f', action='store_true', help='Force overwrite')
+parser.add_argument('--list', '-l', action='store_true', help='List currently supported countries')
 args = parser.parse_args()
 
-data_file = Path(args.csv_file)
-if not data_file.exists() or not data_file.is_file():
-    print('CSV file invalid or cannot be found')
-    exit(1)
+if args.list:
+    for key, value in COUNTRY_MAP.items():
+        print(f'{countries.get(key).name} ({countries.get(key).alpha2})')
+    exit(0)
 
-file_split = data_file.stem.split('_')
-if len(file_split) != 2:
-    print('Cannot determine country from file')
-    exit(1)
-country = file_split[0]
-new_data_file = Path(f'/opt/rf_info/rf_info/data/a_allocations.py')
+def check_countrymap(country, letter):
+    if country.alpha2.upper() in COUNTRY_MAP:
+        if COUNTRY_MAP[country.alpha2.upper()] == letter:
+            print(f'[ {country.alpha2.upper()} ] already exists as [ {letter.upper()} ] in countrymap')
+        else:
+            print(f'[ {country.alpha2.upper()} ] exists but different [ COUNTRY_MAP[country.alpha2.upper()].upper() ] -> [ {letter.upper()} ]')
+            COUNTRY_MAP.update({country.alpha2.upper(): letter.lower()})
+            with country_map_file.open(mode='w') as f:
+                print(f'COUNTRY_MAP = {COUNTRY_MAP}', file=f)
+            data_file.unlink()
+    else:
+        print(f'[ {country.alpha2.upper()} ] does not exist in countrymap. adding it.')
+        COUNTRY_MAP.update({country.alpha2.upper(): letter.lower()})
+        with country_map_file.open(mode='w') as f:
+            print(f'COUNTRY_MAP = {COUNTRY_MAP}', file=f)
+        data_file.unlink()
 
 
 def parse_line(pa):
@@ -91,7 +110,6 @@ def parse_footnotes(footnote):
                     newfoot.append(str(each.strip()))
             else:
                 newfoot.append(str(each.strip()))
-    print(type(newfoot))
     return newfoot
 
 
@@ -107,38 +125,76 @@ def write_footer():
         print('})', file=f)
 
 
-write_header()
-with open(str(data_file)) as csv_file:
-    csv_reader = csv.DictReader(csv_file, delimiter=',')
-    line_count = 0
-    for row in csv_reader:
-        if row["Min (MHz)"].isnumeric():
-            minfreq = int(row["Min (MHz)"])
+pth = Path('/home/ip')
+for dtfl in pth.iterdir():
+    if dtfl.suffix == '.csv':
+        data_file = dtfl
+
+        if not data_file.exists() or not data_file.is_file():
+            print('CSV file invalid or cannot be found')
+            exit(1)
+
+        fs = data_file.stem
+        try:
+            country = countries.get(fs.title())
+        except:
+            print(f'Cannot determine country from filename {fs}')
+            exit(1)
+
+        csv_size = data_file.stat().st_size
+        if csv_size == 635414:
+            letter = 'a'
+            print(f'{country.name} [ {country.alpha2} ] is [ {letter.upper()} ] Type')
+            check_countrymap(country, letter)
+        elif csv_size == 682975:
+            letter = 'b'
+            print(f'{country.name} [ {country.alpha2} ] is [ {letter.upper()} ] Type')
+            check_countrymap(country, letter)
+        elif csv_size == 660096:
+            letter = 'c'
+            print(f'{country.name} [ {country.alpha2} ] is [ {letter.upper()} ] Type')
+            check_countrymap(country, letter)
         else:
-            minfreq = float(row["Min (MHz)"])
-        if row["Max (MHz)"].isnumeric():
-            maxfreq = int(row["Max (MHz)"])
-        else:
-            maxfreq = float(row["Max (MHz)"])
+            letter = 'd'
+            print(f'{country.name} [ {country.alpha2} ] is UNKNOWN TYPE! making [ {letter.upper()} ] file')
+            check_countrymap(country, letter)
+            args,force = True
 
-        minfreq = minfreq * 1000000
-        maxfreq = maxfreq * 1000000
+        new_data_file = Path(f'/opt/rf_info/rf_info/data/{letter.lower()}_allocations.py')
 
-        sa, amateur, fixed, mobile, broadcast = parse_line(row["Secondary Allocations"].split(', '))
-        pa, amateur2, fixed2, mobile2, broadcast2 = parse_line(row["Primary Allocations"].split(', '))
-        if not fixed and fixed2:
-            fixed = True
-        if not mobile and mobile2:
-            mobile = True
-        if not broadcast and broadcast2:
-            broadcast = True
-        if not amateur and amateur2:
-            amateur = True
+        if args.force:
+            print(f'Forcing overwrite of the {letter} allocation file')
+            write_header()
+            with open(str(data_file)) as csv_file:
+                csv_reader = csv.DictReader(csv_file, delimiter=',')
+                line_count = 0
+                for row in csv_reader:
+                    if row["Min (MHz)"].isnumeric():
+                        minfreq = int(row["Min (MHz)"])
+                    else:
+                        minfreq = float(row["Min (MHz)"])
+                    if row["Max (MHz)"].isnumeric():
+                        maxfreq = int(row["Max (MHz)"])
+                    else:
+                        maxfreq = float(row["Max (MHz)"])
 
-        fn = parse_footnotes(row['Footnotes'])
-        print(type(fn))
-        #print(fn)
-        with new_data_file.open(mode='a') as f:
-            print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {pa}, {sa}, {fn}),', file=f)
-        # print(int(minfreq), int(maxfreq), pa, sa, amateur, fixed, mobile, broadcast)
-write_footer()
+                    minfreq = minfreq * 1000000
+                    maxfreq = maxfreq * 1000000
+
+                    sa, amateur, fixed, mobile, broadcast = parse_line(row["Secondary Allocations"].split(', '))
+                    pa, amateur2, fixed2, mobile2, broadcast2 = parse_line(row["Primary Allocations"].split(', '))
+                    if not fixed and fixed2:
+                        fixed = True
+                    if not mobile and mobile2:
+                        mobile = True
+                    if not broadcast and broadcast2:
+                        broadcast = True
+                    if not amateur and amateur2:
+                        amateur = True
+
+                    fn = parse_footnotes(row['Footnotes'])
+                    #print(fn)
+                    with new_data_file.open(mode='a') as f:
+                        print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {pa}, {sa}, {fn}),', file=f)
+                    # print(int(minfreq), int(maxfreq), pa, sa, amateur, fixed, mobile, broadcast)
+            write_footer()

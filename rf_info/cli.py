@@ -5,6 +5,7 @@ import sys
 import json
 
 from colorama import Fore, Style, init, deinit
+from iso3166 import countries
 import rf_info
 
 
@@ -14,12 +15,14 @@ def main(argv=None):
     sys.tracebacklimit = 0  # Disable showing tracebacks
     parser = argparse.ArgumentParser()
     parser.add_argument('--version', action='version', version='%(prog)s {}'.format(rf_info.__version__))
-    parser.add_argument('frequency', action='store', help='radio frequency')
+    parser.add_argument('frequency', nargs='?', help='radio frequency')
     parser.add_argument('unit', nargs='?', default='hz', help='hz, khz, mhz, ghz')
     parser.add_argument('country', nargs='?', default='us', help='us, ca, uk, jp, etc...')
     parser.add_argument('--nocolor', action='store_true', help='no color terminal output')
-    parser.add_argument('--raw', action='store_true', help='raw output for parsing')
-    parser.add_argument('--json', action='store_true', help='json output for parsing')
+    parser.add_argument('--raw', action='store_true', help='raw output')
+    parser.add_argument('--json', action='store_true', help='json output')
+    parser.add_argument('--list', '-l', action='store_true', help='list all supported countries')
+    parser.add_argument('--shortlist', '-sl', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
 
     if not args.nocolor:
@@ -39,6 +42,24 @@ def main(argv=None):
         FALSECOLOR = ''
         NOTESCOLOR = ''
         ALLOCATIONCOLOR = ''
+
+
+    if args.shortlist:
+        from .data.countrymap import COUNTRY_MAP
+        clist = []
+        for key, value in COUNTRY_MAP.items():
+            clist.append(f'{countries.get(key).name} ({countries.get(key).alpha2})')
+        print(', '.join(clist))
+        exit(0)
+    elif args.list:
+        from .data.countrymap import COUNTRY_MAP
+        for key, value in COUNTRY_MAP.items():
+            print(f'{countries.get(key).name} ({countries.get(key).alpha2})')
+        exit(0)
+        
+
+    if args.frequency is None:
+        raise ValueError('You must specify a frequency')
 
     frequency_object = rf_info.Frequency(str(args.frequency), unit=str(args.unit).lower(), country=str(args.country))
     frequency_dict = frequency_object.__dict__
@@ -71,7 +92,7 @@ def main(argv=None):
                         for each in value:
                             print(f'    {VALUECOLOR}{each}{RESET}')
 
-                elif key == 'broadcast_details':
+                elif key == 'broadcasting_details':
                     if len(value) > 0:
                         print(f'{KEYCOLOR}{key.title()}{RESET}:')
                         for each in value:

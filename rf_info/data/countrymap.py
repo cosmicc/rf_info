@@ -1,0 +1,1 @@
+COUNTRY_MAP = {'US': 'a', 'CA': 'a', 'BR': 'a', 'ES': 'b', 'GB': 'b', 'RU': 'b', 'UA': 'b', 'JP': 'c', 'IN': 'c', 'KR': 'c', 'TH': 'c', 'CH': 'b', 'CL': 'a', 'DK': 'b', 'FI': 'b', 'FR': 'b', 'HU': 'b', 'ID': 'c', 'IS': 'b', 'IT': 'b', 'MX': 'a', 'NL': 'b', 'NZ': 'c', 'NO': 'b', 'PL': 'b', 'ZA': 'b', 'SE': 'b', 'VE': 'a', 'AU': 'c', 'SI': 'b', 'IE': 'b', 'BE': 'b', 'AT': 'b'}
