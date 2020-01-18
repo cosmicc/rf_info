@@ -131,7 +131,7 @@ $ rf-info 88 mhz JPN
  Python:
 ::
 
->>> from rf-info import Frequency
+>>> from rf_info import Frequency
 >>> freq = Frequency('112.434.000')
 >>> freq.details()
 
