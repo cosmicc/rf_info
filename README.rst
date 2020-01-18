@@ -45,18 +45,26 @@ Features
 
 Returns information about a radio frequency (Country Specific)
 
-- Primary Band Allocations
-- Secondary Band Allocations  
-- Wavelength
+- "Radio Display" format (Dotted notaton) 
+- hz, khz, Mhz  and Ghz representations of the frequency  
+- Frequency Wavelength
 - ITU Band Description
 - ITU Band Abbreviation
 - ITU Band Number
 - IEEE Band Name
 - NATO Band Name
 - Waveguide Band Name
-- Amateur Radio Details (Type, Class, Max Power), - Not yet Implimented
+- Fixed Station & Mobile Station Designations
+- Broadcast Information 
+- Primary Band Allocations
+- Secondary Band Allocations
+- Detailed footnotes for each band allocation  * Coming soon  
+- Amateur Radio Details (Type, Class, Max Power)  * Coming soon
 
-Supported Countries: US, UK, Spain, Germany, South Africa, Austrailia, Mexico
+Currently supported band allocations for countries: 
+United States (US), Canada (CA), United Kingdom (GB), Spain (ES), Germany (GR), Japan (JP), Thailand (TH), South Korea (KR), Russia (RU), Brazil (BR), Italy (IT), Indonesia (IN), France (FR), Ukraine (UA), Argentina (AR), Poland (PL), Austrailia (AU), Netherlands (NL), Sweden (SE), India (IN), Denmark (DK), Czech Republic, Hungary (HU), Mexico (MX), Chile (CL), South Africa (ZA), Finland (FI), Switzerland (CH), New Zealand (NZ), Norway (NO), Venezeula (VE)
+
+I can easily add support for more countries upon request
 
 Usage
 -------
@@ -67,13 +75,16 @@ Also supports "Radio Display" frequency representation (Dotted notation):
 124.125.000, 198.000.050, 1.500.125.000, .015, 000.012.500
 
 Suffix examples:
-hz, khz, Mhz, Ghz (Case Insensitive)
+hz, khz, Mhz, Ghz  (Case Insensitive)
+
+Country examples (2 digit, 3 digit, number, or name):
+US, USA, 040, Japan, es, spain  (Case Insensitive)
 
 
 Command Line:
 ::
 
-$ rf-info <frequency> [<suffix>]
+$ rf-info <frequency> [<suffix>] [<country>]
 
 
 Python:
@@ -90,7 +101,7 @@ Then:
 returns a dictionary:
 ::
 
->>> {'display': '144.051.000', 'hz': 144051000, 'khz': 144051.0, 'mhz': 144.051, 'ghz': 0.144051, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'band_use': (), 'amateur_band': (True, 'Class', 'Use', 'General CW and weak signals')}
+>>> {'display': '144.051.000', 'hz': 144051000, 'khz': 144051.0, 'mhz': 144.051, 'ghz': 0.144051, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'country': 'US', 'band_use': (), 'amateur_band': (True, 'Class', 'Use', 'General CW and weak signals')}
 
 or you can get individual items directly:
 ::
@@ -101,9 +112,9 @@ or you can get individual items directly:
 Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object:
 ::
 
->>> new_freq_object = Frequency('000.123.000') + Frequency('7', 'khz')  # Adds 7khz to 123khz
->>> new_freq_object = Frequency('1', 'mhz') + 7000  # Adds 7khz to 1mhz
->>> new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7khz from 123khz
+>>> new_freq_object = Frequency('001.123.000') + Frequency('7', 'khz')  # Adds 7 khz to 1.123 mhz
+>>> new_freq_object = Frequency('1', 'mhz') + 15000  # Adds 15 khz to 1 mhz
+>>> new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7 khz from 123 khz
 
 
 Todo
@@ -116,4 +127,5 @@ Todo
 Credits
 -------
 
-Ian Perry (ianperry99@gmail.com)
+M. Ian Perry (ianperry99@gmail.com)
+AD8DL

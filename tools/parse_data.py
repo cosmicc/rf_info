@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 
+'''
+Dev tool for building country allocation files
+data parsed from: http://www.grss-ieee.org/frequency_allocations.html
+
+'''
+
 import csv
 import argparse
 from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument('csv_file', action='store', help='CSV file to parse')
-parser.add_argument('unit', nargs='?', default='hz', help='hz, khz, Mhz, Ghz')
 args = parser.parse_args()
 
 data_file = Path(args.csv_file)
@@ -35,9 +40,8 @@ def parse_line(pa):
                 for c in each:
                     if c.isnumeric():
                         if each in asp:
-                            asp.remove(each)
-            elif len(each) == 1:
-                asp.remove(each)
+                            asp[asp.index(each)] = each.replace('(', '[').replace(')', ']')
+
         if 'AMATEUR' in asp or 'AMATEUR-SATELITE' in asp:
             amateur = True
         if 'BROADCASTING' in asp:
@@ -54,6 +58,14 @@ def parse_line(pa):
         else:
             newpa.append(a.strip().title())
     return newpa, amateur, fixed, mobile, broadcast
+
+
+def parse_footnotes(footnotes):
+    footsplit = footnotes.split('<br>')
+    newfoot = []
+    for each in footsplit:
+        newfoot.append(str(each.strip().replace('<b>', '').replace('</b>', '')))
+    return newfoot
 
 
 def write_header():
@@ -81,12 +93,24 @@ with open(str(data_file)) as csv_file:
             maxfreq = int(row["Max (MHz)"])
         else:
             maxfreq = float(row["Max (MHz)"])
+
         minfreq = minfreq * 1000000
         maxfreq = maxfreq * 1000000
 
         sa, amateur, fixed, mobile, broadcast = parse_line(row["Secondary Allocations"].split(','))
-        pa, amateur, fixed, mobile, broadcast = parse_line(row["Primary Allocations"].split(','))
+        pa, amateur2, fixed2, mobile2, broadcast2 = parse_line(row["Primary Allocations"].split(','))
+        if not fixed and fixed2:
+            fixed = True
+        if not mobile and mobile2:
+            mobile = True
+        if not broadcast and broadcast2:
+            broadcast = True
+        if not amateur and amateur2:
+            amateur = True
+
+        footnotes = parse_footnotes(row['Footnotes'])
+
         with new_data_file.open(mode='a') as f:
-            print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {pa}, {sa}),', file=f)
+            print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {pa}, {sa}, {footnotes}),', file=f)
         # print(int(minfreq), int(maxfreq), pa, sa, amateur, fixed, mobile, broadcast)
 write_footer()

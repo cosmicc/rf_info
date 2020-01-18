@@ -1,8 +1,17 @@
 #!/usr/bin/env python3
+from iso3166 import countries
+
+
+COUNTRY_MAP = {'US': 'a', 'CA': 'a', 'BR': 'a', 'ES': 'b', 'GB': 'b', 'RU': 'b', 'UA': 'b', 'JP': 'c', 'IN': 'c', 'KR': 'c',
+               'TH': 'c', 'CH': 'b', 'CL': 'a', 'DK': 'b', 'FI': 'b', 'FR': 'b', 'HU': 'b', 'ID': 'c', 'IS': 'b', 'IT': 'b',
+               'MX': 'a', 'NL': 'b', 'NZ': 'c', 'NO': 'b', 'PL': 'b', 'ZA': 'b', 'SE', 'b', 'UR': 'b', 'VE': 'a', 'AU': 'c',
+               'AR': 'a'}
+
 
 def remove_all_butfirst(s, substr):
     first_occurrence = s.index(substr) + len(substr)
     return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
+
 
 
 def parse_freq(freq, unit):
@@ -39,47 +48,52 @@ class Frequency():
         if unit == '':
             unit = 'hz'
 
-        # Set country and populate data
-        from .data.international import IEEE, ITU, NATO, WAVEGUIDE
-        if country.lower() == 'us':
-            from .data.us_data import ALLOCATIONS
-        elif country.lower() == 'uk':
-            from .data.uk_data import ALLOCATIONS
-        elif country.lower() == 'gr':
-            from .data.gr_data import ALLOCATIONS
-        elif country.lower() == 'sp':
-            from .data.sp_data import ALLOCATIONS
-        elif country.lower() == 'au':
-            from .data.au_data import ALLOCATIONS
-        elif country.lower() == 'sa':
-            from .data.au_data import ALLOCATIONS
+        # Determine Country and import country data
+        try:
+            scountry = countries.get(country)
+        except KeyError:
+            raise ValueError('Invalid Country Specified')
+        cc = scountry.alpha2.upper()
+        if cc not in COUNTRY_MAP:
+            raise ValueError('Specified Country is Not Supported')
 
+        from .data.international import IEEE, ITU, NATO, WAVEGUIDE
+
+        if COUNTRY_MAP[cc] == 'a':
+            from .data.a_allocations import ALLOCATIONS
+        elif COUNTRY_MAP[cc] == 'b':
+            from .data.b_allocations import ALLOCATIONS
+        elif COUNTRY_MAP[cc] == 'c':
+            from .data.c_allocations import ALLOCATIONS
+
+        if scountry.alpha2.upper() == 'US':
+            from .data.us_extras import SERVICES, BROADCAST, AMATEUR
 
         # Parse Frequency and unit inputs
         if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:
-            self.__intfreq = parse_freq(str(freq), unit)
+            intfreq = parse_freq(str(freq), unit)
         else:
             raise TypeError('Invalid Frequency Type')
-        if self.__intfreq < 1 or self.__intfreq > 999999999999:
+        if intfreq < 1 or intfreq > 999999999999:
             raise ValueError(f'Frequency Out of Range')
 
         # Create Display Frequency
-        dispfreq = str(self.__intfreq)[::-1]
+        dispfreq = str(intfreq)[::-1]
         while len(dispfreq) < 9:
             dispfreq = dispfreq + '0'
         dispfreq = '.'.join(dispfreq[i:i + 3] for i in range(0, len(dispfreq), 3))
         self.display = dispfreq[::-1]
 
         # Create Unit frequencies
-        self.hz = int(self.__intfreq)
-        self.khz = float(self.__intfreq / 1_000)
-        self.mhz = float(self.__intfreq / 1_000_000)
-        self.ghz = float(self.__intfreq / 1_000_000_000)
+        self.hz = int(intfreq)
+        self.khz = float(intfreq / 1_000)
+        self.mhz = float(intfreq / 1_000_000)
+        self.ghz = float(intfreq / 1_000_000_000)
 
         # Create ITU, IEEE, and Wavelength
-        itu = ITU[self.__intfreq]
-        ieee = IEEE[self.__intfreq]
-        meter = 300_000_000 / self.__intfreq
+        itu = ITU[intfreq]
+        ieee = IEEE[intfreq]
+        meter = 300_000_000 / intfreq
         if meter >= 1:
             self.wavelength = '{:,}'.format(int(meter))
             self.wavelength = f'{self.wavelength}m'
@@ -100,26 +114,31 @@ class Frequency():
             self.ieee_description = None
 
         # Create NATO and Waveguide
-        self.nato_band = NATO[self.__intfreq]
-        self.waveguide_band = WAVEGUIDE[self.__intfreq]
+        self.nato_band = NATO[intfreq]
+        self.waveguide_band = WAVEGUIDE[intfreq]
 
+        # Set Country
+        self.country_abbr = scountry.alpha2.upper()
+        self.country_name = scountry.name
+
+        '''
         # Create Band Usage
-        self.band_use = []
-        if BROADCAST[self.__intfreq] is not None and BROADCAST[self.__intfreq]:
-            self.band_use.append(BROADCAST[self.__intfreq])
-        if SERVICES[self.__intfreq] is not None and SERVICES[self.__intfreq]:
-            self.band_use.append(SERVICES[self.__intfreq])
+        if BROADCAST[intfreq] is not None and BROADCAST[intfreq]:
+            self.band_use.append(BROADCAST[intfreq])
+        if SERVICES[intfreq] is not None and SERVICES[intfreq]:
+            self.band_use.append(SERVICES[intfreq])
         if len(self.band_use) == 0:
             self.band_use = tuple()
         else:
             self.band_use = tuple(self.band_use)
 
         # Create Amateur Band Use
-        ham = HAM[self.__intfreq]
-        if ham is None:
+        am = AMATEUR[intfreq]
+        if am is None:
             self.amateur_band = ((False, ))
         else:
-            self.amateur_band = ((True, )) + ham
+            self.amateur_band = ((True, )) + am
+        '''
 
     def info(self):
         return self.__dict__
@@ -160,3 +179,4 @@ class Frequency():
 
     def __len__(self):
         return len(str(self.hz))
+
