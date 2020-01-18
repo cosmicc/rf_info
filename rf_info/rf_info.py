@@ -69,7 +69,7 @@ class Frequency():
             intfreq = parse_freq(str(freq), unit)
         else:
             raise TypeError('Invalid Frequency Type')
-        if intfreq < 1 or intfreq > 999999999999:
+        if intfreq < 1 or intfreq > 999_999_999_999:
             raise ValueError(f'Frequency Out of Range')
 
         # Create Display Frequency
