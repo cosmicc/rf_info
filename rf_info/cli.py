@@ -49,27 +49,40 @@ def main(argv=None):
 
                 if key == 'primary_allocation':
                     if len(value) > 0:
-                        print(f'\n{KEYCOLOR}{key.title()}{RESET}:')
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
                         for each in value:
                             print(f'    {ALLOCATIONCOLOR}{each}{RESET}')
 
                 elif key == 'secondary_allocation':
                     if len(value) > 0:
-                        print(f'\n{KEYCOLOR}{key.title()}{RESET}:')
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
                         for each in value:
                             print(f'    {ALLOCATIONCOLOR}{each}{RESET}')
 
                 elif key == 'allocation_notes':
                     if len(value) > 0:
-                        print(f'\n{KEYCOLOR}{key.title()}{RESET}:')
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
                         for each in value:
-                            print(f'    {NOTESCOLOR}{each}{RESET}\n')
+                            print(f'    {NOTESCOLOR}{each}{RESET}')
 
                 elif key == 'amateur_details':
                     if len(value) > 0:
                         print(f'{KEYCOLOR}{key.title()}{RESET}:')
                         for each in value:
                             print(f'    {VALUECOLOR}{each}{RESET}')
+
+                elif key == 'broadcast_details':
+                    if len(value) > 0:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        for each in value:
+                            print(f'    {VALUECOLOR}{each}{RESET}')
+
+                elif key == 'services_details':
+                    if len(value) > 0:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        for each in value:
+                            print(f'    {VALUECOLOR}{each}{RESET}')
+
                 else:
                     if not value:
                         print(f'{KEYCOLOR}{key.title()}{RESET}: {FALSECOLOR}{value}{RESET}')

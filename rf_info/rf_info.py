@@ -117,8 +117,20 @@ class Frequency():
         self.country_name = scountry.name
 
         # Set Allocations
+        self.fixed_station = ALLOCATIONS[intfreq][1]
+        self.mobile_station = ALLOCATIONS[intfreq][2]
+        self.broadcasting = ALLOCATIONS[intfreq][3]
+
+        if 'BROADCAST' in locals():
+            br = BROADCAST[intfreq]
+            if br is None:
+                self.broadcasting_details = []
+            else:
+                self.broadcasting_details = br
+        else:
+            self.broadcasting_details = []
+
         self.amateur = ALLOCATIONS[intfreq][0]
-        # Create Amateur Band Use
         if 'AMATEUR' in locals():
             am = AMATEUR[intfreq]
             if am is None:
@@ -128,24 +140,19 @@ class Frequency():
         else:
             self.amateur_details = []
 
-        self.fixed_station = ALLOCATIONS[intfreq][1]
-        self.mobile_station = ALLOCATIONS[intfreq][2]
-        self.broadcast = ALLOCATIONS[intfreq][3]
+        if 'SERVICES' in locals():
+            sv = SERVICES[intfreq]
+            if sv is None:
+                self.services_details = []
+            else:
+                self.services_details = sv
+        else:
+            self.services_details = []
+
+
         self.primary_allocation = ALLOCATIONS[intfreq][4]
         self.secondary_allocation = ALLOCATIONS[intfreq][5]
         self.allocation_notes = ALLOCATIONS[intfreq][6]
-
-        '''
-        # Create Band Usage
-        if BROADCAST[intfreq] is not None and BROADCAST[intfreq]:
-            self.band_use.append(BROADCAST[intfreq])
-        if SERVICES[intfreq] is not None and SERVICES[intfreq]:
-            self.band_use.append(SERVICES[intfreq])
-        if len(self.band_use) == 0:
-            self.band_use = tuple()
-        else:
-            self.band_use = tuple(self.band_use)
-        '''
 
 
     def info(self):
