@@ -294,6 +294,7 @@ def test_elements(a):
     assert isinstance(result.primary_allocation, list)
     assert isinstance(result.secondary_allocation, list)
     assert isinstance(result.allocation_notes, list)
+    assert isinstance(result.amateur_details, list)
 
 
 @given(integers(min_value=MIN, max_value=int(MAX / 2)), integers(min_value=MIN, max_value=int(MAX / 2)))

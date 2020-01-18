@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 iso3166 = "*"
+colorama = "*"
 
 [dev-packages]
 bump2version = "*"

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 from iso3166 import countries
 from .data.international import COUNTRY_MAP
 
@@ -6,7 +7,6 @@ from .data.international import COUNTRY_MAP
 def remove_all_butfirst(s, substr):
     first_occurrence = s.index(substr) + len(substr)
     return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
-
 
 
 def parse_freq(freq, unit):
@@ -118,6 +118,16 @@ class Frequency():
 
         # Set Allocations
         self.amateur = ALLOCATIONS[intfreq][0]
+        # Create Amateur Band Use
+        if 'AMATEUR' in locals():
+            am = AMATEUR[intfreq]
+            if am is None:
+                self.amateur_details = []
+            else:
+                self.amateur_details = am
+        else:
+            self.amateur_details = []
+
         self.fixed_station = ALLOCATIONS[intfreq][1]
         self.mobile_station = ALLOCATIONS[intfreq][2]
         self.broadcast = ALLOCATIONS[intfreq][3]
@@ -135,14 +145,8 @@ class Frequency():
             self.band_use = tuple()
         else:
             self.band_use = tuple(self.band_use)
-
-        # Create Amateur Band Use
-        am = AMATEUR[intfreq]
-        if am is None:
-            self.amateur_band = ((False, ))
-        else:
-            self.amateur_band = ((True, )) + am
         '''
+
 
     def info(self):
         return self.__dict__

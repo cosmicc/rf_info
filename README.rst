@@ -38,6 +38,7 @@ Command line & Python library for obtaining details about a radio frequency
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
 * Python 3.6, 3.7, 3.8 & pypy3 tested
+* Linux & Windows with color terminal support  
 
 
 Features
@@ -72,7 +73,7 @@ Usage
 Command Line:
 ::
 
-$ rf-info <frequency> [<suffix>] [<country>]
+$ rf-info <frequency> [<units>] [<country>]
 
 
 Frequency format examples:
@@ -93,10 +94,17 @@ $ rf-info 000.012.500
 
 Suffix examples:
 hz, khz, Mhz, Ghz  (Case Insensitive)
+::
 
-Country examples (2 digit, 3 digit, number, or name):
+$ rf-info 123.100 mhz
+$ rf-info 4.5 ghz
+
+Country examples (2 digit abbriviation, 3 digit abbriviation, 3 digit number, or full name):
 US, USA, 040, JPN, es, Spain  (Case Insensitive)
+::
 
+$ rf-info 144.400.000 hz US
+$ rf-info 88 mhz JPN 
 
 Python:
 ::
