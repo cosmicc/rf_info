@@ -21,9 +21,16 @@ country_map_file = Path('/opt/rf_info/rf_info/data/countrymap.py')
 parser = argparse.ArgumentParser()
 parser.add_argument('--force', '-f', action='store_true', help='Force overwrite')
 parser.add_argument('--list', '-l', action='store_true', help='List currently supported countries')
+parser.add_argument('--shortlist', '-sl', action='store_true', help='short country list for readme')
 args = parser.parse_args()
 
-if args.list:
+if args.shortlist:
+    clist = []
+    for key, value in COUNTRY_MAP.items():
+        clist.append(f'{countries.get(key).name} ({countries.get(key).alpha2})')
+    print(', '.join(clist))
+    exit(0)
+elif args.list:
     for key, value in COUNTRY_MAP.items():
         print(f'{countries.get(key).name} ({countries.get(key).alpha2})')
     exit(0)
@@ -32,6 +39,7 @@ def check_countrymap(country, letter):
     if country.alpha2.upper() in COUNTRY_MAP:
         if COUNTRY_MAP[country.alpha2.upper()] == letter:
             print(f'[ {country.alpha2.upper()} ] already exists as [ {letter.upper()} ] in countrymap')
+            data_file.unlink()
         else:
             print(f'[ {country.alpha2.upper()} ] exists but different [ COUNTRY_MAP[country.alpha2.upper()].upper() ] -> [ {letter.upper()} ]')
             COUNTRY_MAP.update({country.alpha2.upper(): letter.lower()})
@@ -139,7 +147,7 @@ for dtfl in pth.iterdir():
             country = countries.get(fs.title())
         except:
             print(f'Cannot determine country from filename {fs}')
-            exit(1)
+            break
 
         csv_size = data_file.stat().st_size
         if csv_size == 635414:

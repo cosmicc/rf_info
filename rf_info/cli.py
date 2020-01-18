@@ -56,7 +56,6 @@ def main(argv=None):
         for key, value in COUNTRY_MAP.items():
             print(f'{countries.get(key).name} ({countries.get(key).alpha2})')
         exit(0)
-        
 
     if args.frequency is None:
         raise ValueError('You must specify a frequency')
