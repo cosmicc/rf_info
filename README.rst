@@ -59,11 +59,11 @@ Returns information about a radio frequency (Country Specific)
 - Broadcast Information 
 - Primary Band Allocations
 - Secondary Band Allocations
-- Detailed footnotes for each band allocation  * Coming soon  
-- Amateur Radio Details (Type, Class, Max Power)  * Coming soon
+- Detailed footnotes for each band allocation  
+- Amateur Radio Details (Usage, License Class, Max Power) * Not yet complete
 
 Currently supported band allocations for countries: 
-United States (US), Canada (CA), United Kingdom (GB), Spain (ES), Germany (GR), Japan (JP), Thailand (TH), South Korea (KR), Russia (RU), Brazil (BR), Italy (IT), Indonesia (IN), France (FR), Ukraine (UA), Argentina (AR), Poland (PL), Austrailia (AU), Netherlands (NL), Sweden (SE), India (IN), Denmark (DK), Czech Republic, Hungary (HU), Mexico (MX), Chile (CL), South Africa (ZA), Finland (FI), Switzerland (CH), New Zealand (NZ), Norway (NO), Venezeula (VE)
+United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), Russian Federation (RU), Ukraine (UA), Japan (JP), India (IN), Korea, Republic of (KR), Thailand (TH), Switzerland (CH), Chile (CL), Denmark (DK), Finland (FI), France (FR), Hungary (HU), Indonesia (ID), Iceland (IS), Italy (IT), Mexico (MX), Netherlands (NL), New Zealand (NZ), Norway (NO), Poland (PL), South Africa (ZA), Sweden (SE), Venezuela (VE), Australia (AU), Slovenia (SI), Ireland (IE), Belgium (BE), Austria (AT), Argentina (AR), Israel (IL), Romania (RO), China (CN), Uruguay (UY), Greece (GR), Panama (PA), Peru (PE)
 
 I can easily add support for more countries upon request
 
