@@ -38,83 +38,110 @@ Command line & Python library for obtaining details about a radio frequency
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
 * Python 3.6, 3.7, 3.8 & pypy3 tested
+* Linux & Windows with color terminal support  
 
 
 Features
 --------
 
-Returns information about a radio frequency (US only for now)
+Returns information about a radio frequency (Country Specific)
 
-- Band Use
-- Wavelength
+- "Radio Display" format (Dotted notaton) 
+- hz, khz, Mhz  and Ghz representations of the frequency  
+- Frequency Wavelength
 - ITU Band Description
 - ITU Band Abbreviation
 - ITU Band Number
 - IEEE Band Name
 - NATO Band Name
 - Waveguide Band Name
-- Amateur Radio Details (Type, Class, Max Power), - Not yet Implimented
+- Fixed Station & Mobile Station Designations
+- Broadcast Information 
+- Primary Band Allocations
+- Secondary Band Allocations
+- Detailed footnotes for each band allocation  * Coming soon  
+- Amateur Radio Details (Type, Class, Max Power)  * Coming soon
 
-Let me know if there is additional details you would like to see added,
-or if someone would like to donate some EU/Other band info to add ;-)
+Currently supported band allocations for countries: 
+United States (US), Canada (CA), United Kingdom (GB), Spain (ES), Germany (GR), Japan (JP), Thailand (TH), South Korea (KR), Russia (RU), Brazil (BR), Italy (IT), Indonesia (IN), France (FR), Ukraine (UA), Argentina (AR), Poland (PL), Austrailia (AU), Netherlands (NL), Sweden (SE), India (IN), Denmark (DK), Czech Republic, Hungary (HU), Mexico (MX), Chile (CL), South Africa (ZA), Finland (FI), Switzerland (CH), New Zealand (NZ), Norway (NO), Venezeula (VE)
+
+I can easily add support for more countries upon request
 
 Usage
 -------
-Frequency format examples:
-89910000, 23,450,000, 12,634.534, 12_000_000, 344_500.100
-
-Also supports "Radio Display" frequency representation (Dotted notation):
-124.125.000, 198.000.050, 1.500.125.000, .015, 000.012.500
-
-Suffix examples:
-hz, khz, Mhz, Ghz (Case Insensitive)
-
 
 Command Line:
+::
 
-rf-info <frequency> [<suffix>]
+$ rf-info <frequency> [<units>] [<country>]
 
+
+Frequency format examples:
+::
+
+$ rf-info 89910000
+$ rf-info 23,450,000
+$ rf-info 12,634.534
+$ rf-info 12_000_000
+$ rf-info 344_500.100
+
+Also supports "Radio Display" frequency representation (Dotted notation):
+::
+
+$ rf-info 124.125.000
+$ rf-info 1.500.125.000
+$ rf-info 000.012.500
+
+Suffix examples:
+hz, khz, Mhz, Ghz  (Case Insensitive)
+::
+
+$ rf-info 123.100 mhz
+$ rf-info 4.5 ghz
+
+Country examples (2 digit abbriviation, 3 digit abbriviation, 3 digit number, or full name):
+US, USA, 040, JPN, es, Spain  (Case Insensitive)
+::
+
+$ rf-info 144.400.000 hz US
+$ rf-info 88 mhz JPN 
 
 Python:
+::
 
-from rf-info import Frequency
-
-freq = Frequency('112.434.000')
-
-Then:
-
-freq.details()
+>>> from rf-info import Frequency
+>>> freq = Frequency('112.434.000')
+>>> freq.details()
 
 returns a dictionary:
+::
 
-{'display': '144.051.000', 'hz': 144051000, 'khz': 144051.0, 'mhz': 144.051, 'ghz': 0.144051, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'band_use': (), 'amateur_band': (True, 'Class', 'Use', 'General CW and weak signals')}
+>>> {'display': '144.100.000', 'hz': 144100000, 'khz': 144100.0, 'mhz': 144.1, 'ghz': 0.1441, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'country_abbr': 'US', 'country_name': 'United States of America', 'amateur': True, 'fixed_station': False, 'mobile_station': False, 'broadcast': False, 'primary_allocation': ['Amateur', 'Amateur-Satellite'], 'secondary_allocation': [], 'allocation_notes': ['[5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.']}
 
 or you can get individual items directly:
+::
 
-freq.itu_band
-
-freq.wavelength
+>>> freq.itu_band
+>>> freq.wavelength
+>>> freq.primary_allocation
 
 Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object:
+::
 
-new_freq_object = Frequency('000.123.000') + Frequency('7', 'khz')  # Adds 7khz to 123khz
-
-new_freq_object = Frequency('1', 'mhz') + 7000  # Adds 7khz to 1mhz
-
-new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7khz from 123khz
+>>> new_freq_object = Frequency('001.123.000') + Frequency('7', 'khz')  # Adds 7 khz to 1.123 mhz
+>>> new_freq_object = Frequency('1', 'mhz') + 15000  # Adds 15 khz to 1 mhz
+>>> new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7 khz from 123 khz
 
 
 Todo
 -------
 
-- Finish Amateur Radio Details
-- WIFI band details
-- Cellular band details
-- Sattelite band details
-- GMRS, CB, & WIFI Specific Channels
-- Add more reserved frequency details
+- More WIFI band details (channels)
+- More Cellular band details (channels)
+- More Sattelite band details
 
 Credits
 -------
 
-Ian Perry (ianperry99@gmail.com)
+M. Ian Perry (ianperry99@gmail.com)
+AD8DL

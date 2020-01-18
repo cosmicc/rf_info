@@ -2,7 +2,9 @@
 
 import argparse
 import sys
+import json
 
+from colorama import Fore, Style, init, deinit
 import rf_info
 
 
@@ -11,37 +13,92 @@ def main(argv=None):
         argv = sys.argv[1:]
     sys.tracebacklimit = 0  # Disable showing tracebacks
     parser = argparse.ArgumentParser()
-    parser.add_argument('--version', '-v', action='version', version='%(prog)s {}'.format(rf_info.__version__))
-    parser.add_argument('frequency', action='store', help='Radio Frequency')
-    parser.add_argument('--raw', '-r', action='store_true', help='Includes raw output (for debugging)')
-    parser.add_argument('unit', nargs='?', default='hz', help='hz, khz, Mhz, Ghz')
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(rf_info.__version__))
+    parser.add_argument('frequency', action='store', help='radio frequency')
+    parser.add_argument('unit', nargs='?', default='hz', help='hz, khz, mhz, ghz')
+    parser.add_argument('country', nargs='?', default='us', help='us, ca, uk, jp, etc...')
+    parser.add_argument('--nocolor', action='store_true', help='no color terminal output')
+    parser.add_argument('--raw', action='store_true', help='raw output for parsing')
+    parser.add_argument('--json', action='store_true', help='json output for parsing')
     args = parser.parse_args(argv)
 
-    result = rf_info.Frequency(str(args.frequency), str(args.unit).lower()).__dict__
-    print(' ')
-    for key, value in result.items():
-        if key.lower() == 'band_use':
-            if len(value) == 0:
-                print('%s: %s' % (key.title(), 'Unknown'))
-            else:
-                newval = ''
-                loop = 0
-                for each in value:
-                    if loop == 0:
-                        loop += 1
-                        newval = each
-                    else:
-                        newval = f'{newval}, {each}'
-                print('%s: %s' % (key.title(), newval))
-        else:
+    if not args.nocolor:
+        KEYCOLOR = Style.BRIGHT + Fore.WHITE
+        VALUECOLOR = Style.BRIGHT + Fore.YELLOW
+        RESET = Style.RESET_ALL
+        TRUECOLOR = Fore.GREEN
+        FALSECOLOR = Style.BRIGHT + Fore.RED
+        NOTESCOLOR = Fore.CYAN
+        ALLOCATIONCOLOR = Style.BRIGHT + Fore.YELLOW
+        init()
+    else:
+        KEYCOLOR = ''
+        VALUECOLOR = ''
+        RESET = ''
+        TRUECOLOR = ''
+        FALSECOLOR = ''
+        NOTESCOLOR = ''
+        ALLOCATIONCOLOR = ''
+
+    frequency_object = rf_info.Frequency(str(args.frequency), unit=str(args.unit).lower(), country=str(args.country))
+    frequency_dict = frequency_object.__dict__
+    if not args.raw and not args.json:
+        print(' ')
+        for key, value in frequency_dict.items():
             if value is not None:
-                print('%s: %s' % (key.title(), value))
-    print(' ')
-    if args.raw:
-        print('Raw:')
-        for key, value in result.items():
-            print(f'{key}: {value}')
+
+                if key == 'primary_allocation':
+                    if len(value) > 0:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        for each in value:
+                            print(f'    {ALLOCATIONCOLOR}{each}{RESET}')
+
+                elif key == 'secondary_allocation':
+                    if len(value) > 0:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        for each in value:
+                            print(f'    {ALLOCATIONCOLOR}{each}{RESET}')
+
+                elif key == 'allocation_notes':
+                    if len(value) > 0:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        for each in value:
+                            print(f'    {NOTESCOLOR}{each}{RESET}')
+
+                elif key == 'amateur_details':
+                    if len(value) > 0:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        for each in value:
+                            print(f'    {VALUECOLOR}{each}{RESET}')
+
+                elif key == 'broadcast_details':
+                    if len(value) > 0:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        for each in value:
+                            print(f'    {VALUECOLOR}{each}{RESET}')
+
+                elif key == 'services_details':
+                    if len(value) > 0:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        for each in value:
+                            print(f'    {VALUECOLOR}{each}{RESET}')
+
+                else:
+                    if not value:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}: {FALSECOLOR}{value}{RESET}')
+                    elif isinstance(value, bool):
+                        print(f'{KEYCOLOR}{key.title()}{RESET}: {TRUECOLOR}{value}{RESET}')
+                    else:
+                        print(f'{KEYCOLOR}{key.title()}{RESET}: {VALUECOLOR}{value}{RESET}')
         print(' ')
-        print(result)
-        print(' ')
+
+    elif not args.json:
+        for key, value in frequency_dict.items():
+            print(f'{key}={value}')
+    else:
+        print(json.dumps(frequency_dict, indent=4, sort_keys=False))
+
+    if not args.nocolor:
+        deinit()
+
     return 0

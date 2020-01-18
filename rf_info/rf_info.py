@@ -1,4 +1,7 @@
-from .rf_us_data import BROADCAST, HAM, IEEE, ITU, NATO, SERVICES, WAVEGUIDE
+#!/usr/bin/env python3
+
+from iso3166 import countries
+from .data.international import COUNTRY_MAP
 
 
 def remove_all_butfirst(s, substr):
@@ -35,36 +38,57 @@ def parse_freq(freq, unit):
 
 class Frequency():
 
-    def __init__(self, freq, unit='hz'):
+    def __init__(self, freq, unit='hz', country='us'):
         # Hack for pytest to test cli inputs
         if unit == '':
             unit = 'hz'
 
+        # Determine Country and import country data
+        try:
+            scountry = countries.get(country)
+        except KeyError:
+            raise ValueError('Invalid Country Specified')
+        cc = scountry.alpha2.upper()
+        if cc not in COUNTRY_MAP:
+            raise ValueError('Specified Country is Not Supported')
+
+        from .data.international import IEEE, ITU, NATO, WAVEGUIDE
+
+        if COUNTRY_MAP[cc] == 'a':
+            from .data.a_allocations import ALLOCATIONS
+        elif COUNTRY_MAP[cc] == 'b':
+            from .data.b_allocations import ALLOCATIONS
+        elif COUNTRY_MAP[cc] == 'c':
+            from .data.c_allocations import ALLOCATIONS
+
+        if scountry.alpha2.upper() == 'US':
+            from .data.us_extras import SERVICES, BROADCAST, AMATEUR
+
         # Parse Frequency and unit inputs
         if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:
-            self.__intfreq = parse_freq(str(freq), unit)
+            intfreq = parse_freq(str(freq), unit)
         else:
             raise TypeError('Invalid Frequency Type')
-        if self.__intfreq < 1 or self.__intfreq > 999999999999:
+        if intfreq < 1 or intfreq > 999_999_999_999:
             raise ValueError(f'Frequency Out of Range')
 
         # Create Display Frequency
-        dispfreq = str(self.__intfreq)[::-1]
+        dispfreq = str(intfreq)[::-1]
         while len(dispfreq) < 9:
             dispfreq = dispfreq + '0'
         dispfreq = '.'.join(dispfreq[i:i + 3] for i in range(0, len(dispfreq), 3))
         self.display = dispfreq[::-1]
 
         # Create Unit frequencies
-        self.hz = int(self.__intfreq)
-        self.khz = float(self.__intfreq / 1_000)
-        self.mhz = float(self.__intfreq / 1_000_000)
-        self.ghz = float(self.__intfreq / 1_000_000_000)
+        self.hz = int(intfreq)
+        self.khz = float(intfreq / 1_000)
+        self.mhz = float(intfreq / 1_000_000)
+        self.ghz = float(intfreq / 1_000_000_000)
 
         # Create ITU, IEEE, and Wavelength
-        itu = ITU[self.__intfreq]
-        ieee = IEEE[self.__intfreq]
-        meter = 300_000_000 / self.__intfreq
+        itu = ITU[intfreq]
+        ieee = IEEE[intfreq]
+        meter = 300_000_000 / intfreq
         if meter >= 1:
             self.wavelength = '{:,}'.format(int(meter))
             self.wavelength = f'{self.wavelength}m'
@@ -85,26 +109,51 @@ class Frequency():
             self.ieee_description = None
 
         # Create NATO and Waveguide
-        self.nato_band = NATO[self.__intfreq]
-        self.waveguide_band = WAVEGUIDE[self.__intfreq]
+        self.nato_band = NATO[intfreq]
+        self.waveguide_band = WAVEGUIDE[intfreq]
 
-        # Create Band Usage
-        self.band_use = []
-        if BROADCAST[self.__intfreq] is not None and BROADCAST[self.__intfreq]:
-            self.band_use.append(BROADCAST[self.__intfreq])
-        if SERVICES[self.__intfreq] is not None and SERVICES[self.__intfreq]:
-            self.band_use.append(SERVICES[self.__intfreq])
-        if len(self.band_use) == 0:
-            self.band_use = tuple()
-        else:
-            self.band_use = tuple(self.band_use)
+        # Set Country
+        self.country_abbr = scountry.alpha2.upper()
+        self.country_name = scountry.name
 
-        # Create Amateur Band Use
-        ham = HAM[self.__intfreq]
-        if ham is None:
-            self.amateur_band = ((False, ))
+        # Set Allocations
+        self.fixed_station = ALLOCATIONS[intfreq][1]
+        self.mobile_station = ALLOCATIONS[intfreq][2]
+        self.broadcasting = ALLOCATIONS[intfreq][3]
+
+        if 'BROADCAST' in locals():
+            br = BROADCAST[intfreq]
+            if br is None:
+                self.broadcasting_details = []
+            else:
+                self.broadcasting_details = br
         else:
-            self.amateur_band = ((True, )) + ham
+            self.broadcasting_details = []
+
+        self.amateur = ALLOCATIONS[intfreq][0]
+        if 'AMATEUR' in locals():
+            am = AMATEUR[intfreq]
+            if am is None:
+                self.amateur_details = []
+            else:
+                self.amateur_details = am
+        else:
+            self.amateur_details = []
+
+        if 'SERVICES' in locals():
+            sv = SERVICES[intfreq]
+            if sv is None:
+                self.services_details = []
+            else:
+                self.services_details = sv
+        else:
+            self.services_details = []
+
+
+        self.primary_allocation = ALLOCATIONS[intfreq][4]
+        self.secondary_allocation = ALLOCATIONS[intfreq][5]
+        self.allocation_notes = ALLOCATIONS[intfreq][6]
+
 
     def info(self):
         return self.__dict__
@@ -145,3 +194,4 @@ class Frequency():
 
     def __len__(self):
         return len(str(self.hz))
+
