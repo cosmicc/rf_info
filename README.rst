@@ -69,6 +69,17 @@ I can easily add support for more countries upon request
 
 Usage
 -------
+Requires:
+::
+
+$ pip3 install iso3166 colorama
+
+
+Insall:
+::
+
+$ pip3 install rf-info
+
 
 Command Line:
 ::
