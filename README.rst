@@ -147,34 +147,33 @@ Example command line output:
 ::
 
 $ rf-info 144.100.000 hz US
-
-Display: 144.100.000
-Hz: 144100000
-Khz: 144100.0
-Mhz: 144.1
-Ghz: 0.1441
-Wavelength: 2m
-Itu_Band: Very High Frequency
-Itu_Abbr: VHF
-Itu_Num: 8
-Ieee_Band: VHF
-Ieee_Description: Very High Frequency
-Nato_Band: A
-Country_Abbr: US
-Country_Name: United States of America
-Fixed_Station: False
-Mobile_Station: False
-Broadcasting: False
-Amateur: True
-Amateur_Details:
-    Class
-    Use
-    General CW and weak signals
-Primary_Allocation:
-    Amateur
-    Amateur-Satellite
-Allocation_Notes:
-    [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.
+  Display: 144.100.000
+  Hz: 144100000
+  Khz: 144100.0
+  Mhz: 144.1
+  Ghz: 0.1441
+  Wavelength: 2m
+  Itu_Band: Very High Frequency
+  Itu_Abbr: VHF
+  Itu_Num: 8
+  Ieee_Band: VHF
+  Ieee_Description: Very High Frequency
+  Nato_Band: A
+  Country_Abbr: US
+  Country_Name: United States of America
+  Fixed_Station: False
+  Mobile_Station: False
+  Broadcasting: False
+  Amateur: True
+  Amateur_Details:
+      General CW and weak signals
+      License Class
+      Max Power      
+  Primary_Allocation:
+        Amateur
+        Amateur-Satellite
+  Allocation_Notes:
+        [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.
 
 
 
