@@ -1,0 +1,12 @@
+git add *
+git commit -m <version>
+bump2version minor (or patch, major)
+git push --tags
+git push
+
+github: pull request merge
+	delete old dev branch
+	this will trigger travis.ci build test, if passses create release
+	
+github: create a release
+	this will trigger travis.ci to release to pypi
