@@ -204,7 +204,7 @@ def test_invalids():
     assert str(e.value) == "Invalid Unit Specified"
 
 
-def test_dial():
+def test_display():
     template = '{0:20s} | {1:20s} | {2:2s}'
     print(' ')
     print(template.format('FREQUENCY', 'DISPLAY', '=='))
@@ -280,7 +280,6 @@ def test_elements(a):
     assert isinstance(result.mhz, (int, float))
     assert isinstance(result.ghz, (int, float))
     assert isinstance(result.wavelength, str)
-    # assert isinstance(result.band_use, tuple)
     assert isinstance(result.itu_band, str)
     assert isinstance(result.itu_abbr, str)
     assert isinstance(result.itu_num, int)
@@ -288,8 +287,13 @@ def test_elements(a):
     assert isinstance(result.ieee_description, (str, NoneType))
     assert isinstance(result.nato_band, (str, NoneType))
     assert isinstance(result.waveguide_band, (str, NoneType))
-    # assert isinstance(result.amateur_band, tuple)
-    # assert isinstance(result.amateur_band[0], bool)
+    assert isinstance(result.amateur, bool)
+    assert isinstance(result.fixed_station, bool)
+    assert isinstance(result.mobile_station, bool)
+    assert isinstance(result.broadcast, bool)
+    assert isinstance(result.primary_allocation, list)
+    assert isinstance(result.secondary_allocation, list)
+    assert isinstance(result.allocation_notes, list)
 
 
 @given(integers(min_value=MIN, max_value=int(MAX / 2)), integers(min_value=MIN, max_value=int(MAX / 2)))
@@ -327,5 +331,6 @@ def test_countries():
         ok = 'OK' if result.display == expected else 'XX'
         print(template.format(str(freq), country, result.display, ok))
         assert result.display == expected
+        assert result.country_abbr == country.upper()
 
 

@@ -18,7 +18,7 @@ def main(argv=None):
     parser.add_argument('--raw', '-r', action='store_true', help='includes raw output (for debugging)')
     args = parser.parse_args(argv)
 
-    result = rf_info.Frequency(str(args.frequency), str(args.unit).lower()).__dict__
+    result = rf_info.Frequency(str(args.frequency), unit=str(args.unit).lower(), country=str(args.country)).__dict__
     print(' ')
     for key, value in result.items():
         if key.lower() == 'band_use':

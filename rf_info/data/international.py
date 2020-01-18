@@ -1,5 +1,10 @@
 from .rangekeydict import RangeKeyDict
 
+COUNTRY_MAP = {'US': 'a', 'CA': 'a', 'BR': 'a', 'ES': 'b', 'GB': 'b', 'RU': 'b', 'UA': 'b', 'JP': 'c', 'IN': 'c', 'KR': 'c',
+               'TH': 'c', 'CH': 'b', 'CL': 'a', 'DK': 'b', 'FI': 'b', 'FR': 'b', 'HU': 'b', 'ID': 'c', 'IS': 'b', 'IT': 'b',
+               'MX': 'a', 'NL': 'b', 'NZ': 'c', 'NO': 'b', 'PL': 'b', 'ZA': 'b', 'SE': 'b', 'UR': 'b', 'VE': 'a', 'AU': 'c',
+               'AR': 'a'}
+
 WAVEGUIDE = RangeKeyDict({
     (0, 1700000001): None,
     (1700000001, 2200000001): 'R',

@@ -24,7 +24,7 @@ if len(file_split) != 2:
     print('Cannot determine country from file')
     exit(1)
 country = file_split[0]
-new_data_file = Path(f'/opt/rf_info/rf_info/data/{country.lower()}_data.py')
+new_data_file = Path(f'/opt/rf_info/rf_info/data/a_allocations.py')
 
 
 def parse_line(pa):
@@ -36,11 +36,23 @@ def parse_line(pa):
     for a in pa:
         asp = a.strip().split(' ')
         for each in asp:
-            if len(each) > 1:
-                for c in each:
-                    if c.isnumeric():
-                        if each in asp:
-                            asp[asp.index(each)] = each.replace('(', '[').replace(')', ']')
+            if len(each) > 3:
+                if each[0] == '(' and each[1].isnumeric() and each[2] == '.':
+                    if each in asp:
+                        e = each.split(',')
+                        o = 0
+                        if len(e) > 1:
+                            n = ''
+                            for f in e:
+                                if o != len(e) - 1:
+                                    n = n + f + ']['
+                                else:
+                                    n = n + f
+                                o += 1
+                            neach = n
+                        else:
+                            neach = each
+                        asp[asp.index(each)] = neach.replace('(', '[').replace(')', ']')
 
         if 'AMATEUR' in asp or 'AMATEUR-SATELITE' in asp:
             amateur = True
@@ -57,14 +69,29 @@ def parse_line(pa):
            mobile = True
         else:
             newpa.append(a.strip().title())
+    if len(newpa) > 0:
+        if newpa[0] == '':
+            newpa = []
     return newpa, amateur, fixed, mobile, broadcast
 
 
-def parse_footnotes(footnotes):
-    footsplit = footnotes.split('<br>')
+def parse_footnotes(footnote):
+    footsplit = (footnote.replace('<b>', '').replace('</b>', '')).strip().split('<br>')
     newfoot = []
     for each in footsplit:
-        newfoot.append(str(each.strip().replace('<b>', '').replace('</b>', '')))
+        if len(each) > 0:
+            if each[0].isnumeric():
+                if each[1] == '.':
+                    for i, c in enumerate(each):
+                        if c == ':':
+                            break
+                    each = '[' + each
+                    newfoot.append(each[:i+1] + ']' + each[i+1:])
+                else:
+                    newfoot.append(str(each.strip()))
+            else:
+                newfoot.append(str(each.strip()))
+    print(type(newfoot))
     return newfoot
 
 
@@ -97,8 +124,8 @@ with open(str(data_file)) as csv_file:
         minfreq = minfreq * 1000000
         maxfreq = maxfreq * 1000000
 
-        sa, amateur, fixed, mobile, broadcast = parse_line(row["Secondary Allocations"].split(','))
-        pa, amateur2, fixed2, mobile2, broadcast2 = parse_line(row["Primary Allocations"].split(','))
+        sa, amateur, fixed, mobile, broadcast = parse_line(row["Secondary Allocations"].split(', '))
+        pa, amateur2, fixed2, mobile2, broadcast2 = parse_line(row["Primary Allocations"].split(', '))
         if not fixed and fixed2:
             fixed = True
         if not mobile and mobile2:
@@ -108,9 +135,10 @@ with open(str(data_file)) as csv_file:
         if not amateur and amateur2:
             amateur = True
 
-        footnotes = parse_footnotes(row['Footnotes'])
-
+        fn = parse_footnotes(row['Footnotes'])
+        print(type(fn))
+        #print(fn)
         with new_data_file.open(mode='a') as f:
-            print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {pa}, {sa}, {footnotes}),', file=f)
+            print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {pa}, {sa}, {fn}),', file=f)
         # print(int(minfreq), int(maxfreq), pa, sa, amateur, fixed, mobile, broadcast)
 write_footer()

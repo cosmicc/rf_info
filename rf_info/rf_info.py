@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 from iso3166 import countries
-
-
-COUNTRY_MAP = {'US': 'a', 'CA': 'a', 'BR': 'a', 'ES': 'b', 'GB': 'b', 'RU': 'b', 'UA': 'b', 'JP': 'c', 'IN': 'c', 'KR': 'c',
-               'TH': 'c', 'CH': 'b', 'CL': 'a', 'DK': 'b', 'FI': 'b', 'FR': 'b', 'HU': 'b', 'ID': 'c', 'IS': 'b', 'IT': 'b',
-               'MX': 'a', 'NL': 'b', 'NZ': 'c', 'NO': 'b', 'PL': 'b', 'ZA': 'b', 'SE', 'b', 'UR': 'b', 'VE': 'a', 'AU': 'c',
-               'AR': 'a'}
+from .data.international import COUNTRY_MAP
 
 
 def remove_all_butfirst(s, substr):
@@ -120,6 +115,15 @@ class Frequency():
         # Set Country
         self.country_abbr = scountry.alpha2.upper()
         self.country_name = scountry.name
+
+        # Set Allocations
+        self.amateur = ALLOCATIONS[intfreq][0]
+        self.fixed_station = ALLOCATIONS[intfreq][1]
+        self.mobile_station = ALLOCATIONS[intfreq][2]
+        self.broadcast = ALLOCATIONS[intfreq][3]
+        self.primary_allocation = ALLOCATIONS[intfreq][4]
+        self.secondary_allocation = ALLOCATIONS[intfreq][5]
+        self.allocation_notes = ALLOCATIONS[intfreq][6]
 
         '''
         # Create Band Usage
