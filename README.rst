@@ -67,21 +67,32 @@ United States (US), Canada (CA), United Kingdom (GB), Spain (ES), Germany (GR), 
 
 I can easily add support for more countries upon request
 
-Usage
+Command line supports color, raw, and json output
+
+
+Install
 -------
-Requires:
+
+Python library Requires:
+::
+
+$ pip3 install rf-info iso3166
+
+Command Line Requires:
 ::
 
 $ pip3 install iso3166 colorama
 
-
-Insall:
+Install:
 ::
 
 $ pip3 install rf-info
 
 
-Command Line:
+Usage
+-------
+
+  Command Line:
 ::
 
 $ rf-info <frequency> [<units>] [<country>]
@@ -117,7 +128,7 @@ US, USA, 040, JPN, es, Spain  (Case Insensitive)
 $ rf-info 144.400.000 hz US
 $ rf-info 88 mhz JPN 
 
-Python:
+ Python:
 ::
 
 >>> from rf-info import Frequency
@@ -147,34 +158,36 @@ Example command line output:
 ::
 
 $ rf-info 144.100.000 hz US
-  Display: 144.100.000
-  Hz: 144100000
-  Khz: 144100.0
-  Mhz: 144.1
-  Ghz: 0.1441
-  Wavelength: 2m
-  Itu_Band: Very High Frequency
-  Itu_Abbr: VHF
-  Itu_Num: 8
-  Ieee_Band: VHF
-  Ieee_Description: Very High Frequency
-  Nato_Band: A
-  Country_Abbr: US
-  Country_Name: United States of America
-  Fixed_Station: False
-  Mobile_Station: False
-  Broadcasting: False
-  Amateur: True
-  Amateur_Details:
-      General CW and weak signals
-      License Class
-      Max Power      
-  Primary_Allocation:
-        Amateur
-        Amateur-Satellite
-  Allocation_Notes:
-        [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.
+::
 
+ Display: 144.100.000
+ Hz: 144100000
+ Khz: 144100.0
+ Mhz: 144.1
+ Ghz: 0.1441
+ Wavelength: 2m
+ Itu_Band: Very High Frequency
+ Itu_Abbr: VHF
+ Itu_Num: 8
+ Ieee_Band: VHF
+ Ieee_Description: Very High Frequency
+ Nato_Band: A
+ Country_Abbr: US
+ Country_Name: United States of America
+ Fixed_Station: False
+ Mobile_Station: False
+ Broadcasting: False
+ Amateur: True
+ Amateur_Details:
+  General CW and weak signals
+  License Class
+  Max Power      
+ Primary_Allocation:
+  Amateur
+  Amateur-Satellite
+ Allocation_Notes:
+  [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.
+::
 
 
 Todo
@@ -183,6 +196,7 @@ Todo
 - More WIFI band details (channels)
 - More Cellular band details (channels)
 - More Sattelite band details
+
 
 Credits
 -------
