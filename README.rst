@@ -67,7 +67,7 @@ United States (US), Canada (CA), United Kingdom (GB), Spain (ES), Germany (GR), 
 
 I can easily add support for more countries upon request
 
-Command line supports color, raw, and json output
+Command line supports color, raw parsable, and json output
 
 
 Install
@@ -76,7 +76,7 @@ Install
 Python library Requires:
 ::
 
-$ pip3 install rf-info iso3166
+$ pip3 install iso3166
 
 Command Line Requires:
 ::
