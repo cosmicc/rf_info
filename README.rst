@@ -55,12 +55,13 @@ Returns information about a radio frequency (Country Specific)
 - IEEE Band Name
 - NATO Band Name
 - Waveguide Band Name
+- Microwave Band Name & Description  
 - Fixed Station & Mobile Station Designations
 - IEEE Primary Band Allocations
 - IEEE Secondary Band Allocations
 - Detailed IEEE footnotes for each band allocation  
 - Amateur Radio Details (Usage, License Class, Max Power) 
-- Broadcasting Frequency Details
+- Broadcasting Band Number & Details 
 - Satellite Frequency Details
 - WIFI Frequency Details  
 
@@ -101,14 +102,14 @@ Also supports "Radio Display" frequency representation (Dotted notation)::
     $ rf-info 1.500.125.000
     $ rf-info 000.012.500
 
-Suffix examples
+Unit examples:
 hz, khz, Mhz, Ghz  (Case Insensitive)::
 
     $ rf-info 123.100 mhz
     $ rf-info 4.5 ghz
 
 Country examples (2 digit abbriviation, 3 digit abbriviation, 3 digit number, or full name)
-US, USA, 040, JPN, es, Spain  (Case Insensitive)::
+US, USA, 040, JPN, Spain  (Case Insensitive)::
 
     $ rf-info 144.400.000 hz US
     $ rf-info 88 mhz JPN 
@@ -177,7 +178,9 @@ Output Example
 Todo
 -------
 
+- Air band details
 - Cellular band details
+- Any special case frequencies
 
 
 Credits

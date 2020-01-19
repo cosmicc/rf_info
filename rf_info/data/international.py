@@ -1,5 +1,6 @@
 from .rangekeydict import RangeKeyDict
 
+
 SATELLITES = RangeKeyDict({
     (435030000, 435180000): (['OSCAR 10', 'AO-10', 'LSB/CW', 'Uplink', 'Mode B Analog']),
     (145975000, 145825000): (['OSCAR 10', 'AO-10', 'LSB/CW', 'Downlink', 'Mode B Analog']),
@@ -63,6 +64,22 @@ SATELLITES = RangeKeyDict({
     (436500000, 436500001): (['KITSAT B (HL02)', 'KO-25', '', 'Downlink', '9600 Baud AFSK']),
 })
 
+MICROWAVE = RangeKeyDict({
+    (1000000000, 2000000000): ('L', 'Military telemetry, GPS, mobile phones (GSM), amateur radio'),
+    (2000000000, 4000000000): ('S', 'Weather radar, surface ship radar, and some communications satellites (microwave ovens, microwave devices/communications, radio astronomy, mobile phones, wireless LAN, Bluetooth, ZigBee, GPS, amateur radio)'),
+    (4000000000, 8000000000): ('C', 'Long-distance radio telecommunications'),
+    (8000000000, 12000000000): ('X', 'Satellite communications, radar, terrestrial broadband, space communications, amateur radio, molecular rotational spectroscopy'),
+    (12000000000, 18000000000): ('Ku', 'Satellite communications, molecular rotational spectroscopy'),
+    (18000000000, 26500000000): ('K', 'Radar, satellite communications, astronomical observations, automotive radar, molecular rotational spectroscopy'),
+    (26500000000, 40000000000): ('Ka', 'Satellite communications, molecular rotational spectroscopy'),
+    (33000000000, 50000000000): ('Q', 'Satellite communications, terrestrial microwave communications, radio astronomy, automotive radar, molecular rotational spectroscopy'),
+    (40000000000, 60000000000): ('U', 'Overlaps with Q band'),
+    (50000000000, 75000000000): ('V', 'Millimeter wave radar research, molecular rotational spectroscopy and other kinds of scientific research'),
+    (75000000000, 110000000000): ('W', 'Satellite communications, millimeter-wave radar research, military radar targeting and tracking applications, and some non-military applications, automotive radar'),
+    (90000000000, 140000000000): ('F', 'SHF transmissions: Radio astronomy, microwave devices/communications, wireless LAN, most modern radars, communications satellites, satellite television broadcasting, DBS, amateur radio'),
+    (110000000000, 170000000000): ('D', 'EHF transmissions: Radio astronomy, high-frequency microwave radio relay, microwave remote sensing, amateur radio, directed-energy weapon, millimeter wave scanner'),
+})
+
 WAVEGUIDE = RangeKeyDict({
     (0, 1700000001): None,
     (1700000001, 2200000001): 'R',
@@ -119,21 +136,22 @@ IEEE = RangeKeyDict({
     (27000000001, 40000000001): ('Ka', 'Kurz-above'),
     (40000000001, 75000000001): ('V', 'N/A'),
     (75000000001, 110000000001): ('W', 'N/A'),
-    (110000000001, 300000000001): ('G', 'Millimeter'),
+    (110000000001, 300000000001): ('G', '(mm)'),
 })
 
 NATO = RangeKeyDict({
     (0, 250000001): 'A',
-    (250000001, 500000001): 'B',
-    (500000001, 1000000001): 'C',
-    (1000000001, 2000000001): 'D',
-    (2000000001, 3000000001): 'E',
-    (3000000001, 4000000001): 'F',
-    (4000000001, 6000000001): 'G',
-    (6000000001, 8000000001): 'H',
-    (8000000001, 10000000001): 'I',
-    (10000000001, 20000000001): 'J',
-    (20000000001, 40000000001): 'K',
-    (40000000001, 60000000001): 'L',
-    (60000000001, 100000000001): 'M',
+    (250000000, 500000001): 'B',
+    (500000000, 1000000001): 'C',
+    (1000000000, 2000000001): 'D',
+    (2000000000, 3000000001): 'E',
+    (3000000000, 4000000001): 'F',
+    (4000000000, 6000000001): 'G',
+    (6000000000, 8000000001): 'H',
+    (8000000000, 10000000001): 'I',
+    (10000000000, 20000000001): 'J',
+    (20000000000, 40000000001): 'K',
+    (40000000000, 60000000001): 'L',
+    (60000000000, 100000000001): 'M',
+    (100000000000, 200000000001): 'N',
 })

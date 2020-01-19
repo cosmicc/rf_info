@@ -25,7 +25,8 @@ def parse_freq(freq, unit):
     else:
         raise ValueError('Invalid Unit Specified')
     if '.' in freq:
-        nfreq = remove_all_butfirst(freq, '.').split('.')
+        first_occurrence = freq.index('.') + 1
+        nfreq = (freq[:first_occurrence] + freq[first_occurrence:].replace(".", "")).split('.')
         while len(nfreq[1]) < mindigits:
             nfreq[1] = nfreq[1] + '0'
         return int(''.join(nfreq))
