@@ -7,7 +7,7 @@ rf-info
         :target: https://github.com/cosmicc/rf_info
 
 .. image:: https://img.shields.io/pypi/v/rf_info.svg
-        :target: https://pypi.python.org/pypi/rf_info
+        :target: https://pypi.org/project/rf-info/ 
 
 .. image:: https://pyup.io/repos/github/cosmicc/rf_info/python-3-shield.svg
         :target: https://pyup.io/repos/github/cosmicc/rf_info/
@@ -23,7 +23,11 @@ rf-info
         :target: https://travis-ci.org/cosmicc/rf_info
 
 .. image:: https://readthedocs.org/projects/rf-info/badge/?version=latest
-        :target: https://radio-frequency.readthedocs.io/en/latest/?badge=latest
+        :target: https://rf-info.readthedocs.io/?badge=latest
+        :alt: Documentation Status
+      _
+.. image:: https://readthedocs.org/projects/rf-info/badge/?version=latest
+        :target: https://rf-info.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/cosmicc/rf_info/shield.svg
@@ -74,120 +78,119 @@ Install
 -------
 
 Python library Requires:
-::
 
-$ pip3 install iso3166
+.. code-block:: console
+    $ pip3 install iso3166
 
 Command Line Requires:
-::
 
-$ pip3 install iso3166 colorama
+.. code-block:: console 
+    $ pip3 install iso3166 colorama
 
 Install:
-::
 
-$ pip3 install rf-info
+.. code-block:: console
+    $ pip3 install rf-info
 
 
 Usage
 -------
 
-  Command Line:
-::
+Command Line:
 
-$ rf-info <frequency> [<units>] [<country>]
+.. code-block:: console  
+    $ rf-info <frequency> [<units>] [<country>]
 
 
 Frequency format examples:
-::
 
-$ rf-info 89910000
-$ rf-info 23,450,000
-$ rf-info 12,634.534
-$ rf-info 12_000_000
-$ rf-info 344_500.100
+.. code-block:: console
+    $ rf-info 89910000
+    $ rf-info 23,450,000
+    $ rf-info 12,634.534
+    $ rf-info 12_000_000
+    $ rf-info 344_500.100
 
 Also supports "Radio Display" frequency representation (Dotted notation):
-::
 
-$ rf-info 124.125.000
-$ rf-info 1.500.125.000
-$ rf-info 000.012.500
+.. code-block:: console
+    $ rf-info 124.125.000
+    $ rf-info 1.500.125.000
+    $ rf-info 000.012.500
 
-Suffix examples:
-hz, khz, Mhz, Ghz  (Case Insensitive)
-::
+Suffix examples
+hz, khz, Mhz, Ghz  (Case Insensitive):
 
-$ rf-info 123.100 mhz
-$ rf-info 4.5 ghz
+.. code-block:: console
+    $ rf-info 123.100 mhz
+    $ rf-info 4.5 ghz
 
-Country examples (2 digit abbriviation, 3 digit abbriviation, 3 digit number, or full name):
-US, USA, 040, JPN, es, Spain  (Case Insensitive)
-::
+Country examples (2 digit abbriviation, 3 digit abbriviation, 3 digit number, or full name)
+US, USA, 040, JPN, es, Spain  (Case Insensitive):
 
-$ rf-info 144.400.000 hz US
-$ rf-info 88 mhz JPN 
+.. code-block:: console
+    $ rf-info 144.400.000 hz US
+    $ rf-info 88 mhz JPN 
 
- Python:
-::
+Python:
 
->>> from rf_info import Frequency
->>> freq = Frequency('112.434.000')
->>> freq.details()
+.. code-block:: python
+    >>> from rf_info import Frequency
+    >>> freq = Frequency('112.434.000')
+    >>> freq.details()
 
-returns a dictionary:
-::
+Returns a dictionary:
 
->>> {'display': '144.100.000', 'hz': 144100000, 'khz': 144100.0, 'mhz': 144.1, 'ghz': 0.1441, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'country_abbr': 'US', 'country_name': 'United States of America', 'amateur': True, 'fixed_station': False, 'mobile_station': False, 'broadcast': False, 'primary_allocation': ['Amateur', 'Amateur-Satellite'], 'secondary_allocation': [], 'allocation_notes': ['[5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.']}
+.. code-block:: python
+    >>> {'display': '144.100.000', 'hz': 144100000, 'khz': 144100.0, 'mhz': 144.1, 'ghz': 0.1441, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'country_abbr': 'US', 'country_name': 'United States of America', 'amateur': True, 'fixed_station': False, 'mobile_station': False, 'broadcast': False, 'primary_allocation': ['Amateur', 'Amateur-Satellite'], 'secondary_allocation': [], 'allocation_notes': ['[5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.']}
 
-or you can get individual items directly:
-::
+Or you can get individual items directly:
 
->>> freq.itu_band
->>> freq.wavelength
->>> freq.primary_allocation
+.. code-block:: python 
+    >>> freq.itu_band
+    >>> freq.wavelength
+    >>> freq.primary_allocation
 
 Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object:
-::
 
->>> new_freq_object = Frequency('001.123.000') + Frequency('7', 'khz')  # Adds 7 khz to 1.123 mhz
->>> new_freq_object = Frequency('1', 'mhz') + 15000  # Adds 15 khz to 1 mhz
->>> new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7 khz from 123 khz
+.. code-block:: python
+    >>> new_freq_object = Frequency('001.123.000') + Frequency('7', 'khz')  # Adds 7 khz to 1.123 mhz
+    >>> new_freq_object = Frequency('1', 'mhz') + 15000  # Adds 15 khz to 1 mhz
+    >>> new_freq_object = Frequency('123,000') - '000.007.000'  # Subtracts 7 khz from 123 khz
 
 Example command line output:
-::
 
-$ rf-info 144.100.000 hz US
-::
+.. code-block:: console
+    $ rf-info 144.100.000 hz US
 
- Display: 144.100.000
- Hz: 144100000
- Khz: 144100.0
- Mhz: 144.1
- Ghz: 0.1441
- Wavelength: 2m
- Itu_Band: Very High Frequency
- Itu_Abbr: VHF
- Itu_Num: 8
- Ieee_Band: VHF
- Ieee_Description: Very High Frequency
- Nato_Band: A
- Country_Abbr: US
- Country_Name: United States of America
- Fixed_Station: False
- Mobile_Station: False
- Broadcasting: False
- Amateur: True
- Amateur_Details:
-  General CW and weak signals
-  License Class
-  Max Power      
- Primary_Allocation:
-  Amateur
-  Amateur-Satellite
- Allocation_Notes:
-  [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.
-::
+.. code-block:: console 
+    Display: 144.100.000
+    Hz: 144100000
+    Khz: 144100.0
+    Mhz: 144.1
+    Ghz: 0.1441
+    Wavelength: 2m
+    Itu_Band: Very High Frequency
+    Itu_Abbr: VHF
+    Itu_Num: 8
+    Ieee_Band: VHF
+    Ieee_Description: Very High Frequency
+    Nato_Band: A
+    Country_Abbr: US
+    Country_Name: United States of America
+    Fixed_Station: False
+    Mobile_Station: False
+    Broadcasting: False
+    Amateur: True
+    Amateur_Details:
+        General CW and weak signals
+        License Class
+        Max Power      
+    Primary_Allocation:
+        Amateur
+        Amateur-Satellite
+    Allocation_Notes:
+        [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.
 
 
 Todo

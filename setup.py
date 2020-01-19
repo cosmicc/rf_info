@@ -11,11 +11,26 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [ ]
+requirements = ['iso3166', 'colorama']
 
 setup_requirements = ['pytest-runner', ]
 
 test_requirements = ['pytest>=3', ]
+
+data_files = []
+man_sections = {}
+for dir in find_dirs('man'):
+    for file in os.listdir(dir):
+        section = file.split('.')[-1]
+        man_sections[section] = man_sections.get(section, []) + [os.path.join(dir, file)]
+for section in man_sections:
+    data_files.append(('share/man/man'+section, man_sections[section]))
+info_pages = {}
+for dir in find_dirs('info'):
+    for file in glob(os.path.join(dir, '*.info')):
+        info_pages[dir] = info_pages.get(dir, []) + [file]
+for dir in info_pages:
+    data_files.append(('share/info', info_pages[dir]))
 
 setup(
     author="Ian Perry",
@@ -42,7 +57,8 @@ setup(
     include_package_data=True,
     keywords='rf_info',
     name='rf_info',
-    packages=find_packages(include=['rf_info', 'rf_info.*', 'radio-frequency']),
+    packages=find_packages(include=['rf_info', 'rf_info.*', 'rf-info', 'rf-info.*']),
+    data_files=data_files,
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,

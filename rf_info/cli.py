@@ -48,13 +48,13 @@ def main(argv=None):
         from .data.countrymap import COUNTRY_MAP
         clist = []
         for key, value in COUNTRY_MAP.items():
-            clist.append(f'{countries.get(key).name} ({countries.get(key).alpha2})')
+            clist.append('{} ({})'.format(countries.get(key).name, countries.get(key).alpha2))
         print(', '.join(clist))
         exit(0)
     elif args.list:
         from .data.countrymap import COUNTRY_MAP
         for key, value in COUNTRY_MAP.items():
-            print(f'{countries.get(key).name} ({countries.get(key).alpha2})')
+            print('{} ({})'.format(countries.get(key).name, countries.get(key).alpha2))
         exit(0)
 
     if args.frequency is None:
@@ -69,52 +69,52 @@ def main(argv=None):
 
                 if key == 'primary_allocation':
                     if len(value) > 0:
-                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
                         for each in value:
-                            print(f'    {ALLOCATIONCOLOR}{each}{RESET}')
+                            print('    {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
 
                 elif key == 'secondary_allocation':
                     if len(value) > 0:
-                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
                         for each in value:
-                            print(f'    {ALLOCATIONCOLOR}{each}{RESET}')
+                            print('    {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
 
                 elif key == 'allocation_notes':
                     if len(value) > 0:
-                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
                         for each in value:
-                            print(f'    {NOTESCOLOR}{each}{RESET}')
+                            print('    {}{}{}'.format(NOTESCOLOR, each, RESET))
 
                 elif key == 'amateur_details':
                     if len(value) > 0:
-                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
                         for each in value:
-                            print(f'    {VALUECOLOR}{each}{RESET}')
+                            print('    {}{}{}'.format(VALUECOLOR, each, RESET))
 
                 elif key == 'broadcasting_details':
                     if len(value) > 0:
-                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
                         for each in value:
-                            print(f'    {VALUECOLOR}{each}{RESET}')
+                            print('    {}{}{}'.format(VALUECOLOR, each, RESET))
 
                 elif key == 'services_details':
                     if len(value) > 0:
-                        print(f'{KEYCOLOR}{key.title()}{RESET}:')
+                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
                         for each in value:
-                            print(f'    {VALUECOLOR}{each}{RESET}')
+                            print('    {}{}{}'.format(VALUECOLOR, each, RESET))
 
                 else:
                     if not value:
-                        print(f'{KEYCOLOR}{key.title()}{RESET}: {FALSECOLOR}{value}{RESET}')
+                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, key.title(), RESET, FALSECOLOR, value, RESET))
                     elif isinstance(value, bool):
-                        print(f'{KEYCOLOR}{key.title()}{RESET}: {TRUECOLOR}{value}{RESET}')
+                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, key.title(), RESET, TRUECOLOR, value, RESET))
                     else:
-                        print(f'{KEYCOLOR}{key.title()}{RESET}: {VALUECOLOR}{value}{RESET}')
+                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, key.title(), RESET, VALUECOLOR, value, RESET))
         print(' ')
 
     elif not args.json:
         for key, value in frequency_dict.items():
-            print(f'{key}={value}')
+            print('{}={}'.format(key, value))
     else:
         print(json.dumps(frequency_dict, indent=4, sort_keys=False))
 

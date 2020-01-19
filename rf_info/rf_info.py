@@ -69,8 +69,8 @@ class Frequency():
             intfreq = parse_freq(str(freq), unit)
         else:
             raise TypeError('Invalid Frequency Type')
-        if intfreq < 1 or intfreq > 999_999_999_999:
-            raise ValueError(f'Frequency Out of Range')
+        if intfreq < 1 or intfreq > 999999999999:
+            raise ValueError('Frequency Out of Range')
 
         # Create Display Frequency
         dispfreq = str(intfreq)[::-1]
@@ -81,23 +81,23 @@ class Frequency():
 
         # Create Unit frequencies
         self.hz = int(intfreq)
-        self.khz = float(intfreq / 1_000)
-        self.mhz = float(intfreq / 1_000_000)
-        self.ghz = float(intfreq / 1_000_000_000)
+        self.khz = float(intfreq / 1000)
+        self.mhz = float(intfreq / 1000000)
+        self.ghz = float(intfreq / 1000000000)
 
         # Create ITU, IEEE, and Wavelength
         itu = ITU[intfreq]
         ieee = IEEE[intfreq]
-        meter = 300_000_000 / intfreq
+        meter = 300000000 / intfreq
         if meter >= 1:
             self.wavelength = '{:,}'.format(int(meter))
-            self.wavelength = f'{self.wavelength}m'
+            self.wavelength = '{}m'.format(self.wavelength)
         elif meter >= 0.01:
             sub = int(str(meter).split('.')[1])
-            self.wavelength = f'{str(sub)[:2]}cm'
+            self.wavelength = '{}cm'.format(str(sub)[:2])
         elif meter < 0.01:
             sub = int(str(meter).split('.')[1]) * 1000
-            self.wavelength = f'{str(sub)[:2]}mm'
+            self.wavelength = '{}mm'.format(str(sub)[:2])
         self.itu_band = itu[2]
         self.itu_abbr = itu[1]
         self.itu_num = itu[0]
@@ -165,7 +165,7 @@ class Frequency():
         return "Frequency('{}')".format(self.display)
 
     def __str__(self):
-        return f'{self.display} - {self.hz} hz'
+        return '{} - {} hz'.format(self.display, self.hz)
 
     def __int__(self):
         return int(self.hz)
