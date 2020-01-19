@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>rf-info 0.6.3 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-rf-info-s-documentation">
+<h1>Welcome to rf-info's documentation!<a class="headerlink" href="#welcome-to-rf-info-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<span id="document-readme"></span><div class="section" id="rf-info">
+<h2>rf-info<a class="headerlink" href="#rf-info" title="Permalink to this headline">¶</a></h2>
+<a class="reference external image-reference" href="https://github.com/cosmicc/rf_info"><img alt="https://img.shields.io/github/v/release/cosmicc/rf_info.svg?include_prereleases" src="https://img.shields.io/github/v/release/cosmicc/rf_info.svg?include_prereleases" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/rf_info"><img alt="https://img.shields.io/pypi/v/rf_info.svg" src="https://img.shields.io/pypi/v/rf_info.svg" /></a>
+<a class="reference external image-reference" href="https://pyup.io/repos/github/cosmicc/rf_info/"><img alt="Python 3" src="https://pyup.io/repos/github/cosmicc/rf_info/python-3-shield.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/cosmicc/rf_info"><img alt="https://img.shields.io/github/license/cosmicc/rf_info.svg" src="https://img.shields.io/github/license/cosmicc/rf_info.svg" /></a>
+<a class="reference external image-reference" href="https://coveralls.io/github/cosmicc/rf_info?branch=master"><img alt="https://coveralls.io/repos/github/cosmicc/rf_info/badge.svg?branch=master" src="https://coveralls.io/repos/github/cosmicc/rf_info/badge.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://travis-ci.org/cosmicc/rf_info"><img alt="https://img.shields.io/travis/cosmicc/rf_info.svg" src="https://img.shields.io/travis/cosmicc/rf_info.svg" /></a>
+<a class="reference external image-reference" href="https://radio-frequency.readthedocs.io/en/latest/?badge=latest"><img alt="Documentation Status" src="https://readthedocs.org/projects/rf-info/badge/?version=latest" /></a>
+<a class="reference external image-reference" href="https://pyup.io/repos/github/cosmicc/rf_info/"><img alt="Updates" src="https://pyup.io/repos/github/cosmicc/rf_info/shield.svg" /></a>
+<p>Command line &amp; Python library for obtaining details about a radio frequency</p>
+<ul class="simple">
+<li><p>Free software: MIT license</p></li>
+<li><p>Documentation: <a class="reference external" href="https://rf-info.readthedocs.io">https://rf-info.readthedocs.io</a>.</p></li>
+<li><p>Python 3.6, 3.7, 3.8 &amp; pypy3 tested</p></li>
+<li><p>Linux &amp; Windows with color terminal support</p></li>
+</ul>
+<div class="section" id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
+<p>Returns information about a radio frequency (Country Specific)</p>
+<ul class="simple">
+<li><p>&quot;Radio Display&quot; format (Dotted notaton)</p></li>
+<li><p>hz, khz, Mhz  and Ghz representations of the frequency</p></li>
+<li><p>Frequency Wavelength</p></li>
+<li><p>ITU Band Description</p></li>
+<li><p>ITU Band Abbreviation</p></li>
+<li><p>ITU Band Number</p></li>
+<li><p>IEEE Band Name</p></li>
+<li><p>NATO Band Name</p></li>
+<li><p>Waveguide Band Name</p></li>
+<li><p>Fixed Station &amp; Mobile Station Designations</p></li>
+<li><p>Broadcast Information</p></li>
+<li><p>Primary Band Allocations</p></li>
+<li><p>Secondary Band Allocations</p></li>
+<li><p>Detailed footnotes for each band allocation</p></li>
+<li><p>Amateur Radio Details (Usage, License Class, Max Power) * Not yet complete</p></li>
+</ul>
+<p>Currently supported band allocations for countries:
+United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), Russian Federation (RU), Ukraine (UA), Japan (JP), India (IN), Korea, Republic of (KR), Thailand (TH), Switzerland (CH), Chile (CL), Denmark (DK), Finland (FI), France (FR), Hungary (HU), Indonesia (ID), Iceland (IS), Italy (IT), Mexico (MX), Netherlands (NL), New Zealand (NZ), Norway (NO), Poland (PL), South Africa (ZA), Sweden (SE), Venezuela (VE), Australia (AU), Slovenia (SI), Ireland (IE), Belgium (BE), Austria (AT), Argentina (AR), Israel (IL), Romania (RO), China (CN), Uruguay (UY), Greece (GR), Panama (PA), Peru (PE)</p>
+<p>I can easily add support for more countries upon request</p>
+<p>Command line supports color, raw parsable, and json output</p>
+</div>
+<div class="section" id="install">
+<h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
+<p>Python library Requires:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip3 install iso3166
+</pre></div>
+</div>
+<p>Command Line Requires:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip3 install iso3166 colorama
+</pre></div>
+</div>
+<p>Install:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip3 install rf-info
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Command Line:</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info &lt;frequency&gt; [&lt;units&gt;] [&lt;country&gt;]
+</pre></div>
+</div>
+<p>Frequency format examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 89910000
+$ rf-info 23,450,000
+$ rf-info 12,634.534
+$ rf-info 12_000_000
+$ rf-info 344_500.100
+</pre></div>
+</div>
+<p>Also supports &quot;Radio Display&quot; frequency representation (Dotted notation):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 124.125.000
+$ rf-info 1.500.125.000
+$ rf-info 000.012.500
+</pre></div>
+</div>
+<p>Suffix examples:
+hz, khz, Mhz, Ghz  (Case Insensitive)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 123.100 mhz
+$ rf-info 4.5 ghz
+</pre></div>
+</div>
+<p>Country examples (2 digit abbriviation, 3 digit abbriviation, 3 digit number, or full name):
+US, USA, 040, JPN, es, Spain  (Case Insensitive)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 144.400.000 hz US
+$ rf-info 88 mhz JPN
+</pre></div>
+</div>
+<blockquote>
+<div><p>Python:</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">rf_info</span> <span class="kn">import</span> <span class="n">Frequency</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;112.434.000&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span><span class="o">.</span><span class="n">details</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>returns a dictionary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span><span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;144.100.000&#39;</span><span class="p">,</span> <span class="s1">&#39;hz&#39;</span><span class="p">:</span> <span class="mi">144100000</span><span class="p">,</span> <span class="s1">&#39;khz&#39;</span><span class="p">:</span> <span class="mf">144100.0</span><span class="p">,</span> <span class="s1">&#39;mhz&#39;</span><span class="p">:</span> <span class="mf">144.1</span><span class="p">,</span> <span class="s1">&#39;ghz&#39;</span><span class="p">:</span> <span class="mf">0.1441</span><span class="p">,</span> <span class="s1">&#39;wavelength&#39;</span><span class="p">:</span> <span class="s1">&#39;2m&#39;</span><span class="p">,</span> <span class="s1">&#39;itu_band&#39;</span><span class="p">:</span> <span class="s1">&#39;Very High Frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;itu_abbr&#39;</span><span class="p">:</span> <span class="s1">&#39;VHF&#39;</span><span class="p">,</span> <span class="s1">&#39;itu_num&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;ieee_band&#39;</span><span class="p">:</span> <span class="s1">&#39;VHF&#39;</span><span class="p">,</span> <span class="s1">&#39;ieee_description&#39;</span><span class="p">:</span> <span class="s1">&#39;Very High Frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;nato_band&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;waveguide_band&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;country_abbr&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="s1">&#39;country_name&#39;</span><span class="p">:</span> <span class="s1">&#39;United States of America&#39;</span><span class="p">,</span> <span class="s1">&#39;amateur&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;fixed_station&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;mobile_station&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;broadcast&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;primary_allocation&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Amateur&#39;</span><span class="p">,</span> <span class="s1">&#39;Amateur-Satellite&#39;</span><span class="p">],</span> <span class="s1">&#39;secondary_allocation&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;allocation_notes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;[5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.&#39;</span><span class="p">]}</span>
+</pre></div>
+</div>
+<p>or you can get individual items directly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span><span class="o">.</span><span class="n">itu_band</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span><span class="o">.</span><span class="n">wavelength</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span><span class="o">.</span><span class="n">primary_allocation</span>
+</pre></div>
+</div>
+<p>Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_freq_object</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;001.123.000&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;7&#39;</span><span class="p">,</span> <span class="s1">&#39;khz&#39;</span><span class="p">)</span>  <span class="c1"># Adds 7 khz to 1.123 mhz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_freq_object</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;mhz&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">15000</span>  <span class="c1"># Adds 15 khz to 1 mhz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_freq_object</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;123,000&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="s1">&#39;000.007.000&#39;</span>  <span class="c1"># Subtracts 7 khz from 123 khz</span>
+</pre></div>
+</div>
+<p>Example command line output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 144.100.000 hz US
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Display</span><span class="p">:</span> <span class="mf">144.100</span><span class="o">.</span><span class="mi">000</span>
+<span class="n">Hz</span><span class="p">:</span> <span class="mi">144100000</span>
+<span class="n">Khz</span><span class="p">:</span> <span class="mf">144100.0</span>
+<span class="n">Mhz</span><span class="p">:</span> <span class="mf">144.1</span>
+<span class="n">Ghz</span><span class="p">:</span> <span class="mf">0.1441</span>
+<span class="n">Wavelength</span><span class="p">:</span> <span class="mi">2</span><span class="n">m</span>
+<span class="n">Itu_Band</span><span class="p">:</span> <span class="n">Very</span> <span class="n">High</span> <span class="n">Frequency</span>
+<span class="n">Itu_Abbr</span><span class="p">:</span> <span class="n">VHF</span>
+<span class="n">Itu_Num</span><span class="p">:</span> <span class="mi">8</span>
+<span class="n">Ieee_Band</span><span class="p">:</span> <span class="n">VHF</span>
+<span class="n">Ieee_Description</span><span class="p">:</span> <span class="n">Very</span> <span class="n">High</span> <span class="n">Frequency</span>
+<span class="n">Nato_Band</span><span class="p">:</span> <span class="n">A</span>
+<span class="n">Country_Abbr</span><span class="p">:</span> <span class="n">US</span>
+<span class="n">Country_Name</span><span class="p">:</span> <span class="n">United</span> <span class="n">States</span> <span class="n">of</span> <span class="n">America</span>
+<span class="n">Fixed_Station</span><span class="p">:</span> <span class="kc">False</span>
+<span class="n">Mobile_Station</span><span class="p">:</span> <span class="kc">False</span>
+<span class="n">Broadcasting</span><span class="p">:</span> <span class="kc">False</span>
+<span class="n">Amateur</span><span class="p">:</span> <span class="kc">True</span>
+<span class="n">Amateur_Details</span><span class="p">:</span>
+ <span class="n">General</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">weak</span> <span class="n">signals</span>
+ <span class="n">License</span> <span class="n">Class</span>
+ <span class="n">Max</span> <span class="n">Power</span>
+<span class="n">Primary_Allocation</span><span class="p">:</span>
+ <span class="n">Amateur</span>
+ <span class="n">Amateur</span><span class="o">-</span><span class="n">Satellite</span>
+<span class="n">Allocation_Notes</span><span class="p">:</span>
+ <span class="p">[</span><span class="mf">5.216</span><span class="p">]:</span> <span class="n">Additional</span> <span class="n">allocation</span><span class="p">:</span> <span class="ow">in</span> <span class="n">China</span><span class="p">,</span> <span class="n">the</span> <span class="n">band</span> <span class="mi">144</span><span class="o">-</span><span class="mi">146</span> <span class="n">MHz</span> <span class="ow">is</span> <span class="n">also</span> <span class="n">allocated</span> <span class="n">to</span> <span class="n">the</span> <span class="n">aeronautical</span> <span class="n">mobile</span> <span class="p">(</span><span class="n">OR</span><span class="p">)</span> <span class="n">service</span> <span class="n">on</span> <span class="n">a</span> <span class="n">secondary</span> <span class="n">basis</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="todo">
+<h3>Todo<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>More WIFI band details (channels)</p></li>
+<li><p>More Cellular band details (channels)</p></li>
+<li><p>More Sattelite band details</p></li>
+</ul>
+</div>
+<div class="section" id="credits">
+<h3>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h3>
+<p>M. Ian Perry (<a class="reference external" href="mailto:ianperry99&#37;&#52;&#48;gmail&#46;com">ianperry99<span>&#64;</span>gmail<span>&#46;</span>com</a>)
+AD8DL</p>
+</div>
+</div>
+<span id="document-installation"></span><div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>rf-info requires the iso3166 library</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install iso3166
+</pre></div>
+</div>
+<p>rf-info command line also requires the colorama library for color terminal output</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install colorama
+</pre></div>
+</div>
+</div>
+<div class="section" id="stable-release">
+<h3>Stable release<a class="headerlink" href="#stable-release" title="Permalink to this headline">¶</a></h3>
+<p>To install rf-info, run this command in your terminal:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install rf-info
+</pre></div>
+</div>
+<p>This is the preferred method to install rf-info, as it will always install the most recent stable release.</p>
+<p>If you don't have <a class="reference external" href="https://pip.pypa.io">pip</a> installed, this <a class="reference external" href="http://docs.python-guide.org/en/latest/starting/installation/">Python installation guide</a> can guide
+you through the process.</p>
+</div>
+<div class="section" id="from-sources">
+<h3>From sources<a class="headerlink" href="#from-sources" title="Permalink to this headline">¶</a></h3>
+<p>The sources for rf-info can be downloaded from the <a class="reference external" href="https://github.com/cosmicc/rf_info">Github repo</a>.</p>
+<p>You can either clone the public repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone git://github.com/cosmicc/rf_info
+</pre></div>
+</div>
+<p>Or download the <a class="reference external" href="https://github.com/cosmicc/rf_info/tarball/master">tarball</a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -OJL https://github.com/cosmicc/rf_info/tarball/master
+</pre></div>
+</div>
+<p>Once you have a copy of the source, you can install it with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py install
+</pre></div>
+</div>
+</div>
+</div>
+<span id="document-usage"></span><div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<p>To use rf-info in a python project:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">rf_info</span> <span class="kn">import</span> <span class="n">Frequency</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;112.434.000&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt>then::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span><span class="o">.</span><span class="n">details</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt>Returns a dictionary of all details::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span><span class="s1">&#39;display&#39;</span><span class="p">:</span> <span class="s1">&#39;144.100.000&#39;</span><span class="p">,</span> <span class="s1">&#39;hz&#39;</span><span class="p">:</span> <span class="mi">144100000</span><span class="p">,</span> <span class="s1">&#39;khz&#39;</span><span class="p">:</span> <span class="mf">144100.0</span><span class="p">,</span> <span class="s1">&#39;mhz&#39;</span><span class="p">:</span> <span class="mf">144.1</span><span class="p">,</span> <span class="s1">&#39;ghz&#39;</span><span class="p">:</span> <span class="mf">0.1441</span><span class="p">,</span> <span class="s1">&#39;wavelength&#39;</span><span class="p">:</span> <span class="s1">&#39;2m&#39;</span><span class="p">,</span> <span class="s1">&#39;itu_band&#39;</span><span class="p">:</span> <span class="s1">&#39;Very High Frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;itu_abbr&#39;</span><span class="p">:</span> <span class="s1">&#39;VHF&#39;</span><span class="p">,</span> <span class="s1">&#39;itu_num&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;ieee_band&#39;</span><span class="p">:</span> <span class="s1">&#39;VHF&#39;</span><span class="p">,</span> <span class="s1">&#39;ieee_description&#39;</span><span class="p">:</span> <span class="s1">&#39;Very High Frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;nato_band&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;waveguide_band&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;country_abbr&#39;</span><span class="p">:</span> <span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="s1">&#39;country_name&#39;</span><span class="p">:</span> <span class="s1">&#39;United States of America&#39;</span><span class="p">,</span> <span class="s1">&#39;amateur&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;fixed_station&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;mobile_station&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;broadcast&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;primary_allocation&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Amateur&#39;</span><span class="p">,</span> <span class="s1">&#39;Amateur-Satellite&#39;</span><span class="p">],</span> <span class="s1">&#39;secondary_allocation&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;allocation_notes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;[5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.&#39;</span><span class="p">]}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>You can also get each detail individually:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span><span class="o">.</span><span class="n">itu_band</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span><span class="o">.</span><span class="n">wavelength</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span><span class="o">.</span><span class="n">Primary_Allocation</span>
+</pre></div>
+</div>
+<p>Also supports adding and subtracting frequencies. Start with a frequency object then annd or subtract another frequency object, int, or string representation of a frequency, returns a new frequency object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_freq_object</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;001.123.000&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;7&#39;</span><span class="p">,</span> <span class="s1">&#39;khz&#39;</span><span class="p">)</span>  <span class="c1"># Adds 7 khz to 1.123 mhz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_freq_object</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;mhz&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">15000</span>  <span class="c1"># Adds 15 khz to 1 mhz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_freq_object</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="s1">&#39;123,000&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="s1">&#39;000.007.000&#39;</span>  <span class="c1"># Subtracts 7 khz from 123 khz</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line">
+<h3>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h3>
+<p>To use the rf-info command line tool:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info &lt;frequency&gt; [&lt;units&gt;] [&lt;country&gt;]
+</pre></div>
+</div>
+<p>Frequency format examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 89910000
+$ rf-info 23,450,000
+$ rf-info 12,634.534
+$ rf-info 12_000_000
+$ rf-info 344_500.100
+</pre></div>
+</div>
+<p>Also supports &quot;Radio Display&quot; frequency representation (Dotted notation):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 124.125.000
+$ rf-info 1.500.125.000
+$ rf-info 000.012.500
+</pre></div>
+</div>
+<p>Suffix examples: hz, khz, Mhz, Ghz (Case Insensitive):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 123.100 mhz
+$ rf-info 4.5 ghz
+</pre></div>
+</div>
+<p>Country examples (2 digit abbriviation, 3 digit abbriviation, 3 digit number, or full name): US, USA, 040, JPN, es, Spain (Case Insensitive):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 144.400.000 hz US
+$ rf-info 88 mhz JPN
+</pre></div>
+</div>
+<p>Example command line output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 144.100.000 hz US
+Display: 144.100.000
+Hz: 144100000
+Khz: 144100.0
+Mhz: 144.1
+Ghz: 0.1441
+Wavelength: 2m
+Itu_Band: Very High Frequency
+Itu_Abbr: VHF
+Itu_Num: 8
+Ieee_Band: VHF
+Ieee_Description: Very High Frequency
+Nato_Band: A
+Country_Abbr: US
+Country_Name: United States of America
+Fixed_Station: False
+Mobile_Station: False
+Broadcasting: False
+Amateur: True
+Amateur_Details:
+    General CW and weak signals
+    License Class
+Max Power
+Primary_Allocation:
+    Amateur
+    Amateur-Satellite
+Allocation_Notes:
+    [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a
+</pre></div>
+</div>
+<p>You also can print the info in raw or json formatted output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ rf-info 144.000 hz --raw
+$ rf-info 144.000 hz --json
+</pre></div>
+</div>
+</div>
+</div>
+<span id="document-modules"></span><div class="section" id="rf-info">
+<h2>rf-info<a class="headerlink" href="#rf-info" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<span id="document-rf_info"></span><div class="section" id="rf-info-package">
+<h3>rf-info package<a class="headerlink" href="#rf-info-package" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="submodules">
+<h4>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="module-rf_info.rf_info">
+<span id="rf-info-rf-info-module"></span><h4>rf_info.rf_info module<a class="headerlink" href="#module-rf_info.rf_info" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="rf_info.rf_info.Frequency">
+<em class="property">class </em><code class="sig-prename descclassname">rf_info.rf_info.</code><code class="sig-name descname">Frequency</code><span class="sig-paren">(</span><em class="sig-param">freq</em>, <em class="sig-param">unit='hz'</em>, <em class="sig-param">country='us'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rf_info/rf_info.html#Frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rf_info.rf_info.Frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="rf_info.rf_info.Frequency.details">
+<code class="sig-name descname">details</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rf_info/rf_info.html#Frequency.details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rf_info.rf_info.Frequency.details" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rf_info.rf_info.Frequency.info">
+<code class="sig-name descname">info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rf_info/rf_info.html#Frequency.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rf_info.rf_info.Frequency.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="rf_info.rf_info.parse_freq">
+<code class="sig-prename descclassname">rf_info.rf_info.</code><code class="sig-name descname">parse_freq</code><span class="sig-paren">(</span><em class="sig-param">freq</em>, <em class="sig-param">unit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rf_info/rf_info.html#parse_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rf_info.rf_info.parse_freq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="rf_info.rf_info.remove_all_butfirst">
+<code class="sig-prename descclassname">rf_info.rf_info.</code><code class="sig-name descname">remove_all_butfirst</code><span class="sig-paren">(</span><em class="sig-param">s</em>, <em class="sig-param">substr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rf_info/rf_info.html#remove_all_butfirst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rf_info.rf_info.remove_all_butfirst" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-rf_info">
+<span id="module-contents"></span><h4>Module contents<a class="headerlink" href="#module-rf_info" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+</div>
+</div>
+<span id="document-contributing"></span><div class="section" id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<p>Contributions are welcome, and they are greatly appreciated! Every little bit
+helps, and credit will always be given.</p>
+<p>You can contribute in many ways:</p>
+<div class="section" id="types-of-contributions">
+<h3>Types of Contributions<a class="headerlink" href="#types-of-contributions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="report-bugs">
+<h4>Report Bugs<a class="headerlink" href="#report-bugs" title="Permalink to this headline">¶</a></h4>
+<p>Report bugs at <a class="reference external" href="https://github.com/cosmicc/rf_info/issues">https://github.com/cosmicc/rf_info/issues</a>.</p>
+<p>If you are reporting a bug, please include:</p>
+<ul class="simple">
+<li><p>Your operating system name and version.</p></li>
+<li><p>Any details about your local setup that might be helpful in troubleshooting.</p></li>
+<li><p>Detailed steps to reproduce the bug.</p></li>
+</ul>
+</div>
+<div class="section" id="fix-bugs">
+<h4>Fix Bugs<a class="headerlink" href="#fix-bugs" title="Permalink to this headline">¶</a></h4>
+<p>Look through the GitHub issues for bugs. Anything tagged with &quot;bug&quot; and &quot;help
+wanted&quot; is open to whoever wants to implement it.</p>
+</div>
+<div class="section" id="implement-features">
+<h4>Implement Features<a class="headerlink" href="#implement-features" title="Permalink to this headline">¶</a></h4>
+<p>Look through the GitHub issues for features. Anything tagged with &quot;enhancement&quot;
+and &quot;help wanted&quot; is open to whoever wants to implement it.</p>
+</div>
+<div class="section" id="write-documentation">
+<h4>Write Documentation<a class="headerlink" href="#write-documentation" title="Permalink to this headline">¶</a></h4>
+<p>rf-info could always use more documentation, whether as part of the
+official rf-info docs, in docstrings, or even on the web in blog posts,
+articles, and such.</p>
+</div>
+<div class="section" id="submit-feedback">
+<h4>Submit Feedback<a class="headerlink" href="#submit-feedback" title="Permalink to this headline">¶</a></h4>
+<p>The best way to send feedback is to file an issue at <a class="reference external" href="https://github.com/cosmicc/rf_info/issues">https://github.com/cosmicc/rf_info/issues</a>.</p>
+<p>If you are proposing a feature:</p>
+<ul class="simple">
+<li><p>Explain in detail how it would work.</p></li>
+<li><p>Keep the scope as narrow as possible, to make it easier to implement.</p></li>
+<li><p>Remember that this is a volunteer-driven project, and that contributions
+are welcome :)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="get-started">
+<h3>Get Started!<a class="headerlink" href="#get-started" title="Permalink to this headline">¶</a></h3>
+<p>Ready to contribute? Here's how to set up <cite>rf_info</cite> for local development.</p>
+<ol class="arabic">
+<li><p>Fork the <cite>rf_info</cite> repo on GitHub.</p></li>
+<li><p>Clone your fork locally:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:your_name_here/rf_info.git
+</pre></div>
+</div>
+</li>
+<li><p>Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ mkvirtualenv rf_info
+$ <span class="nb">cd</span> rf_info/
+$ python setup.py develop
+</pre></div>
+</div>
+</li>
+<li><p>Create a branch for local development:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git checkout -b name-of-your-bugfix-or-feature
+</pre></div>
+</div>
+<p>Now you can make your changes locally.</p>
+</li>
+<li><p>When you're done making changes, check that your changes pass flake8 and the
+tests, including testing other Python versions with tox:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ flake8 rf_info tests
+$ python setup.py <span class="nb">test</span> or pytest
+$ tox
+</pre></div>
+</div>
+<p>To get flake8 and tox, just pip install them into your virtualenv.</p>
+</li>
+<li><p>Commit your changes and push your branch to GitHub:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git add .
+$ git commit -m <span class="s2">&quot;Your detailed description of your changes.&quot;</span>
+$ git push origin name-of-your-bugfix-or-feature
+</pre></div>
+</div>
+</li>
+<li><p>Submit a pull request through the GitHub website.</p></li>
+</ol>
+</div>
+<div class="section" id="pull-request-guidelines">
+<h3>Pull Request Guidelines<a class="headerlink" href="#pull-request-guidelines" title="Permalink to this headline">¶</a></h3>
+<p>Before you submit a pull request, check that it meets these guidelines:</p>
+<ol class="arabic simple">
+<li><p>The pull request should include tests.</p></li>
+<li><p>If the pull request adds functionality, the docs should be updated. Put
+your new functionality into a function with a docstring, and add the
+feature to the list in README.rst.</p></li>
+<li><p>The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy. Check
+<a class="reference external" href="https://travis-ci.org/cosmicc/rf_info/pull_requests">https://travis-ci.org/cosmicc/rf_info/pull_requests</a>
+and make sure that the tests pass for all supported Python versions.</p></li>
+</ol>
+</div>
+<div class="section" id="tips">
+<h3>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h3>
+<p>To run a subset of tests:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pytest tests.test_rf_info
+</pre></div>
+</div>
+</div>
+<div class="section" id="deploying">
+<h3>Deploying<a class="headerlink" href="#deploying" title="Permalink to this headline">¶</a></h3>
+<p>A reminder for the maintainers on how to deploy.
+Make sure all your changes are committed (including an entry in HISTORY.rst).
+Then run:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ bump2version patch <span class="c1"># possible: major / minor / patch</span>
+$ git push
+$ git push --tags
+</pre></div>
+</div>
+<p>Travis will then deploy to PyPI if tests pass.</p>
+</div>
+</div>
+<span id="document-authors"></span><div class="section" id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="development-lead">
+<h3>Development Lead<a class="headerlink" href="#development-lead" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Ian Perry &lt;<a class="reference external" href="mailto:ianperry99&#37;&#52;&#48;gmail&#46;com">ianperry99<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</p></li>
+</ul>
+</div>
+<div class="section" id="contributors">
+<h3>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h3>
+<p>None yet. Why not be the first?</p>
+</div>
+</div>
+<span id="document-history"></span><div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>0.1.0 (2020-01-12)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>First release on PyPI.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html#document-index">rf-info</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-readme">rf-info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-modules">rf-info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-contributing">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-authors">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-history">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html#document-index">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Ian Perry.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
