@@ -74,4 +74,3 @@ def test_cli():
     ok = 'OK' if exit_status == 0 else f'XX ({exit_status})'
     print(template.format(str(freq), '--nocolor', ok))
     assert exit_status == 0
-

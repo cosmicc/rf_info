@@ -43,7 +43,6 @@ def main(argv=None):
         NOTESCOLOR = ''
         ALLOCATIONCOLOR = ''
 
-
     if args.shortlist:
         from .data.countrymap import COUNTRY_MAP
         clist = []

@@ -124,6 +124,4 @@ BROADCAST = RangeKeyDict({
     (2182000, 2182001): (['Marine Emergency']),
     (285000, 315501): (['Aviation']),
     (340000, 350001): (['Aviation SSB']),
-    (285000, 315501): (['Aviation']),
 })
-

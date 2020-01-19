@@ -149,11 +149,9 @@ class Frequency():
         else:
             self.services_details = []
 
-
         self.primary_allocation = ALLOCATIONS[intfreq][4]
         self.secondary_allocation = ALLOCATIONS[intfreq][5]
         self.allocation_notes = ALLOCATIONS[intfreq][6]
-
 
     def info(self):
         return self.__dict__
@@ -194,4 +192,3 @@ class Frequency():
 
     def __len__(self):
         return len(str(self.hz))
-

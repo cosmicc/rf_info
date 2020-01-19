@@ -67,11 +67,11 @@ TEST_UNITS = (
 
 
 TEST_COUNTRY = (
-             ('144.100.000', 'US', '144.100.000'),
-             ('132.158.000', 'us', '132.158.000'),
-             ('1,000,000', 'GB', '001.000.000'),
-             ('1000', 'ca', '000.001.000'),
-             ('142.233', 'jP', '000.142.233'),
+               ('144.100.000', 'US', '144.100.000'),
+               ('132.158.000', 'us', '132.158.000'),
+               ('1,000,000', 'GB', '001.000.000'),
+               ('1000', 'ca', '000.001.000'),
+               ('142.233', 'jP', '000.142.233'),
 )
 
 
@@ -225,6 +225,7 @@ def test_ieee():
         print(template.format(str(f), str(result.ieee_band), ok))
         assert result.ieee_band == expected
 
+
 '''
 def test_band_use():
     template = '{0:20s} | {1:20s} | {2:2s}'
@@ -247,6 +248,7 @@ def test_services():
         print(template.format(str(f), str(result.band_use), ok))
         assert expected in result.band_use
 '''
+
 
 def test_units():
     template = '{0:20s} | {1:20s} | {3:20s} | {3:2s}'
@@ -333,5 +335,3 @@ def test_countries():
         print(template.format(str(freq), country, result.display, ok))
         assert result.display == expected
         assert result.country_abbr == country.upper()
-
-
