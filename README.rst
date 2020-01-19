@@ -25,10 +25,6 @@ rf-info
 .. image:: https://readthedocs.org/projects/rf-info/badge/?version=latest
         :target: https://rf-info.readthedocs.io/?badge=latest
         :alt: Documentation Status
-      _
-.. image:: https://readthedocs.org/projects/rf-info/badge/?version=latest
-        :target: https://rf-info.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/cosmicc/rf_info/shield.svg
      :target: https://pyup.io/repos/github/cosmicc/rf_info/
