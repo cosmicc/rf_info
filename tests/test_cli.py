@@ -3,7 +3,7 @@
 import pytest
 from rf_info import cli
 
-MAX = 999_999_999_999
+MAX = 999999999999
 RAND_TESTS = 500
 TEST_UNITS = (
              ('144.100.000', 'Hz', 'us', '144.100.000'),
@@ -56,21 +56,21 @@ def test_cli():
     print(template.format('FREQUENCY', 'units', '=='))
     for (freq, unit, country, expected) in TEST_UNITS:
         exit_status = cli.main([str(freq), unit])
-        ok = 'OK' if exit_status == 0 else f'XX ({exit_status})'
+        ok = 'OK' if exit_status == 0 else 'XX ({})'.format(exit_status)
         print(template.format(str(freq), unit, ok))
         assert exit_status == 0
 
     exit_status = cli.main(['123', '--raw'])
-    ok = 'OK' if exit_status == 0 else f'XX ({exit_status})'
+    ok = 'OK' if exit_status == 0 else 'XX ({})'.format(exit_status)
     print(template.format(str(freq), '--raw', ok))
     assert exit_status == 0
 
     exit_status = cli.main(['144.100.000', '--json'])
-    ok = 'OK' if exit_status == 0 else f'XX ({exit_status})'
+    ok = 'OK' if exit_status == 0 else 'XX ({})'.format(exit_status)
     print(template.format(str(freq), '--json', ok))
     assert exit_status == 0
 
     exit_status = cli.main(['123', '--nocolor'])
-    ok = 'OK' if exit_status == 0 else f'XX ({exit_status})'
+    ok = 'OK' if exit_status == 0 else 'XX ({})'.format(exit_status)
     print(template.format(str(freq), '--nocolor', ok))
     assert exit_status == 0

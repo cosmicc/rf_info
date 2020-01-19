@@ -115,7 +115,7 @@ def test_small_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(10_000, 999_999)
+        random = randint(10000, 999999)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))
@@ -129,7 +129,7 @@ def test_medium_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(1_000_000, 999999999)
+        random = randint(1000000, 999999999)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))
@@ -143,7 +143,7 @@ def test_large_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(1_000_000_000, MAX)
+        random = randint(1000000000, MAX)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))
@@ -159,30 +159,30 @@ def test_types():
     for (freq, expected) in TEST_DISPLAY:
         result = Frequency(freq).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
-        print(template.format(str(freq), f'{type(freq)}', ok))
+        print(template.format(str(freq), '{}'.format(type(freq)), ok))
         assert isinstance(result, dict)
 
     with pytest.raises(Exception) as e:
         freq = [1, 2, 3]
-        print(template.format(str(freq), f'{type(freq)}', '--'))
+        print(template.format(str(freq), '{}'.format(type(freq)), '--'))
         assert Frequency(freq)
     assert str(e.value) == "Invalid Frequency Type"
 
     with pytest.raises(Exception) as e:
         freq = (1, 2, 3)
-        print(template.format(str(freq), f'{type(freq)}', '--'))
+        print(template.format(str(freq), '{}'.format(type(freq)), '--'))
         assert Frequency(freq)
     assert str(e.value) == "Invalid Frequency Type"
 
     with pytest.raises(Exception) as e:
         freq = True
-        print(template.format(str(freq), f'{type(freq)}', '--'))
+        print(template.format(str(freq), '{}'.format(type(freq)), '--'))
         assert Frequency(freq)
     assert str(e.value) == "Invalid Frequency Type"
 
     with pytest.raises(Exception) as e:
         freq = {'freq': 123}
-        print(template.format(str(freq), f'{type(freq)}', '--'))
+        print(template.format(str(freq), '{}'.format(type(freq)), '--'))
         assert Frequency(freq)
     assert str(e.value) == "Invalid Frequency Type"
 
@@ -267,13 +267,13 @@ def test_elements(a):
     result = Frequency(a)
     assert isinstance(result.__dict__, dict)
     assert result.hz == a
-    assert result.khz == a / 1_000
-    assert result.mhz == a / 1_000_000
-    assert result.ghz == a / 1_000_000_000
+    assert result.khz == a / 1000
+    assert result.mhz == a / 1000000
+    assert result.ghz == a / 1000000000
     assert isinstance(result.info(), dict)
     assert isinstance(result.details(), dict)
     assert isinstance(str(result), str)
-    assert str(result) == f'{result.display} - {result.hz} hz'
+    assert str(result) == '{} - {} hz'.format(result.display, result.hz)
     assert isinstance(int(result), int)
     assert int(result) == result.hz
     assert isinstance(result.display, str)

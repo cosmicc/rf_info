@@ -37,7 +37,7 @@ Command line & Python library for obtaining details about a radio frequency
 
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
-* Python 3.6, 3.7, 3.8 & pypy3 tested
+* Python 3.5, 3.6, 3.7, 3.8 & pypy3 tested
 * Linux & Windows with color terminal support  
 
 
@@ -56,11 +56,13 @@ Returns information about a radio frequency (Country Specific)
 - NATO Band Name
 - Waveguide Band Name
 - Fixed Station & Mobile Station Designations
-- Broadcast Information 
-- Primary Band Allocations
-- Secondary Band Allocations
-- Detailed footnotes for each band allocation  
-- Amateur Radio Details (Usage, License Class, Max Power) * Not yet complete
+- IEEE Primary Band Allocations
+- IEEE Secondary Band Allocations
+- Detailed IEEE footnotes for each band allocation  
+- Amateur Radio Details (Usage, License Class, Max Power) 
+- Broadcasting Frequency Details
+- Satellite Frequency Details
+- WIFI Frequency Details  
 
 Currently supported band allocations for countries: 
 United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), Russian Federation (RU), Ukraine (UA), Japan (JP), India (IN), Korea, Republic of (KR), Thailand (TH), Switzerland (CH), Chile (CL), Denmark (DK), Finland (FI), France (FR), Hungary (HU), Indonesia (ID), Iceland (IS), Italy (IT), Mexico (MX), Netherlands (NL), New Zealand (NZ), Norway (NO), Poland (PL), South Africa (ZA), Sweden (SE), Venezuela (VE), Australia (AU), Slovenia (SI), Ireland (IE), Belgium (BE), Austria (AT), Argentina (AR), Israel (IL), Romania (RO), China (CN), Uruguay (UY), Greece (GR), Panama (PA), Peru (PE)
@@ -68,6 +70,8 @@ United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), R
 I can easily add support for more countries upon request
 
 Command line supports color, raw parsable, and json output
+
+Includes man pages and texinfo documentation
 
 
 Install
@@ -173,9 +177,7 @@ Output Example
 Todo
 -------
 
-- More WIFI band details (channels)
-- More Cellular band details (channels)
-- More Sattelite band details
+- Cellular band details
 
 
 Credits
