@@ -4,9 +4,13 @@ bump2version minor (or patch, major)
 git push --tags
 git push
 
-github: pull request merge
+github: pull request merge to master
 	delete old dev branch
-	this will trigger travis.ci build test, if passses create release
+	this will trigger travis.ci build test
+
+if tests pass    
 	
-github: create a release
-	this will trigger travis.ci to release to pypi
+github: create a release pointing to master
+	this will trigger travis.ci test to release to pypi
+
+start a new dev branch    

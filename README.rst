@@ -72,16 +72,7 @@ Command line supports color, raw parsable, and json output
 
 Install
 -------
-
-Python library Requires::
-
-    $ pip3 install iso3166
-
-Command Line Requires::
-
-    $ pip3 install iso3166 colorama
-
-Install::
+::
 
     $ pip3 install rf-info
 

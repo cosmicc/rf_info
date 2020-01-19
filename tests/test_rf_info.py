@@ -87,11 +87,11 @@ def test_out_of_range():
     assert str(e.value) == "Invalid Frequency Specified"
 
     with pytest.raises(Exception) as e:
-        assert Frequency(freq, 'hz', 'CN')
+        assert Frequency('1', 'hz', 'CX')
     assert str(e.value) == "Specified Country is Not Supported"
 
     with pytest.raises(Exception) as e:
-        assert Frequency(freq, country='XX')
+        assert Frequency('1', country='XX')
     assert str(e.value) == "Invalid Country Specified"
 
 
