@@ -1,6 +1,5 @@
 from .rangekeydict import RangeKeyDict
 
-
 SATELLITES = RangeKeyDict({
     (435030000, 435180000): (['OSCAR 10', 'AO-10', 'LSB/CW', 'Uplink', 'Mode B Analog']),
     (145975000, 145825000): (['OSCAR 10', 'AO-10', 'LSB/CW', 'Downlink', 'Mode B Analog']),

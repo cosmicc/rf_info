@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from iso3166 import countries
-from .data.countrymap import COUNTRY_MAP
+from countrymap import COUNTRY_MAP
 
 
 def remove_all_butfirst(s, substr):
@@ -53,17 +53,17 @@ class Frequency():
         if cc not in COUNTRY_MAP:
             raise ValueError('Specified Country is Not Supported')
 
-        from .data.international import IEEE, ITU, NATO, WAVEGUIDE
+        from international import IEEE, ITU, NATO, WAVEGUIDE
 
         if COUNTRY_MAP[cc] == 'a':
-            from .data.a_allocations import ALLOCATIONS
+            from .a_allocations import ALLOCATIONS
         elif COUNTRY_MAP[cc] == 'b':
-            from .data.b_allocations import ALLOCATIONS
+            from b_allocations import ALLOCATIONS
         elif COUNTRY_MAP[cc] == 'c':
-            from .data.c_allocations import ALLOCATIONS
+            from c_allocations import ALLOCATIONS
 
         if scountry.alpha2.upper() == 'US':
-            from .data.us_extras import SERVICES, BROADCAST, AMATEUR
+            from us_extras import SERVICES, BROADCAST, AMATEUR
 
         # Parse Frequency and unit inputs
         if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:

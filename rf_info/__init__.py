@@ -1,5 +1,3 @@
-from .rf_info import Frequency
-
 __author__ = """Ian Perry"""
 __email__ = 'ianperry99@gmail.com'
 __version__ = '0.6.3'

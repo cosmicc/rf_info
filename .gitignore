@@ -103,3 +103,16 @@ ENV/
 
 # IDE settings
 .vscode/
+
+# FTPSync settings
+ftpsync.settings
+/.editorconfig
+/.editorconfig
+/.editorconfig
+/.travis.yml
+/Makefile
+/tests/__init__.py
+/tests/test_cli.py
+/tests/test_rf_info.py
+/.travis.yml
+/.coveralls.yml
