@@ -100,7 +100,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'rf_infodoc'
+htmlhelp_basename = 'rf-infodoc'
 
 
 # -- Options for LaTeX output ------------------------------------------
@@ -127,7 +127,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'rf_info.tex',
+    (master_doc, 'rf-info.tex',
      'rf-info Documentation',
      'Ian Perry', 'manual'),
 ]
@@ -138,7 +138,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'rf_info',
+    (master_doc, 'rf-info',
      'rf-info Documentation',
      [author], 1)
 ]
@@ -150,11 +150,11 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'rf_info',
+    (master_doc, 'rf-info',
      'rf-info Documentation',
      author,
-     'rf_info',
-     'One line description of project.',
+     'rf-info',
+     'Obtain detailed information about a specific radio frequency',
      'Miscellaneous'),
 ]
 

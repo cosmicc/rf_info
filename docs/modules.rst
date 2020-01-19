@@ -1,4 +1,4 @@
-rf_info
+rf-info
 =======
 
 .. toctree::
