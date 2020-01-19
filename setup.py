@@ -3,7 +3,13 @@
 """The setup script."""
 
 from setuptools import setup, find_packages
+from glob import glob
+import os
 
+def find_dirs(dir_name):
+    for dir, dirs, files in os.walk('.'):
+        if dir_name in dirs:
+            yield os.path.relpath(os.path.join(dir, dir_name))
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
