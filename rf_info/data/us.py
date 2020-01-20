@@ -1,11 +1,11 @@
-from .rangekeydict import RangeKeyDict
+from rf_info.data.rangekeydict import RangeKeyDict
 
 AMATEUR = RangeKeyDict({
     # 2200 Meters
-    (135700, 135800): (['General, Extra', '1W EIRP', 'CW, Phone, Image, RTTY/Data']),
+    (135700, 135800): ('General, Extra', '1W EIRP', 'CW, Phone, Image, RTTY/Data'),
 
     # 630 Meters
-    (472000, 479000): (['General, Extra', '5W EIRP', 'CW, Phone, Image, RTTY/Data']),
+    (472000, 479000): ('General, Extra', '5W EIRP', 'CW, Phone, Image, RTTY/Data'),
 
     # 160 Meters
     (1800000, 1831000): (['General, Extra', 'Power', 'CW, RTTY, and other narrowband modes']),

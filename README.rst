@@ -7,7 +7,7 @@ rf-info
         :target: https://github.com/cosmicc/rf_info
 
 .. image:: https://img.shields.io/pypi/v/rf_info.svg
-        :target: https://pypi.org/project/rf-info/ 
+        :target: https://pypi.org/project/rf-info/
 
 .. image:: https://pyup.io/repos/github/cosmicc/rf_info/python-3-shield.svg
         :target: https://pyup.io/repos/github/cosmicc/rf_info/
@@ -38,16 +38,16 @@ Command line & Python library for obtaining details about a radio frequency
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
 * Python 3.5, 3.6, 3.7, 3.8 & pypy3 tested
-* Linux & Windows with color terminal support  
+* Linux & Windows with color terminal support
 
 
 Features
 --------
 
-Returns information about a radio frequency (Country Specific)
+Returns information about a radio frequency (With Country specific band allocations)
 
-- "Radio Display" format (Dotted notaton) 
-- hz, khz, Mhz  and Ghz representations of the frequency  
+- "Radio Display" format (Dotted notaton)
+- hz, khz, Mhz  and Ghz representations of the frequency
 - Frequency Wavelength
 - ITU Band Description
 - ITU Band Abbreviation
@@ -55,17 +55,17 @@ Returns information about a radio frequency (Country Specific)
 - IEEE Band Name
 - NATO Band Name
 - Waveguide Band Name
-- Microwave Band Name & Description  
+- Microwave Band Name & Description
 - Fixed Station & Mobile Station Designations
 - IEEE Primary Band Allocations
 - IEEE Secondary Band Allocations
-- Detailed IEEE footnotes for each band allocation  
-- Amateur Radio Details (Usage, License Class, Max Power) 
-- Broadcasting Band Number & Details 
-- Satellite Frequency Details
-- WIFI Frequency Details  
+- Detailed IEEE footnotes for each band allocation
+- Amateur Radio Details (Usage, License Class, Max Power)
+- Broadcasting Band Number & Details (US)
+- All active Satellite frequencys & Details (406 as of 1/18/20)
+- WIFI Frequency Details (US)
 
-Currently supported band allocations for countries: 
+Currently supported band allocations for countries:
 United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), Russian Federation (RU), Ukraine (UA), Japan (JP), India (IN), Korea, Republic of (KR), Thailand (TH), Switzerland (CH), Chile (CL), Denmark (DK), Finland (FI), France (FR), Hungary (HU), Indonesia (ID), Iceland (IS), Italy (IT), Mexico (MX), Netherlands (NL), New Zealand (NZ), Norway (NO), Poland (PL), South Africa (ZA), Sweden (SE), Venezuela (VE), Australia (AU), Slovenia (SI), Ireland (IE), Belgium (BE), Austria (AT), Argentina (AR), Israel (IL), Romania (RO), China (CN), Uruguay (UY), Greece (GR), Panama (PA), Peru (PE)
 
 I can easily add support for more countries upon request
@@ -112,7 +112,7 @@ Country examples (2 digit abbriviation, 3 digit abbriviation, 3 digit number, or
 US, USA, 040, JPN, Spain  (Case Insensitive)::
 
     $ rf-info 144.400.000 hz US
-    $ rf-info 88 mhz JPN 
+    $ rf-info 88 mhz JPN
 
 
 Python Library Usage
@@ -167,7 +167,7 @@ Output Example
     Amateur_Details:
         General CW and weak signals
         License Class
-        Max Power      
+        Max Power
     Primary_Allocation:
         Amateur
         Amateur-Satellite

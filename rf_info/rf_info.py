@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 
 from iso3166 import countries
-from countrymap import COUNTRY_MAP
-
-
-def remove_all_butfirst(s, substr):
-    first_occurrence = s.index(substr) + len(substr)
-    return s[:first_occurrence] + s[first_occurrence:].replace(substr, "")
+from rf_info.countrymap import COUNTRY_MAP
 
 
 def parse_freq(freq, unit):
@@ -38,7 +33,6 @@ def parse_freq(freq, unit):
 
 
 class Frequency():
-
     def __init__(self, freq, unit='hz', country='us'):
         # Hack for pytest to test cli inputs
         if unit == '':
@@ -53,17 +47,18 @@ class Frequency():
         if cc not in COUNTRY_MAP:
             raise ValueError('Specified Country is Not Supported')
 
-        from international import IEEE, ITU, NATO, WAVEGUIDE
+        from rf_info.data.international import IEEE, ITU, NATO, WAVEGUIDE, MICROWAVE
+        from rf_info.data.satellites import SATELLITES
 
         if COUNTRY_MAP[cc] == 'a':
-            from .a_allocations import ALLOCATIONS
+            from rf_info.data.a_allocations import ALLOCATIONS
         elif COUNTRY_MAP[cc] == 'b':
-            from b_allocations import ALLOCATIONS
+            from rf_info.data.b_allocations import ALLOCATIONS
         elif COUNTRY_MAP[cc] == 'c':
-            from c_allocations import ALLOCATIONS
+            from rf_info.data.c_allocations import ALLOCATIONS
 
         if scountry.alpha2.upper() == 'US':
-            from us_extras import SERVICES, BROADCAST, AMATEUR
+            from rf_info.data.us import SERVICES, BROADCAST, AMATEUR
 
         # Parse Frequency and unit inputs
         if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:
@@ -113,6 +108,14 @@ class Frequency():
         self.nato_band = NATO[intfreq]
         self.waveguide_band = WAVEGUIDE[intfreq]
 
+        # Create Microwave data
+        if MICROWAVE[intfreq] is None:
+            self.microwave_band = None
+            self.microwave_details = ()
+        else:
+            self.microwave_band = MICROWAVE[intfreq][0]
+            self.microwave_details = (MICROWAVE[intfreq][1])
+
         # Set Country
         self.country_abbr = scountry.alpha2.upper()
         self.country_name = scountry.name
@@ -120,26 +123,36 @@ class Frequency():
         # Set Allocations
         self.fixed_station = ALLOCATIONS[intfreq][1]
         self.mobile_station = ALLOCATIONS[intfreq][2]
-        self.broadcasting = ALLOCATIONS[intfreq][3]
 
+        if SATELLITES[intfreq] is not None:
+            self.sattelite = True
+            keys = ['name', 'sat-id', 'link', 'modes', 'callsign', 'status']
+            self.satellite_details = dict(zip(keys, SATELLITES[intfreq]))
+        else:
+            self.satellite = False
+            self.satellite_details = {}
+
+        self.broadcasting = ALLOCATIONS[intfreq][3]
         if 'BROADCAST' in locals():
             br = BROADCAST[intfreq]
             if br is None:
-                self.broadcasting_details = []
+                self.broadcasting_details = {}
             else:
                 self.broadcasting_details = br
         else:
-            self.broadcasting_details = []
+            self.broadcasting_details = {}
 
         self.amateur = ALLOCATIONS[intfreq][0]
         if 'AMATEUR' in locals():
             am = AMATEUR[intfreq]
             if am is None:
-                self.amateur_details = []
+                self.amateur_details = {}
             else:
-                self.amateur_details = am
+                self.amateur = True
+                keys = ['license', 'power', 'modes']
+                self.amateur_details = dict(zip(keys, am))
         else:
-            self.amateur_details = []
+            self.amateur_details = {}
 
         if 'SERVICES' in locals():
             sv = SERVICES[intfreq]
@@ -150,9 +163,9 @@ class Frequency():
         else:
             self.services_details = []
 
-        self.primary_allocation = ALLOCATIONS[intfreq][4]
-        self.secondary_allocation = ALLOCATIONS[intfreq][5]
-        self.allocation_notes = ALLOCATIONS[intfreq][6]
+        self.primary_allocation = tuple(ALLOCATIONS[intfreq][4])
+        self.secondary_allocation = tuple(ALLOCATIONS[intfreq][5])
+        self.allocation_notes = tuple(ALLOCATIONS[intfreq][6])
 
     def info(self):
         return self.__dict__

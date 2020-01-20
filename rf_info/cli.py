@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 
 import argparse
-import sys
 import json
+import sys
 
-from colorama import Fore, Style, init, deinit
-from iso3166 import countries
 import rf_info
+from colorama import Fore, Style, deinit, init
+from iso3166 import countries
+
+
+def fkey(key):
+    key = key.title().replace('_', ' ')
+    if 'Itu' in key:
+        skey = key.split(' ')
+        key = 'ITU {}'.format(skey[1])
+    if 'Nato' in key:
+        key = 'NATO Band'
+    return key
 
 
 def main(argv=None):
@@ -68,47 +78,53 @@ def main(argv=None):
 
                 if key == 'primary_allocation':
                     if len(value) > 0:
-                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
+                        print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
                         for each in value:
                             print('    {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
 
                 elif key == 'secondary_allocation':
                     if len(value) > 0:
-                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
+                        print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
                         for each in value:
                             print('    {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
 
                 elif key == 'allocation_notes':
                     if len(value) > 0:
-                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
+                        print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
                         for each in value:
                             print('    {}{}{}'.format(NOTESCOLOR, each, RESET))
 
                 elif key == 'amateur_details':
                     if len(value) > 0:
-                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
-                        for each in value:
-                            print('    {}{}{}'.format(VALUECOLOR, each, RESET))
+                        print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
+                        for key, each in value.items():
+                            print('    {}{}: {}{}{}'.format(KEYCOLOR, key.title(), VALUECOLOR, each, RESET))
 
                 elif key == 'broadcasting_details':
                     if len(value) > 0:
-                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
+                        print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
                         for each in value:
                             print('    {}{}{}'.format(VALUECOLOR, each, RESET))
 
                 elif key == 'services_details':
                     if len(value) > 0:
-                        print('{}{}{}:'.format(KEYCOLOR, key.title(), RESET))
+                        print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
                         for each in value:
                             print('    {}{}{}'.format(VALUECOLOR, each, RESET))
 
+                elif key == 'satellite_details':
+                    if len(value) > 0:
+                        print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
+                        for key, each in value.items():
+                            print('    {}{}: {}{}{}'.format(KEYCOLOR, key.title(), VALUECOLOR, each, RESET))
+
                 else:
                     if not value:
-                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, key.title(), RESET, FALSECOLOR, value, RESET))
+                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, FALSECOLOR, value, RESET))
                     elif isinstance(value, bool):
-                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, key.title(), RESET, TRUECOLOR, value, RESET))
+                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, TRUECOLOR, value, RESET))
                     else:
-                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, key.title(), RESET, VALUECOLOR, value, RESET))
+                        print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, VALUECOLOR, value, RESET))
         print(' ')
 
     elif not args.json:

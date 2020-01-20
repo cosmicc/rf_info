@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
 
 '''
-Dev tool for building country allocation files
-data parsed from: http://www.grss-ieee.org/frequency_allocations.html
+Dev tool for building country allocation files data parsed from:
+    http://www.grss-ieee.org/frequency_allocations.html
 
 '''
 
-import csv
 import argparse
-from pathlib import Path
-from iso3166 import countries
-
+import csv
 import sys
-sys.path.insert(1, '/opt/rf_info/rf_info/data')
+from pathlib import Path
 
-from countrymap import COUNTRY_MAP
+from iso3166 import countries
+from rf_info.countrymap import COUNTRY_MAP
 
-country_map_file = Path('/opt/rf_info/rf_info/data/countrymap.py')
+sys.path.insert(1, '../rf_info')
+
+
+country_map_file = Path('../rf_info/countrymap.py')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--force', '-f', action='store_true', help='Force overwrite')
@@ -34,6 +35,7 @@ elif args.list:
     for key, value in COUNTRY_MAP.items():
         print(f'{countries.get(key).name} ({countries.get(key).alpha2})')
     exit(0)
+
 
 def check_countrymap(country, letter):
     if country.alpha2.upper() in COUNTRY_MAP:
@@ -93,7 +95,7 @@ def parse_line(pa):
         if a.strip().lower() == 'fixed':
             fixed = True
         elif a.strip().lower() == 'mobile':
-           mobile = True
+            mobile = True
         else:
             newpa.append(a.strip().title())
     if len(newpa) > 0:
@@ -113,7 +115,7 @@ def parse_footnotes(footnote):
                         if c == ':':
                             break
                     each = '[' + each
-                    newfoot.append(each[:i+1] + ']' + each[i+1:])
+                    newfoot.append(each[:i + 1] + ']' + each[i + 1:])
                 else:
                     newfoot.append(str(each.strip()))
             else:
@@ -123,7 +125,7 @@ def parse_footnotes(footnote):
 
 def write_header():
     with new_data_file.open(mode='w') as f:
-        print('from .rangekeydict import RangeKeyDict', file=f)
+        print('from rf_info.data.rangekeydict import RangeKeyDict', file=f)
         print(' ', file=f)
         print('ALLOCATIONS = RangeKeyDict({', file=f)
 
@@ -133,7 +135,7 @@ def write_footer():
         print('})', file=f)
 
 
-pth = Path('/home/ip')
+pth = Path('.')
 for dtfl in pth.iterdir():
     if dtfl.suffix == '.csv':
         data_file = dtfl
@@ -166,9 +168,9 @@ for dtfl in pth.iterdir():
             letter = 'd'
             print(f'{country.name} [ {country.alpha2} ] is UNKNOWN TYPE! making [ {letter.upper()} ] file')
             check_countrymap(country, letter)
-            args,force = True
+            args, force = True
 
-        new_data_file = Path(f'/opt/rf_info/rf_info/data/{letter.lower()}_allocations.py')
+        new_data_file = Path(f'../rf_info/data/{letter.lower()}_allocations.py')
 
         if args.force:
             print(f'Forcing overwrite of the {letter} allocation file')
@@ -201,7 +203,7 @@ for dtfl in pth.iterdir():
                         amateur = True
 
                     fn = parse_footnotes(row['Footnotes'])
-                    #print(fn)
+                    # print(fn)
                     with new_data_file.open(mode='a') as f:
                         print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {pa}, {sa}, {fn}),', file=f)
                     # print(int(minfreq), int(maxfreq), pa, sa, amateur, fixed, mobile, broadcast)
