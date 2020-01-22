@@ -41,7 +41,7 @@ def run_raw(frequency_obj):
 
 
 def run_shortlist():
-    from .data.countrymap import COUNTRY_MAP
+    from .countrymap import COUNTRY_MAP
     clist = []
     for key, value in COUNTRY_MAP.items():
         clist.append('{} ({})'.format(countries.get(key).name, countries.get(key).alpha2))
@@ -49,13 +49,13 @@ def run_shortlist():
 
 
 def run_country_list():
-    from .data.countrymap import COUNTRY_MAP
+    from .countrymap import COUNTRY_MAP
     for key, value in COUNTRY_MAP.items():
         print('{} ({})'.format(countries.get(key).name, countries.get(key).alpha2))
 
 
 def verify_country(country):
-    from .data.countrymap import COUNTRY_MAP
+    from .countrymap import COUNTRY_MAP
     if country.upper() not in COUNTRY_MAP:
         raise ValueError('Specified Country is Not Supported')
 

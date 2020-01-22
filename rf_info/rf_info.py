@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from iso3166 import countries
-from rf_info.countrymap import COUNTRY_MAP
+from .countrymap import COUNTRY_MAP
 
 
 def parse_freq(freq, unit):
