@@ -70,6 +70,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/cosmicc/rf_info',
-    version='0.6.3',
+    version='0.7.0',
     zip_safe=False,
 )
