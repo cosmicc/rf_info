@@ -41,19 +41,16 @@ def check_countrymap(country, letter):
     if country.alpha2.upper() in COUNTRY_MAP:
         if COUNTRY_MAP[country.alpha2.upper()] == letter:
             print(f'[ {country.alpha2.upper()} ] already exists as [ {letter.upper()} ] in countrymap')
-            data_file.unlink()
         else:
             print(f'[ {country.alpha2.upper()} ] exists but different [ COUNTRY_MAP[country.alpha2.upper()].upper() ] -> [ {letter.upper()} ]')
             COUNTRY_MAP.update({country.alpha2.upper(): letter.lower()})
             with country_map_file.open(mode='w') as f:
                 print(f'COUNTRY_MAP = {COUNTRY_MAP}', file=f)
-            data_file.unlink()
     else:
         print(f'[ {country.alpha2.upper()} ] does not exist in countrymap. adding it.')
         COUNTRY_MAP.update({country.alpha2.upper(): letter.lower()})
         with country_map_file.open(mode='w') as f:
             print(f'COUNTRY_MAP = {COUNTRY_MAP}', file=f)
-        data_file.unlink()
 
 
 def parse_line(pa):
@@ -62,6 +59,7 @@ def parse_line(pa):
     mobile = False
     amateur = False
     broadcast = False
+    satellite = False
     for a in pa:
         asp = a.strip().split(' ')
         for each in asp:
@@ -83,14 +81,16 @@ def parse_line(pa):
                             neach = each
                         asp[asp.index(each)] = neach.replace('(', '[').replace(')', ']')
 
-        if 'AMATEUR' in asp or 'AMATEUR-SATELITE' in asp:
+        if 'AMATEUR' in asp or 'Amateur' in asp or 'AMATEUR-SATELITE' in asp or 'Amateur-Satellite' in asp:
             amateur = True
-        if 'BROADCASTING' in asp:
+        if 'BROADCASTING' in asp or 'Broadcasting' in asp:
             broadcast = True
-        if 'FIXED' in asp:
+        if 'FIXED' in asp or 'Fixed' in asp:
             fixed = True
-        if 'MOBILE' in asp:
+        if 'MOBILE' in asp or 'Mobile' in asp:
             mobile = True
+        if 'SATELLITE' in asp or 'Satellite' in asp:
+            satellite = True
         a = ' '.join(asp)
         if a.strip().lower() == 'fixed':
             fixed = True
@@ -101,7 +101,7 @@ def parse_line(pa):
     if len(newpa) > 0:
         if newpa[0] == '':
             newpa = []
-    return newpa, amateur, fixed, mobile, broadcast
+    return newpa, amateur, fixed, mobile, broadcast, satellite
 
 
 def parse_footnotes(footnote):
@@ -125,8 +125,7 @@ def parse_footnotes(footnote):
 
 def write_header():
     with new_data_file.open(mode='w') as f:
-        print('from rf_info.data.rangekeydict import RangeKeyDict', file=f)
-        print(' ', file=f)
+        print('from rf_info.data.rangekeydict import RangeKeyDict\n', file=f)
         print('ALLOCATIONS = RangeKeyDict({', file=f)
 
 
@@ -173,6 +172,7 @@ for dtfl in pth.iterdir():
         new_data_file = Path(f'../rf_info/data/{letter.lower()}_allocations.py')
 
         if args.force:
+            new_data_file.unlink()
             print(f'Forcing overwrite of the {letter} allocation file')
             write_header()
             with open(str(data_file)) as csv_file:
@@ -189,22 +189,35 @@ for dtfl in pth.iterdir():
                         maxfreq = float(row["Max (MHz)"])
 
                     minfreq = minfreq * 1000000
-                    maxfreq = maxfreq * 1000000
+                    maxfreq = (maxfreq * 1000000) + 1
 
-                    sa, amateur, fixed, mobile, broadcast = parse_line(row["Secondary Allocations"].split(', '))
-                    pa, amateur2, fixed2, mobile2, broadcast2 = parse_line(row["Primary Allocations"].split(', '))
-                    if not fixed and fixed2:
+                    sa, amateura, fixeda, mobilea, broadcasta, sata = parse_line(row["Secondary Allocations"].split(', '))
+                    pa, amateurb, fixedb, mobileb, broadcastb, satb = parse_line(row["Primary Allocations"].split(', '))
+                    if fixeda or fixedb:
                         fixed = True
-                    if not mobile and mobile2:
+                    else:
+                        fixed = False
+                    if mobilea or mobileb:
                         mobile = True
-                    if not broadcast and broadcast2:
+                    else:
+                        mobile = False
+                    if broadcasta or broadcastb:
                         broadcast = True
-                    if not amateur and amateur2:
+                    else:
+                        broadcast = False
+                    if amateura or amateurb:
                         amateur = True
+                    else:
+                        amateur = False
+                    if sata or satb:
+                        sat = True
+                    else:
+                        sat = False
 
                     fn = parse_footnotes(row['Footnotes'])
                     # print(fn)
                     with new_data_file.open(mode='a') as f:
-                        print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {pa}, {sa}, {fn}),', file=f)
+                        print(f'    ({int(minfreq)}, {int(maxfreq)}): ({amateur}, {fixed}, {mobile}, {broadcast}, {sat}, {pa}, {sa}, {fn}),', file=f)
                     # print(int(minfreq), int(maxfreq), pa, sa, amateur, fixed, mobile, broadcast)
             write_footer()
+        data_file.unlink()

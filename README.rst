@@ -38,13 +38,13 @@ Command line & Python library for obtaining details about a radio frequency
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
 * Python 3.5, 3.6, 3.7, 3.8 & pypy3 tested
-* Linux & Windows with color terminal support
+* Linux & Windows with color & interactive terminal support
 
 
 Features
 --------
 
-Returns information about a radio frequency (With Country specific band allocations)
+Returns information about a radio frequency.
 
 - "Radio Display" format (Dotted notaton)
 - hz, khz, Mhz  and Ghz representations of the frequency
@@ -52,6 +52,7 @@ Returns information about a radio frequency (With Country specific band allocati
 - ITU Band Description
 - ITU Band Abbreviation
 - ITU Band Number
+- ISM Band Type & Description
 - IEEE Band Name
 - NATO Band Name
 - Waveguide Band Name
@@ -60,10 +61,11 @@ Returns information about a radio frequency (With Country specific band allocati
 - IEEE Primary Band Allocations
 - IEEE Secondary Band Allocations
 - Detailed IEEE footnotes for each band allocation
-- Amateur Radio Details (Usage, License Class, Max Power)
-- Broadcasting Band Number & Details (US)
-- All active Satellite frequencys & Details (406 as of 1/18/20)
-- WIFI Frequency Details (US)
+- All active & upcomming satellite frequencys & details (406 Satellites as of 1/18/20)
+- Amateur Radio Modes, License Class, Max Power (US Only)
+- Broadcasting Band Number & Details (US Only)
+- WIFI Frequency Details (US Only)
+- Other Services CB, GMRS, Aircraft Band, Etc (US Only)
 
 Currently supported band allocations for countries:
 United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), Russian Federation (RU), Ukraine (UA), Japan (JP), India (IN), Korea, Republic of (KR), Thailand (TH), Switzerland (CH), Chile (CL), Denmark (DK), Finland (FI), France (FR), Hungary (HU), Indonesia (ID), Iceland (IS), Italy (IT), Mexico (MX), Netherlands (NL), New Zealand (NZ), Norway (NO), Poland (PL), South Africa (ZA), Sweden (SE), Venezuela (VE), Australia (AU), Slovenia (SI), Ireland (IE), Belgium (BE), Austria (AT), Argentina (AR), Israel (IL), Romania (RO), China (CN), Uruguay (UY), Greece (GR), Panama (PA), Peru (PE)
@@ -146,41 +148,44 @@ Output Example
 
     $ rf-info 144.100.000 hz US
 
-    Display: 144.100.000
-    Hz: 144100000
-    Khz: 144100.0
-    Mhz: 144.1
-    Ghz: 0.1441
+    Display: 145.825.000
+    Hz: 145825000
+    Khz: 145825.0
+    Mhz: 145.825
+    Ghz: 0.145825
     Wavelength: 2m
-    Itu_Band: Very High Frequency
-    Itu_Abbr: VHF
-    Itu_Num: 8
-    Ieee_Band: VHF
-    Ieee_Description: Very High Frequency
-    Nato_Band: A
-    Country_Abbr: US
-    Country_Name: United States of America
-    Fixed_Station: False
-    Mobile_Station: False
+    ITU Band: Very High Frequency
+    ITU Abbr: VHF
+    ITU Num: 8
+    IEEE Band: VHF
+    IEEE Description: Very High Frequency
+    NATO Band: A
+    Microwave Details: ()
+    Country Abbr: JP
+    Country Name: Japan
+    Fixed Station: False
+    Mobile Station: False
     Broadcasting: False
+    Sattelite: True
+    Satellite Details:
+        Name: USNAP1 (BRICSAT2 NO-103)
+        Sat-Id: 44355
+        Link: Downlink
+        Modes: 1k2/9k6* FSK
+        Callsign: USNAP1-1
+        Status: Active
     Amateur: True
-    Amateur_Details:
-        General CW and weak signals
-        License Class
-        Max Power
-    Primary_Allocation:
+    Primary Allocation:
         Amateur
         Amateur-Satellite
-    Allocation_Notes:
+    Allocation Notes:
         [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.
 
 
 Todo
 -------
 
-- Air band details
-- Cellular band details
-- Any special case frequencies
+- Add interactive terminal mode
 
 
 Credits

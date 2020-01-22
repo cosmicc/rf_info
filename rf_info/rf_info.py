@@ -37,6 +37,8 @@ class Frequency():
         # Hack for pytest to test cli inputs
         if unit == '':
             unit = 'hz'
+        if country == '':
+            country = 'us'
 
         # Determine Country and import country data
         try:
@@ -47,7 +49,7 @@ class Frequency():
         if cc not in COUNTRY_MAP:
             raise ValueError('Specified Country is Not Supported')
 
-        from rf_info.data.international import IEEE, ITU, NATO, WAVEGUIDE, MICROWAVE
+        from rf_info.data.international import ISM, IEEE, ITU, NATO, WAVEGUIDE, MICROWAVE
         from rf_info.data.satellites import SATELLITES
 
         if COUNTRY_MAP[cc] == 'a':
@@ -58,7 +60,7 @@ class Frequency():
             from rf_info.data.c_allocations import ALLOCATIONS
 
         if scountry.alpha2.upper() == 'US':
-            from rf_info.data.us import SERVICES, BROADCAST, AMATEUR
+            from rf_info.data.us import BROADCAST, AMATEUR, WIFI, SERVICES
 
         # Parse Frequency and unit inputs
         if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:
@@ -68,20 +70,20 @@ class Frequency():
         if intfreq < 1 or intfreq > 999999999999:
             raise ValueError('Frequency Out of Range')
 
-        # Create Display Frequency
+        # Display Frequency
         dispfreq = str(intfreq)[::-1]
         while len(dispfreq) < 9:
             dispfreq = dispfreq + '0'
         dispfreq = '.'.join(dispfreq[i:i + 3] for i in range(0, len(dispfreq), 3))
         self.display = dispfreq[::-1]
 
-        # Create Unit frequencies
+        # Unit frequencies
         self.hz = int(intfreq)
         self.khz = float(intfreq / 1000)
         self.mhz = float(intfreq / 1000000)
         self.ghz = float(intfreq / 1000000000)
 
-        # Create ITU, IEEE, and Wavelength
+        # ITU, IEEE, and Wavelength
         itu = ITU[intfreq]
         ieee = IEEE[intfreq]
         meter = 300000000 / intfreq
@@ -104,14 +106,16 @@ class Frequency():
             self.ieee_band = None
             self.ieee_description = None
 
-        # Create NATO and Waveguide
+        # NATO data
         self.nato_band = NATO[intfreq]
+
+        # Waveguide data
         self.waveguide_band = WAVEGUIDE[intfreq]
 
-        # Create Microwave data
+        # Microwave data
         if MICROWAVE[intfreq] is None:
             self.microwave_band = None
-            self.microwave_details = ()
+            self.microwave_details = None
         else:
             self.microwave_band = MICROWAVE[intfreq][0]
             self.microwave_details = (MICROWAVE[intfreq][1])
@@ -120,52 +124,82 @@ class Frequency():
         self.country_abbr = scountry.alpha2.upper()
         self.country_name = scountry.name
 
-        # Set Allocations
+        # ISM Band data
+        if ISM[intfreq] is not None:
+            keys = ['type', 'description']
+            self.ism_band = dict(zip(keys, ISM[intfreq]))
+        else:
+            self.ism_band = None
+
+        # Broadcasting data
+        self.broadcasting = ALLOCATIONS[intfreq][3]
+        if 'BROADCAST' in locals():
+            broadcast = BROADCAST[intfreq]
+            if broadcast is not None:
+                self.broadcasting = True
+                self.broadcasting_details = broadcast
+            else:
+                self.broadcasting_details = None
+        else:
+            self.broadcasting_details = None
+
+        # Wifi data
+        if 'WIFI' in locals():
+            wifi = WIFI[intfreq]
+            if wifi is not None:
+                self.wifi = True
+                self.wifi_details = wifi
+            else:
+                self.wifi = False
+                self.wifi_details = None
+        else:
+            self.wifi = False
+            self.wifi_details = None
+
+        # Satellite data
+        self.satellite = ALLOCATIONS[intfreq][4]
+        if 'SATELLITES' in locals():
+            satellite = SATELLITES[intfreq]
+            if satellite is not None:
+                self.satellite = True
+                keys = ['name', 'sat-id', 'link', 'modes', 'callsign', 'status']
+                self.satellite_details = dict(zip(keys, satellite))
+            else:
+                self.satellite_details = None
+        else:
+            self.satellite_details = None
+
+        # Amateur radio data
+        self.amateur = ALLOCATIONS[intfreq][0]
+        if 'AMATEUR' in locals():
+            amateur = AMATEUR[intfreq]
+            if amateur is not None:
+                self.amateur = True
+                keys = ['license', 'power', 'modes']
+                self.amateur_details = dict(zip(keys, amateur))
+            else:
+                self.amateur_details = None
+        else:
+            self.amateur_details = None
+
+        # Other Services data
+        if 'SERVICES' in locals():
+            services = SERVICES[intfreq]
+            if services is not None:
+                self.services_details = services
+            else:
+                self.services_details = None
+        else:
+            self.services_details = None
+
+        # Fixed & Mobile station data
         self.fixed_station = ALLOCATIONS[intfreq][1]
         self.mobile_station = ALLOCATIONS[intfreq][2]
 
-        if SATELLITES[intfreq] is not None:
-            self.sattelite = True
-            keys = ['name', 'sat-id', 'link', 'modes', 'callsign', 'status']
-            self.satellite_details = dict(zip(keys, SATELLITES[intfreq]))
-        else:
-            self.satellite = False
-            self.satellite_details = {}
-
-        self.broadcasting = ALLOCATIONS[intfreq][3]
-        if 'BROADCAST' in locals():
-            br = BROADCAST[intfreq]
-            if br is None:
-                self.broadcasting_details = {}
-            else:
-                self.broadcasting_details = br
-        else:
-            self.broadcasting_details = {}
-
-        self.amateur = ALLOCATIONS[intfreq][0]
-        if 'AMATEUR' in locals():
-            am = AMATEUR[intfreq]
-            if am is None:
-                self.amateur_details = {}
-            else:
-                self.amateur = True
-                keys = ['license', 'power', 'modes']
-                self.amateur_details = dict(zip(keys, am))
-        else:
-            self.amateur_details = {}
-
-        if 'SERVICES' in locals():
-            sv = SERVICES[intfreq]
-            if sv is None:
-                self.services_details = []
-            else:
-                self.services_details = sv
-        else:
-            self.services_details = []
-
-        self.primary_allocation = tuple(ALLOCATIONS[intfreq][4])
-        self.secondary_allocation = tuple(ALLOCATIONS[intfreq][5])
-        self.allocation_notes = tuple(ALLOCATIONS[intfreq][6])
+        # IEEE Allocations
+        self.primary_allocation = tuple(ALLOCATIONS[intfreq][5])
+        self.secondary_allocation = tuple(ALLOCATIONS[intfreq][6])
+        self.allocation_notes = tuple(ALLOCATIONS[intfreq][7])
 
     def info(self):
         return self.__dict__
