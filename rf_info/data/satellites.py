@@ -1,5 +1,5 @@
 from rf_info.data.rangekeydict import RangeKeyDict
- 
+
 SATELLITES = RangeKeyDict({
     (437300000, 437300001): ("1KUNS-PF", "43466", "Downlink", "1k2*/2k4/4k8/9k6 GMSK", "", "Active"),
     (145980000, 145980001): ("4M-LXS", "", "Downlink", "WSJT-JT65B", "LX0OHB", "Deep Space"),

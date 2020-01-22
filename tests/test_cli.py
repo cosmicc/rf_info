@@ -2,7 +2,10 @@
 
 import pytest
 from rf_info import cli
+from hypothesis import given, settings
+from hypothesis.strategies import integers
 
+MIN = 1
 MAX = 999999999999
 RAND_TESTS = 500
 TEST_UNITS = (
@@ -76,3 +79,15 @@ def test_cli():
         ok = 'OK' if exit_status == 0 else 'XX ({})'.format(exit_status)
         print(template.format(str(freq), unit, ok))
         assert exit_status == 0
+
+
+@settings(deadline=300, max_examples=50)
+@given(integers(min_value=MIN, max_value=MAX))
+def test_hypothesis(a):
+    template = '{0:20s} | {1:20s} | {2:2s}'
+    print(' ')
+    print(template.format('FREQUENCY', 'units', '=='))
+    exit_status = cli.main([str(a)])
+    ok = 'OK' if exit_status == 0 else 'XX ({})'.format(exit_status)
+    print(template.format(str(a), 'hz', ok))
+    assert exit_status == 0
