@@ -5,7 +5,7 @@ Installation
 ============
 
 Requirements
---------------
+------------
 
 rf-info requires the iso3166 library, and the colorama library for the command line.
 These are automatically installed when rf-info is installed.
@@ -30,7 +30,7 @@ you through the process.
 
 
 Latest Version from sources
-------------
+---------------------------
 
 The sources for rf-info can be downloaded from the `Github repo`_.
 

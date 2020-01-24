@@ -19,6 +19,14 @@ rf\_info.cli module
    :undoc-members:
    :show-inheritance:
 
+rf\_info.countrymap module
+--------------------------
+
+.. automodule:: rf_info.countrymap
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 rf\_info.rf\_info module
 ------------------------
 
