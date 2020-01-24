@@ -4,26 +4,32 @@
 Installation
 ============
 
+Requirements
+--------------
 
-Stable release
+rf-info requires the iso3166 library, and the colorama library for the command line.
+These are automatically installed when rf-info is installed.
+
+     
+Stable Version
 --------------
 
 To install rf-info, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install rf_info
+    $ pip install rf-info
 
 This is the preferred method to install rf-info, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
 
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+.. _pip: https://pip.pypa.io/en/stable/
+.. _Python installation guide: https://docs.python-guide.org/starting/installation/ 
 
 
-From sources
+Latest Version from sources
 ------------
 
 The sources for rf-info can be downloaded from the `Github repo`_.

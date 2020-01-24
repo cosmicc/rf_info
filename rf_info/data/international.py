@@ -1,4 +1,35 @@
-from .rangekeydict import RangeKeyDict
+from rf_info.data.rangekeydict import RangeKeyDict
+
+ISM = RangeKeyDict({
+    (6765000, 6795000): ('A', 'Fixed & Mobile Service'),
+    (13553000, 13567000): ('B', 'Fixed & Mobile services except Aeronautical mobile service'),
+    (26957000, 27283000): ('B', 'Fixed & Mobile Service except Aeronautical mobile service, CB Radio'),
+    (40660000, 40700000): ('B', 'Fixed, Mobile & Earth exploration-satellite service'),
+    (433050000, 434790000): ('A', 'Amateur & Radiolocation Service,'),
+    (902000000, 928000000): ('B', 'Fixed, Mobile except aeronautical mobile & Radiolocation service; in Region 2 additional Amateur service'),
+    (2400000000, 2500000000): ('B', 'Fixed, Mobile, Radiolocation, Amateur & Amateur-satellite service'),
+    (5725000000, 5875000000): ('B', 'Fixed-Satellite, Radiolocation, Moblie, Amateur & Amateur-satellite service'),
+    (24000000000, 24250000000): ('B', 'Amateur, Amateur-Satellite, Radiolocation & Earth exploration-satellite service (active)'),
+    (61000000000, 61500000000): ('A', 'Fixed, Inter-Satellite, Moblie & Radiolocation Service'),
+    (122000000000, 123000000000): ('A', 'Earth Exploration-Satellite (passive), Fixed, Inter-Satellite, Moblie, Space Research (passive) & Amateur service'),
+    (244000000000, 246000000000): ('A', 'Radiolocation, Radio Astronomy, Amateur & Amateur-satellite service'),
+})
+
+MICROWAVE = RangeKeyDict({
+    (1000000000, 2000000000): ('L', 'Military telemetry, GPS, mobile phones (GSM), amateur radio'),
+    (2000000000, 4000000000): ('S', 'Weather radar, surface ship radar, and some communications satellites (microwave ovens, microwave devices/communications, radio astronomy, mobile phones, wireless LAN, Bluetooth, ZigBee, GPS, amateur radio)'),
+    (4000000000, 8000000000): ('C', 'Long-distance radio telecommunications'),
+    (8000000000, 12000000000): ('X', 'Satellite communications, radar, terrestrial broadband, space communications, amateur radio, molecular rotational spectroscopy'),
+    (12000000000, 18000000000): ('Ku', 'Satellite communications, molecular rotational spectroscopy'),
+    (18000000000, 26500000000): ('K', 'Radar, satellite communications, astronomical observations, automotive radar, molecular rotational spectroscopy'),
+    (26500000000, 40000000000): ('Ka', 'Satellite communications, molecular rotational spectroscopy'),
+    (33000000000, 50000000000): ('Q', 'Satellite communications, terrestrial microwave communications, radio astronomy, automotive radar, molecular rotational spectroscopy'),
+    (40000000000, 60000000000): ('U', 'Overlaps with Q band'),
+    (50000000000, 75000000000): ('V', 'Millimeter wave radar research, molecular rotational spectroscopy and other kinds of scientific research'),
+    (75000000000, 110000000000): ('W', 'Satellite communications, millimeter-wave radar research, military radar targeting and tracking applications, and some non-military applications, automotive radar'),
+    (90000000000, 140000000000): ('F', 'SHF transmissions: Radio astronomy, microwave devices/communications, wireless LAN, most modern radars, communications satellites, satellite television broadcasting, DBS, amateur radio'),
+    (110000000000, 170000000000): ('D', 'EHF transmissions: Radio astronomy, high-frequency microwave radio relay, microwave remote sensing, amateur radio, directed-energy weapon, millimeter wave scanner'),
+})
 
 WAVEGUIDE = RangeKeyDict({
     (0, 1700000001): None,
@@ -56,21 +87,22 @@ IEEE = RangeKeyDict({
     (27000000001, 40000000001): ('Ka', 'Kurz-above'),
     (40000000001, 75000000001): ('V', 'N/A'),
     (75000000001, 110000000001): ('W', 'N/A'),
-    (110000000001, 300000000001): ('G', 'Millimeter'),
+    (110000000001, 300000000001): ('G', '(mm)'),
 })
 
 NATO = RangeKeyDict({
     (0, 250000001): 'A',
-    (250000001, 500000001): 'B',
-    (500000001, 1000000001): 'C',
-    (1000000001, 2000000001): 'D',
-    (2000000001, 3000000001): 'E',
-    (3000000001, 4000000001): 'F',
-    (4000000001, 6000000001): 'G',
-    (6000000001, 8000000001): 'H',
-    (8000000001, 10000000001): 'I',
-    (10000000001, 20000000001): 'J',
-    (20000000001, 40000000001): 'K',
-    (40000000001, 60000000001): 'L',
-    (60000000001, 100000000001): 'M',
+    (250000000, 500000001): 'B',
+    (500000000, 1000000001): 'C',
+    (1000000000, 2000000001): 'D',
+    (2000000000, 3000000001): 'E',
+    (3000000000, 4000000001): 'F',
+    (4000000000, 6000000001): 'G',
+    (6000000000, 8000000001): 'H',
+    (8000000000, 10000000001): 'I',
+    (10000000000, 20000000001): 'J',
+    (20000000000, 40000000001): 'K',
+    (40000000000, 60000000001): 'L',
+    (60000000000, 100000000001): 'M',
+    (100000000000, 200000000001): 'N',
 })

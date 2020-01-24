@@ -67,11 +67,11 @@ TEST_UNITS = (
 
 
 TEST_COUNTRY = (
-             ('144.100.000', 'US', '144.100.000'),
-             ('132.158.000', 'us', '132.158.000'),
-             ('1,000,000', 'GB', '001.000.000'),
-             ('1000', 'ca', '000.001.000'),
-             ('142.233', 'jP', '000.142.233'),
+               ('144.100.000', 'US', '144.100.000'),
+               ('132.158.000', 'us', '132.158.000'),
+               ('1,000,000', 'GB', '001.000.000'),
+               ('1000', 'ca', '000.001.000'),
+               ('142.233', 'jP', '000.142.233'),
 )
 
 
@@ -87,11 +87,11 @@ def test_out_of_range():
     assert str(e.value) == "Invalid Frequency Specified"
 
     with pytest.raises(Exception) as e:
-        assert Frequency(freq, 'hz', 'CN')
+        assert Frequency('1', 'hz', 'CX')
     assert str(e.value) == "Specified Country is Not Supported"
 
     with pytest.raises(Exception) as e:
-        assert Frequency(freq, country='XX')
+        assert Frequency('1', country='XX')
     assert str(e.value) == "Invalid Country Specified"
 
 
@@ -115,7 +115,7 @@ def test_small_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(10_000, 999_999)
+        random = randint(10000, 999999)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))
@@ -129,7 +129,7 @@ def test_medium_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(1_000_000, 999999999)
+        random = randint(1000000, 999999999)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))
@@ -143,7 +143,7 @@ def test_large_random():
     print(template.format('FREQUENCY', 'ITU', '=='))
     rand_tests = RAND_TESTS
     while rand_tests > 0:
-        random = randint(1_000_000_000, MAX)
+        random = randint(1000000000, MAX)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
         print(template.format(str(random), result['itu_abbr'], ok))
@@ -159,30 +159,30 @@ def test_types():
     for (freq, expected) in TEST_DISPLAY:
         result = Frequency(freq).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
-        print(template.format(str(freq), f'{type(freq)}', ok))
+        print(template.format(str(freq), '{}'.format(type(freq)), ok))
         assert isinstance(result, dict)
 
     with pytest.raises(Exception) as e:
         freq = [1, 2, 3]
-        print(template.format(str(freq), f'{type(freq)}', '--'))
+        print(template.format(str(freq), '{}'.format(type(freq)), '--'))
         assert Frequency(freq)
     assert str(e.value) == "Invalid Frequency Type"
 
     with pytest.raises(Exception) as e:
         freq = (1, 2, 3)
-        print(template.format(str(freq), f'{type(freq)}', '--'))
+        print(template.format(str(freq), '{}'.format(type(freq)), '--'))
         assert Frequency(freq)
     assert str(e.value) == "Invalid Frequency Type"
 
     with pytest.raises(Exception) as e:
         freq = True
-        print(template.format(str(freq), f'{type(freq)}', '--'))
+        print(template.format(str(freq), '{}'.format(type(freq)), '--'))
         assert Frequency(freq)
     assert str(e.value) == "Invalid Frequency Type"
 
     with pytest.raises(Exception) as e:
         freq = {'freq': 123}
-        print(template.format(str(freq), f'{type(freq)}', '--'))
+        print(template.format(str(freq), '{}'.format(type(freq)), '--'))
         assert Frequency(freq)
     assert str(e.value) == "Invalid Frequency Type"
 
@@ -225,6 +225,7 @@ def test_ieee():
         print(template.format(str(f), str(result.ieee_band), ok))
         assert result.ieee_band == expected
 
+
 '''
 def test_band_use():
     template = '{0:20s} | {1:20s} | {2:2s}'
@@ -248,6 +249,7 @@ def test_services():
         assert expected in result.band_use
 '''
 
+
 def test_units():
     template = '{0:20s} | {1:20s} | {3:20s} | {3:2s}'
     print(' ')
@@ -265,13 +267,13 @@ def test_elements(a):
     result = Frequency(a)
     assert isinstance(result.__dict__, dict)
     assert result.hz == a
-    assert result.khz == a / 1_000
-    assert result.mhz == a / 1_000_000
-    assert result.ghz == a / 1_000_000_000
+    assert result.khz == a / 1000
+    assert result.mhz == a / 1000000
+    assert result.ghz == a / 1000000000
     assert isinstance(result.info(), dict)
     assert isinstance(result.details(), dict)
     assert isinstance(str(result), str)
-    assert str(result) == f'{result.display} - {result.hz} hz'
+    assert str(result) == '{} - {} hz'.format(result.display, result.hz)
     assert isinstance(int(result), int)
     assert int(result) == result.hz
     assert isinstance(result.display, str)
@@ -287,14 +289,23 @@ def test_elements(a):
     assert isinstance(result.ieee_description, (str, NoneType))
     assert isinstance(result.nato_band, (str, NoneType))
     assert isinstance(result.waveguide_band, (str, NoneType))
+    assert isinstance(result.microwave_band, (str, NoneType))
+    assert isinstance(result.microwave_details, (str, NoneType))
+    assert isinstance(result.allocation_notes, tuple)
     assert isinstance(result.amateur, bool)
     assert isinstance(result.fixed_station, bool)
     assert isinstance(result.mobile_station, bool)
     assert isinstance(result.broadcasting, bool)
-    assert isinstance(result.primary_allocation, list)
-    assert isinstance(result.secondary_allocation, list)
-    assert isinstance(result.allocation_notes, list)
-    assert isinstance(result.amateur_details, list)
+    assert isinstance(result.broadcasting_details, (str, NoneType))
+    assert isinstance(result.wifi, bool)
+    assert isinstance(result.wifi_details, (str, NoneType))
+    assert isinstance(result.satellite, bool)
+    assert isinstance(result.satellite_details, (dict, NoneType))
+    assert isinstance(result.ism_band, (dict, NoneType))
+    assert isinstance(result.primary_allocation, tuple)
+    assert isinstance(result.secondary_allocation, tuple)
+    assert isinstance(result.allocation_notes, tuple)
+    assert isinstance(result.amateur_details, (dict, NoneType))
 
 
 @given(integers(min_value=MIN, max_value=int(MAX / 2)), integers(min_value=MIN, max_value=int(MAX / 2)))
@@ -333,5 +344,3 @@ def test_countries():
         print(template.format(str(freq), country, result.display, ok))
         assert result.display == expected
         assert result.country_abbr == country.upper()
-
-
