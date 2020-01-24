@@ -64,6 +64,7 @@ def run_output(frequency, unit, country):
     frequency_obj = get_frequency_obj(frequency, unit, country)
     frequency_dict = frequency_obj.__dict__
     print(' ')
+    countryabbr = 'us'
     for key, value in frequency_dict.items():
         if value is not None:
             if key == 'country_abbr':
