@@ -99,9 +99,7 @@ def run_output(frequency, unit, country):
 
             elif key == 'broadcasting_details':
                 if len(value) > 0:
-                    # print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
-                    for each in value:
-                        print('    {}{}{}'.format(VALUECOLOR, each, RESET))
+                    print('    {}{}{}'.format(VALUECOLOR, each, RESET))
 
             elif key == 'services_details':
                 if len(value) > 0:
