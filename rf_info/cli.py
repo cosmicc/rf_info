@@ -5,24 +5,8 @@ import json
 import sys
 
 import rf_info
-from colorama import Fore, Style, deinit, init
+from colorama import Fore, Style, init, deinit
 from iso3166 import countries
-
-
-def fkey(key):
-    key = key.title().replace('_', ' ')
-    if 'Itu' in key:
-        skey = key.split(' ')
-        key = 'ITU {}'.format(skey[1])
-    if 'Ieee' in key:
-        skey = key.split(' ')
-        key = 'IEEE {}'.format(skey[1])
-    if 'Ism' in key:
-        skey = key.split(' ')
-        key = 'ISM {}'.format(skey[1])
-    if 'Nato' in key:
-        key = 'NATO Band'
-    return key
 
 
 def get_frequency_obj(frequency, unit, country):
@@ -31,16 +15,15 @@ def get_frequency_obj(frequency, unit, country):
     return rf_info.Frequency(str(frequency), unit=str(unit).lower(), country=str(country))
 
 
-def run_json(frequency_obj):
-    for key, value in frequency_obj.__dict__.items():
-        print('{}={}'.format(key, value))
+def display_raw(frequency_obj):
+    print(frequency_obj.__dict__)
 
 
-def run_raw(frequency_obj):
+def display_json(frequency_obj):
     print(json.dumps(frequency_obj.__dict__, indent=4, sort_keys=False))
 
 
-def run_shortlist():
+def country_shortlist():
     from .countrymap import COUNTRY_MAP
     clist = []
     for key, value in COUNTRY_MAP.items():
@@ -48,7 +31,7 @@ def run_shortlist():
     print(', '.join(clist))
 
 
-def run_country_list():
+def country_list():
     from .countrymap import COUNTRY_MAP
     for key, value in COUNTRY_MAP.items():
         print('{} ({})'.format(countries.get(key).name, countries.get(key).alpha2))
@@ -60,73 +43,115 @@ def verify_country(country):
         raise ValueError('Specified Country is Not Supported')
 
 
-def run_output(frequency, unit, country):
+def display_results(frequency, unit, country):
     frequency_obj = get_frequency_obj(frequency, unit, country)
-    frequency_dict = frequency_obj.__dict__
+    fd = frequency_obj
     print(' ')
-    countryabbr = 'us'
-    for key, value in frequency_dict.items():
-        if value is not None:
-            if key == 'country_abbr':
-                countryabbr = value
-
-            elif key == 'country_name':
-                print('{}{}: {}{} ({}){}'.format(KEYCOLOR, 'Country', VALUECOLOR, value, countryabbr, RESET))
-
-            elif key == 'primary_allocation':
-                if len(value) > 0:
-                    print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
-                    for each in value:
-                        print('    {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
-
-            elif key == 'secondary_allocation':
-                if len(value) > 0:
-                    print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
-                    for each in value:
-                        print('    {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
-
-            elif key == 'allocation_notes':
-                if len(value) > 0:
-                    print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
-                    for each in value:
-                        print('    {}{}{}'.format(NOTESCOLOR, each, RESET))
-
-            elif key == 'amateur_details':
-                if len(value) > 0:
-                    # print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
-                    for key, each in value.items():
-                        print('    {}{}: {}{}{}'.format(KEYCOLOR, key.title(), VALUECOLOR, each, RESET))
-
-            elif key == 'broadcasting_details':
-                if len(value) > 0:
-                    print('    {}{}{}'.format(VALUECOLOR, each, RESET))
-
-            elif key == 'services_details':
-                if len(value) > 0:
-                    print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, VALUECOLOR, value, RESET))
-
-            elif key == 'satellite_details':
-                if len(value) > 0:
-                    # print('{}{}{}:'.format(KEYCOLOR, fkey(key), RESET))
-                    for key, each in value.items():
-                        print('    {}{}: {}{}{}'.format(KEYCOLOR, key.title(), VALUECOLOR, each, RESET))
-
-            elif key == 'ism_band':
-                if len(value) > 0:
-                    print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, TRUECOLOR, 'True', RESET))
-                    for key, each in value.items():
-                        print('    {}{}: {}{}{}'.format(KEYCOLOR, key.title(), VALUECOLOR, each, RESET))
-                else:
-                    print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, FALSECOLOR, 'False', RESET))
-
-            else:
-                if not value:
-                    print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, FALSECOLOR, value, RESET))
-                elif isinstance(value, bool):
-                    print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, TRUECOLOR, value, RESET))
-                else:
-                    print('{}{}{}: {}{}{}'.format(KEYCOLOR, fkey(key), RESET, VALUECOLOR, value, RESET))
-    print(' ')
+    # DISPLAY
+    print(' {}Display: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.display, RESET))
+    # UNITS
+    print(' {}Hz: {}{:,}{}'.format(KEYCOLOR, VALUECOLOR, fd.units['hz'], RESET))
+    if fd.units['khz'].is_integer():
+        print(' {}Khz: {}{:,}{}'.format(KEYCOLOR, VALUECOLOR, int(fd.units['khz']), RESET))
+    else:
+        print(' {}Khz: {}{:,g}{}'.format(KEYCOLOR, VALUECOLOR, fd.units['khz'], RESET))
+    if fd.units['mhz'].is_integer():
+        print(' {}Mhz: {}{:,}{}'.format(KEYCOLOR, VALUECOLOR, int(fd.units['mhz']), RESET))
+    else:
+        print(' {}Mhz: {}{:,g}{}'.format(KEYCOLOR, VALUECOLOR, fd.units['mhz'], RESET))
+    if fd.units['ghz'].is_integer():
+        print(' {}Ghz: {}{:,}{}'.format(KEYCOLOR, VALUECOLOR, int(fd.units['ghz']), RESET))
+    else:
+        print(' {}Ghz: {}{:,g}{}'.format(KEYCOLOR, VALUECOLOR, fd.units['ghz'], RESET))
+    print(' {}Wavelength: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.wavelength, RESET))
+    # ITU
+    if fd.itu['number'] is not None:
+        print(' {}ITU Band: {}{} - {} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.itu['number'], fd.itu['abbr'], fd.itu['band'], RESET))
+    # IEEE    
+    if fd.ieee['band'] is not None:
+        print(' {}IEEE Band: {}{} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.ieee['band'], fd.ieee['description'], RESET))
+    else:
+        print(' {}IEEE Band: {}None{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # NATO    
+    if fd.nato['band'] is not None:
+        print(' {}NATO Band: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.nato['band'], RESET))
+    else:
+        print(' {}NATO Band: {}None{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # WAVEGUIDE    
+    if fd.waveguide['band'] is not None:
+        print(' {}Waveguide Band: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.waveguide['band'], RESET))
+    else:
+        print(' {}Waveguide Band: {}None{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # MICROWAVE    
+    if fd.microwave['band'] is not None:
+        print(' {}Microwave Band: {}{} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.microwave['band'], fd.microwave['allocation'], RESET))
+    else:
+        print(' {}Microwave Band: {}None{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    print(' {}Country: {}{} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.country['name'], fd.country['abbr'], RESET))
+    # SERVICES
+    if fd.services is not None:
+        print(' {}Services: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.services, RESET))
+    # BROADCASTING
+    if fd.broadcasting['allocated']:
+        if len(fd.broadcasting['details']) > 0:
+            print(' {}Broadcasting: {}True {}({}){}'.format(KEYCOLOR, TRUECOLOR, VALUECOLOR, fd.broadcasting['details'], RESET))
+        else:
+            print(' {}Broadcasting: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
+    else:
+        print(' {}Broadcasting: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # WIFI
+    if fd.wifi['allocated']:
+        print(' {}Wifi: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
+        print('   - {}{}{}'.format(VALUECOLOR, fd.wifi['details'], RESET))
+    else:
+        print(' {}Wifi: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # AMATEUR    
+    if fd.amateur['allocated']:
+        print(' {}Amateur: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
+        if fd.amateur['modes'] is not None:
+            print('   {}Modes: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.amateur['modes'], RESET))
+            print('   {}License: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.amateur['license'], RESET))
+            print('   {}Power: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.amateur['power'], RESET))
+    else:
+        print(' {}Amateur: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # SATELLITE    
+    if fd.satellite['allocated']:
+        print(' {}Satellite: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
+        if fd.satellite['name'] is not None:
+            print('   {}Name: {}{} [{}]{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['name'], fd.satellite['sat-id'], RESET))
+            print('   {}Link: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['link'], RESET))
+            print('   {}Modes: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['modes'], RESET))
+            print('   {}Status: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['status'], RESET))
+    else:
+        print(' {}Satellite: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # FIXED STATION    
+    if fd.station['fixed']:
+        print(' {}Fixed Station: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
+    else:
+        print(' {}Fixed Station: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # MOBILE STATION    
+    if fd.station['mobile']:
+        print(' {}Mobile Station: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
+    else:
+        print(' {}Mobile Station: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+    # PRIMARY ALLOCATION    
+    if fd.ieee_allocation['primary']:
+        if len(fd.ieee_allocation['primary']) > 0:
+            print(' {}Primary Allocation:{}'.format(KEYCOLOR, RESET))
+            for each in fd.ieee_allocation['primary']:
+                print('   - {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
+    # SECONDARY ALLOCATION            
+    if fd.ieee_allocation['secondary']:
+        if len(fd.ieee_allocation['secondary']) > 0:
+            print(' {}Secondary Allocation:{}'.format(KEYCOLOR, RESET))
+            for each in fd.ieee_allocation['secondary']:
+                print('   - {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
+    # ALLOCATION_NOTES
+    if fd.ieee_allocation['notes']:
+        if len(fd.ieee_allocation['notes']) > 0:
+            print(' {}Allocation Notes: {}'.format(KEYCOLOR, RESET))
+            for each in fd.ieee_allocation['notes']:
+                print('   - {}{}{}'.format(NOTESCOLOR, each, RESET))
 
 
 def main(argv=None):
@@ -172,34 +197,41 @@ def main(argv=None):
         ALLOCATIONCOLOR = ''
 
     if args.shortlist:
-        run_shortlist()
+        country_shortlist()
         return 0
     elif args.list:
-        run_country_list()
+        country_list()
         return 0
     elif args.json:
-        run_json(get_frequency_obj(args.frequency, args.unit, args.country))
+        display_json(get_frequency_obj(args.frequency, args.unit, args.country))
         return 0
     elif args.raw:
-        run_raw(get_frequency_obj(args.frequency, args.unit, args.country))
+        display_raw(get_frequency_obj(args.frequency, args.unit, args.country))
         return 0
     elif args.interactive:
         verify_country(args.interactive)
         answer = ''
         unit = 'hz'
+        print('Enter q to quit')
         while answer.lower() != 'quit' and answer.lower() != 'exit' and answer.lower() != 'q':
-            answer = input("Frequency({})> ".format(args.interactive.upper()))
-            if answer != '':
+            answer = input("Frequency ({})> ".format(args.interactive.lower()))
+            if answer != '' and answer.lower() != 'quit' and answer.lower() != 'exit' and answer.lower() != 'q':
                 if len(answer.split(' ')) > 1:
                     answer = answer.split(' ')[0]
                     unit = answer.split(' ')[1]
                 try:
-                    run_output(answer, unit, args.country)
+                    display_results(answer, unit, args.country)
                 except Exception as e:
                     print('{}{}{}'.format(VALUECOLOR, e, RESET))
 
         print('Exiting.')
         return 0
     else:
-        run_output(args.frequency, args.unit, args.country)
+        if args.country:
+            verify_country(args.country)
+        display_results(args.frequency, args.unit, args.country)
         return 0
+
+
+if __name__ == '__main__':
+    main()

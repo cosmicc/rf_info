@@ -37,8 +37,8 @@ Command line & Python library for obtaining details about a radio frequency
 
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
-* Python 3.5, 3.6, 3.7, 3.8 & pypy3 tested
-* Linux & Windows with color & interactive terminal support
+* Python 3.5, 3.6, 3.7, 3.8 & pypy3 tested. Not compatible with Python 2.x
+* Linux & Windows with color, raw parsable output, json output, and interactive terminal support
 
 
 Features
@@ -72,8 +72,6 @@ United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), R
 
 I can easily add support for more countries upon request
 
-Command line supports color, raw parsable, and json output
-
 Includes man pages and texinfo documentation
 
 
@@ -81,7 +79,7 @@ Install
 -------
 ::
 
-    $ pip3 install rf-info
+    $ pip install rf-info
 
 
 Command Line Usage

@@ -28,14 +28,6 @@ rf\_info.data.c\_allocations module
    :undoc-members:
    :show-inheritance:
 
-rf\_info.data.countrymap module
--------------------------------
-
-.. automodule:: rf_info.data.countrymap
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 rf\_info.data.international module
 ----------------------------------
 
@@ -52,10 +44,18 @@ rf\_info.data.rangekeydict module
    :undoc-members:
    :show-inheritance:
 
-rf\_info.data.us\_extras module
+rf\_info.data.satellites module
 -------------------------------
 
-.. automodule:: rf_info.data.us_extras
+.. automodule:: rf_info.data.satellites
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+rf\_info.data.us module
+-----------------------
+
+.. automodule:: rf_info.data.us
    :members:
    :undoc-members:
    :show-inheritance:
