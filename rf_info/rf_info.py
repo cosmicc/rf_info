@@ -49,18 +49,18 @@ class Frequency():
         if cc not in COUNTRY_MAP:
             raise ValueError('Specified Country is Not Supported')
 
-        from rf_info.data.international import ISM, IEEE, ITU, NATO, WAVEGUIDE, MICROWAVE
-        from rf_info.data.satellites import SATELLITES
+        from .data.international import ISM, IEEE, ITU, NATO, WAVEGUIDE, MICROWAVE
+        from .data.satellites import SATELLITES
 
         if COUNTRY_MAP[cc] == 'a':
-            from rf_info.data.a_allocations import ALLOCATIONS
+            from .data.a_allocations import ALLOCATIONS
         elif COUNTRY_MAP[cc] == 'b':
-            from rf_info.data.b_allocations import ALLOCATIONS
+            from .data.b_allocations import ALLOCATIONS
         elif COUNTRY_MAP[cc] == 'c':
-            from rf_info.data.c_allocations import ALLOCATIONS
+            from .data.c_allocations import ALLOCATIONS
 
         if scountry.alpha2.upper() == 'US':
-            from rf_info.data.us import BROADCAST, AMATEUR, WIFI, SERVICES
+            from .data.us import BROADCAST, AMATEUR, WIFI, SERVICES
 
         # Parse Frequency and unit inputs
         if (isinstance(freq, float) or isinstance(freq, str) or isinstance(freq, int)) and type(freq) != bool:
@@ -78,14 +78,9 @@ class Frequency():
         self.display = dispfreq[::-1]
 
         # Unit frequencies
-        self.hz = int(intfreq)
-        self.khz = float(intfreq / 1000)
-        self.mhz = float(intfreq / 1000000)
-        self.ghz = float(intfreq / 1000000000)
+        self.units = {'hz': int(intfreq), 'khz': float(intfreq / 1000), 'mhz': float(intfreq / 1000000), 'ghz': float(intfreq / 1000000000)}
 
-        # ITU, IEEE, and Wavelength
-        itu = ITU[intfreq]
-        ieee = IEEE[intfreq]
+        # Wavelength data
         meter = 300000000 / intfreq
         if meter >= 1:
             self.wavelength = '{:,}'.format(int(meter))
@@ -96,110 +91,118 @@ class Frequency():
         elif meter < 0.01:
             sub = int(str(meter).split('.')[1]) * 1000
             self.wavelength = '{}mm'.format(str(sub)[:2])
-        self.itu_band = itu[2]
-        self.itu_abbr = itu[1]
-        self.itu_num = itu[0]
-        if ieee is not None:
-            self.ieee_band = ieee[0]
-            self.ieee_description = ieee[1]
+
+        # ITU data
+        itu = ITU[intfreq]
+        if itu:
+            self.itu = {'number': itu[0], 'band': itu[2], 'abbr': itu[1]}
         else:
-            self.ieee_band = None
-            self.ieee_description = None
+            self.itu = {'number': None, 'band': None, 'abbr': None}
+
+        # IEEE data
+        ieee = IEEE[intfreq]
+        if ieee:
+            self.ieee = {'band': ieee[0], 'description': ieee[1]}
+        else:
+            self.ieee = {'band': None, 'description': None}
 
         # NATO data
-        self.nato_band = NATO[intfreq]
-
-        # Waveguide data
-        self.waveguide_band = WAVEGUIDE[intfreq]
-
-        # Microwave data
-        if MICROWAVE[intfreq] is None:
-            self.microwave_band = None
-            self.microwave_details = None
+        nato = NATO[intfreq]
+        if nato:
+            self.nato = {'band': nato[0]}
         else:
-            self.microwave_band = MICROWAVE[intfreq][0]
-            self.microwave_details = (MICROWAVE[intfreq][1])
-
-        # Set Country
-        self.country_abbr = scountry.alpha2.upper()
-        self.country_name = scountry.name
+            self.nato = {'band': None}
 
         # ISM Band data
         if ISM[intfreq] is not None:
             keys = ['type', 'description']
-            self.ism_band = dict(zip(keys, ISM[intfreq]))
+            self.ism = dict(zip(keys, ISM[intfreq]))
         else:
-            self.ism_band = None
+            self.ism = {'band': None, 'description': None}
+
+        # Waveguide data
+        waveguide = WAVEGUIDE[intfreq]
+        if waveguide:
+            self.waveguide = {'band': waveguide[0]}
+        else:
+            self.waveguide = {'band': None}
+
+        # Microwave data
+        if MICROWAVE[intfreq] is None:
+            self.microwave = {'band': None, 'allocation': None}
+        else:
+            self.microwave = {'band': MICROWAVE[intfreq][0], 'allocation': MICROWAVE[intfreq][1]}
+
+        # Set Country
+        self.country = {'name': scountry.name, 'abbr': scountry.alpha2.upper()}
 
         # Broadcasting data
-        self.broadcasting = ALLOCATIONS[intfreq][3]
+        broadcasting = ALLOCATIONS[intfreq][3]
         if 'BROADCAST' in locals():
             broadcast = BROADCAST[intfreq]
-            if broadcast is not None:
-                self.broadcasting = True
-                self.broadcasting_details = broadcast
+            if broadcasting:
+                if broadcast is not None:
+                    if len(broadcast) > 0:
+                        self.broadcasting = {'allocated': True, 'details': broadcast}
+                else:
+                    self.broadcasting = {'allocated': True, 'details': tuple()}
             else:
-                self.broadcasting_details = None
+                self.broadcasting = {'allocated': False, 'details': tuple()}
         else:
-            self.broadcasting_details = None
+            self.broadcasting = {'allocated': False, 'details': tuple()}
 
         # Wifi data
         if 'WIFI' in locals():
             wifi = WIFI[intfreq]
             if wifi is not None:
-                self.wifi = True
-                self.wifi_details = wifi
+                self.wifi = {'allocated': True, 'details': wifi}
             else:
-                self.wifi = False
-                self.wifi_details = None
+                self.wifi = {'allocated': False, 'details': None}
         else:
-            self.wifi = False
-            self.wifi_details = None
-
-        # Satellite data
-        self.satellite = ALLOCATIONS[intfreq][4]
-        if 'SATELLITES' in locals():
-            satellite = SATELLITES[intfreq]
-            if satellite is not None:
-                self.satellite = True
-                keys = ['name', 'sat-id', 'link', 'modes', 'callsign', 'status']
-                self.satellite_details = dict(zip(keys, satellite))
-            else:
-                self.satellite_details = None
-        else:
-            self.satellite_details = None
+            self.wifi = {'allocated': False, 'details': None}
 
         # Amateur radio data
-        self.amateur = ALLOCATIONS[intfreq][0]
+        amateur = ALLOCATIONS[intfreq][0]
         if 'AMATEUR' in locals():
-            amateur = AMATEUR[intfreq]
-            if amateur is not None:
-                self.amateur = True
-                keys = ['license', 'power', 'modes']
-                self.amateur_details = dict(zip(keys, amateur))
+            amateurdetail = AMATEUR[intfreq]
+            if amateur:
+                if amateurdetail is not None:
+                    self.amateur = {'allocated': True, 'modes': amateurdetail[0], 'license': amateurdetail[1], 'power': amateurdetail[2]}
+                else:
+                    self.amateur = {'allocated': True, 'modes': None, 'license': None, 'power': None}
             else:
-                self.amateur_details = None
+                self.amateur = {'allocated': False, 'modes': None, 'license': None, 'power': None}
         else:
-            self.amateur_details = None
+            self.amateur = {'allocated': False, 'modes': None, 'license': None, 'power': None}
+
+        # Satellite data
+        satellite = ALLOCATIONS[intfreq][4]
+        if 'SATELLITES' in locals():
+            satdetail = SATELLITES[intfreq]
+            if satdetail is not None:
+                self.satellite = {'allocated': True, 'name': satdetail[0], 'sat-id': satdetail[1], 'link': satdetail[2], 'modes': satdetail[3], 'callsign': satdetail[4], 'status': satdetail[5]}
+            elif satellite:
+                self.satellite = {'allocated': True, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None}
+            else:
+                self.satellite = {'allocated': False, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None}
+        else:
+            self.satellite = {'allocated': False, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None}
 
         # Other Services data
         if 'SERVICES' in locals():
             services = SERVICES[intfreq]
             if services is not None:
-                self.services_details = services
+                self.services = services
             else:
-                self.services_details = None
+                self.services = None
         else:
-            self.services_details = None
+            self.services = None
 
         # Fixed & Mobile station data
-        self.fixed_station = ALLOCATIONS[intfreq][1]
-        self.mobile_station = ALLOCATIONS[intfreq][2]
+        self.station = {'fixed': ALLOCATIONS[intfreq][1], 'mobile': ALLOCATIONS[intfreq][2]}
 
-        # IEEE Allocations
-        self.primary_allocation = tuple(ALLOCATIONS[intfreq][5])
-        self.secondary_allocation = tuple(ALLOCATIONS[intfreq][6])
-        self.allocation_notes = tuple(ALLOCATIONS[intfreq][7])
+        # IEEE Allocation
+        self.ieee_allocation = {'primary': tuple(ALLOCATIONS[intfreq][5]), 'secondary': tuple(ALLOCATIONS[intfreq][6]), 'notes': tuple(ALLOCATIONS[intfreq][7])}
 
     def info(self):
         return self.__dict__
@@ -208,35 +211,35 @@ class Frequency():
         return self.__dict__
 
     def __repr__(self):
-        return "Frequency('{}')".format(self.display)
+        return "rf_info.Frequency('{}', 'hz', '{}')".format(self.display, self.country['abbr'].lower())
 
     def __str__(self):
-        return '{} - {} hz'.format(self.display, self.hz)
+        return '{} - {} hz'.format(self.display, self.units['hz'])
 
     def __int__(self):
-        return int(self.hz)
+        return int(self.units['hz'])
 
     def __add__(self, other):
         if isinstance(other, Frequency):
-            return Frequency(self.hz + other.hz)
+            return Frequency(self.units['hz'] + other.units['hz'])
         elif isinstance(other, int):
-            return Frequency(self.hz + other)
+            return Frequency(self.units['hz'] + other)
         elif isinstance(other, str):
             otherf = Frequency(other)
-            return Frequency(self.hz + otherf.hz)
+            return Frequency(self.units['hz'] + otherf.units['hz'])
         else:
             raise TypeError
 
     def __sub__(self, other):
         if isinstance(other, Frequency):
-            return Frequency(self.hz - other.hz)
+            return Frequency(self.units['hz'] - other.units['hz'])
         elif isinstance(other, int):
-            return Frequency(self.hz - other)
+            return Frequency(self.units['hz'] - other)
         elif isinstance(other, str):
             otherf = Frequency(other)
-            return Frequency(self.hz - otherf.hz)
+            return Frequency(self.units['hz'] - otherf.units['hz'])
         else:
             raise TypeError
 
     def __len__(self):
-        return len(str(self.hz))
+        return len(str(self.units['hz']))

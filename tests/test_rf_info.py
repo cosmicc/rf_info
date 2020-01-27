@@ -104,7 +104,7 @@ def test_tiny_random():
         random = randint(1, 9999)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
-        print(template.format(str(random), result['itu_abbr'], ok))
+        print(template.format(str(random), result['itu']['abbr'], ok))
         assert isinstance(result, dict)
         rand_tests -= 1
 
@@ -118,7 +118,7 @@ def test_small_random():
         random = randint(10000, 999999)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
-        print(template.format(str(random), result['itu_abbr'], ok))
+        print(template.format(str(random), result['itu']['abbr'], ok))
         assert isinstance(result, dict)
         rand_tests -= 1
 
@@ -132,7 +132,7 @@ def test_medium_random():
         random = randint(1000000, 999999999)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
-        print(template.format(str(random), result['itu_abbr'], ok))
+        print(template.format(str(random), result['itu']['abbr'], ok))
         assert isinstance(result, dict)
         rand_tests -= 1
 
@@ -146,7 +146,7 @@ def test_large_random():
         random = randint(1000000000, MAX)
         result = Frequency(random).__dict__
         ok = 'OK' if isinstance(result, dict) else 'XX'
-        print(template.format(str(random), result['itu_abbr'], ok))
+        print(template.format(str(random), result['itu']['abbr'], ok))
         assert isinstance(result, dict)
         rand_tests -= 1
 
@@ -221,33 +221,9 @@ def test_ieee():
     print(template.format('FREQUENCY', 'IEEE', '=='))
     for (f, expected) in TEST_IEEE:
         result = Frequency(f)
-        ok = 'OK' if result.ieee_band == expected else 'XX'
-        print(template.format(str(f), str(result.ieee_band), ok))
-        assert result.ieee_band == expected
-
-
-'''
-def test_band_use():
-    template = '{0:20s} | {1:20s} | {2:2s}'
-    print(' ')
-    print(template.format('FREQUENCY', 'USE', '=='))
-    for (f, expected) in TEST_BROADCAST:
-        result = Frequency(f)
-        ok = 'OK' if expected in result.band_use else 'XX'
-        print(template.format(str(f), str(result.band_use), ok))
-        assert expected in result.band_use
-
-
-def test_services():
-    template = '{0:20s} | {1:20s} | {2:2s}'
-    print(' ')
-    print(template.format('frequency', 'service', '=='))
-    for (f, expected) in test_services:
-        result = frequency(f)
-        ok = 'ok' if expected in result.band_use else 'xx'
-        print(template.format(str(f), str(result.band_use), ok))
-        assert expected in result.band_use
-'''
+        ok = 'OK' if result.ieee['band'] == expected else 'XX'
+        print(template.format(str(f), str(result.ieee['band']), ok))
+        assert result.ieee['band'] == expected
 
 
 def test_units():
@@ -266,46 +242,39 @@ def test_elements(a):
     NoneType = type(None)
     result = Frequency(a)
     assert isinstance(result.__dict__, dict)
-    assert result.hz == a
-    assert result.khz == a / 1000
-    assert result.mhz == a / 1000000
-    assert result.ghz == a / 1000000000
+    assert isinstance(result.units, dict)
+    assert isinstance(result.units['hz'], int)
+    assert isinstance(result.units['khz'], (int, float))
+    assert isinstance(result.units['mhz'], (int, float))
+    assert isinstance(result.units['ghz'], (int, float))
+    assert result.units['hz'] == a
+    assert result.units['khz'] == a / 1000
+    assert result.units['mhz'] == a / 1000000
+    assert result.units['ghz'] == a / 1000000000
     assert isinstance(result.info(), dict)
     assert isinstance(result.details(), dict)
     assert isinstance(str(result), str)
-    assert str(result) == '{} - {} hz'.format(result.display, result.hz)
+    assert str(result) == '{} - {} hz'.format(result.display, result.units['hz'])
     assert isinstance(int(result), int)
-    assert int(result) == result.hz
+    assert int(result) == result.units['hz']
+    assert isinstance(repr(result), str)
+    assert repr(result) == "rf_info.Frequency('{}', 'hz', 'us')".format(result.display)
     assert isinstance(result.display, str)
-    assert isinstance(result.hz, int)
-    assert isinstance(result.khz, (int, float))
-    assert isinstance(result.mhz, (int, float))
-    assert isinstance(result.ghz, (int, float))
     assert isinstance(result.wavelength, str)
-    assert isinstance(result.itu_band, str)
-    assert isinstance(result.itu_abbr, str)
-    assert isinstance(result.itu_num, int)
-    assert isinstance(result.ieee_band, (str, NoneType))
-    assert isinstance(result.ieee_description, (str, NoneType))
-    assert isinstance(result.nato_band, (str, NoneType))
-    assert isinstance(result.waveguide_band, (str, NoneType))
-    assert isinstance(result.microwave_band, (str, NoneType))
-    assert isinstance(result.microwave_details, (str, NoneType))
-    assert isinstance(result.allocation_notes, tuple)
-    assert isinstance(result.amateur, bool)
-    assert isinstance(result.fixed_station, bool)
-    assert isinstance(result.mobile_station, bool)
-    assert isinstance(result.broadcasting, bool)
-    assert isinstance(result.broadcasting_details, (str, NoneType))
-    assert isinstance(result.wifi, bool)
-    assert isinstance(result.wifi_details, (str, NoneType))
-    assert isinstance(result.satellite, bool)
-    assert isinstance(result.satellite_details, (dict, NoneType))
-    assert isinstance(result.ism_band, (dict, NoneType))
-    assert isinstance(result.primary_allocation, tuple)
-    assert isinstance(result.secondary_allocation, tuple)
-    assert isinstance(result.allocation_notes, tuple)
-    assert isinstance(result.amateur_details, (dict, NoneType))
+    assert isinstance(result.itu, dict)
+    assert isinstance(result.ieee, (dict))
+    assert isinstance(result.nato, (dict))
+    assert isinstance(result.waveguide, (dict))
+    assert isinstance(result.microwave, (dict))
+    assert isinstance(result.amateur, dict)
+    assert isinstance(result.station, dict)
+    assert isinstance(result.broadcasting, dict)
+    assert isinstance(result.wifi, dict)
+    assert isinstance(result.satellite, dict)
+    assert isinstance(result.ism, (dict))
+    assert isinstance(result.ieee_allocation['primary'], tuple)
+    assert isinstance(result.ieee_allocation['secondary'], tuple)
+    assert isinstance(result.ieee_allocation['notes'], tuple)
 
 
 @given(integers(min_value=MIN, max_value=int(MAX / 2)), integers(min_value=MIN, max_value=int(MAX / 2)))
@@ -314,11 +283,11 @@ def test_addition(a, b):
     resultb = Frequency(b)
     result = resulta + resultb
     assert isinstance(result.__dict__, dict)
-    assert result.hz == resulta.hz + resultb.hz
+    assert result.units['hz'] == resulta.units['hz'] + resultb.units['hz']
     result = resulta + b
-    assert result.hz == resulta.hz + resultb.hz
+    assert result.units['hz'] == resulta.units['hz'] + resultb.units['hz']
     result = resulta + str(b)
-    assert result.hz == resulta.hz + resultb.hz
+    assert result.units['hz'] == resulta.units['hz'] + resultb.units['hz']
 
 
 @given(integers(min_value=10000, max_value=MAX), integers(min_value=MIN, max_value=9999))
@@ -327,11 +296,11 @@ def test_subtraction(a, b):
     resultb = Frequency(b)
     result = resulta - resultb
     assert isinstance(result.__dict__, dict)
-    assert result.hz == resulta.hz - resultb.hz
+    assert result.units['hz'] == resulta.units['hz'] - resultb.units['hz']
     result = resulta - b
-    assert result.hz == resulta.hz - resultb.hz
+    assert result.units['hz'] == resulta.units['hz'] - resultb.units['hz']
     result = resulta - str(b)
-    assert result.hz == resulta.hz - resultb.hz
+    assert result.units['hz'] == resulta.units['hz'] - resultb.units['hz']
 
 
 def test_countries():
@@ -343,4 +312,4 @@ def test_countries():
         ok = 'OK' if result.display == expected else 'XX'
         print(template.format(str(freq), country, result.display, ok))
         assert result.display == expected
-        assert result.country_abbr == country.upper()
+        assert result.country['abbr'] == country.upper()

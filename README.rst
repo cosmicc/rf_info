@@ -37,8 +37,8 @@ Command line & Python library for obtaining details about a radio frequency
 
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
-* Python 3.5, 3.6, 3.7, 3.8 & pypy3 tested
-* Linux & Windows with color & interactive terminal support
+* Python 3.5, 3.6, 3.7, 3.8 & pypy3 tested. Not compatible with Python 2.x
+* Linux & Windows with color, json output, and interactive terminal support
 
 
 Features
@@ -72,8 +72,6 @@ United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), R
 
 I can easily add support for more countries upon request
 
-Command line supports color, raw parsable, and json output
-
 Includes man pages and texinfo documentation
 
 
@@ -81,7 +79,7 @@ Install
 -------
 ::
 
-    $ pip3 install rf-info
+    $ pip install rf-info
 
 
 Command Line Usage
@@ -122,18 +120,20 @@ Python Library Usage
 ::
 
     >>> from rf_info import Frequency
-    >>> freq = Frequency('112.434.000')
+    >>> freq = Frequency('144.890.000')
     >>> freq.details()
 
 Returns a dictionary::
 
-    >>> {'display': '144.100.000', 'hz': 144100000, 'khz': 144100.0, 'mhz': 144.1, 'ghz': 0.1441, 'wavelength': '2m', 'itu_band': 'Very High Frequency', 'itu_abbr': 'VHF', 'itu_num': 8, 'ieee_band': 'VHF', 'ieee_description': 'Very High Frequency', 'nato_band': 'A', 'waveguide_band': None, 'country_abbr': 'US', 'country_name': 'United States of America', 'amateur': True, 'fixed_station': False, 'mobile_station': False, 'broadcast': False, 'primary_allocation': ['Amateur', 'Amateur-Satellite'], 'secondary_allocation': [], 'allocation_notes': ['[5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.']}
+    >>> {'display': '144.890.000', 'units': {'hz': 144890000, 'khz': 144890.0, 'mhz': 144.89, 'ghz': 0.14489}, 'wavelength': '2m', 'itu': {'number': 8, 'band': 'Very High Frequency', 'abbr': 'VHF'}, 'ieee': {'band': 'VHF', 'description': 'Very High Frequency'}, 'nato': {'band': 'A'}, 'ism': {'band': None, 'description': None}, 'waveguide': {'band': None}, 'microwave': {'band': None, 'allocation': None}, 'country': {'name': 'United States of America', 'abbr': 'US'}, 'broadcasting': {'allocated': False, 'details': ()}, 'wifi': {'allocated': False, 'details': None}, 'amateur': {'allocated': True, 'modes': 'CW, Phone, Image, RTTY/Data', 'license': 'Tech, General, Extra', 'power': 'MAX'}, 'satellite': {'allocated': False, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None}, 'services': None, 'station': {'fixed': False, 'mobile': False}, 'ieee_allocation': {'primary': ('Amateur', 'Amateur-Satellite'), 'secondary': (), 'notes': ('[5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.',)}}
+
 
 Or you can get individual items directly::
 
-    >>> freq.itu_band
+    >>> freq.itu
+    >>> freq.itu['band']
     >>> freq.wavelength
-    >>> freq.primary_allocation
+    >>> freq.ieee_allocation['primary']
 
 Also supports adding and subtracting frequencies.  Either a frequency object, int, or string representation of a frequency, returns a new frequency object::
 
@@ -146,40 +146,40 @@ Output Example
 --------------
 ::
 
-    $ rf-info 144.100.000 hz US
+    $ rf-info 435.890.000 hz US
 
-    Display: 145.825.000
-    Hz: 145825000
-    Khz: 145825.0
-    Mhz: 145.825
-    Ghz: 0.145825
-    Wavelength: 2m
-    ITU Band: Very High Frequency
-    ITU Abbr: VHF
-    ITU Num: 8
-    IEEE Band: VHF
-    IEEE Description: Very High Frequency
-    NATO Band: A
-    Microwave Details: ()
-    Country Abbr: JP
-    Country Name: Japan
-    Fixed Station: False
-    Mobile Station: False
-    Broadcasting: False
-    Sattelite: True
-    Satellite Details:
-        Name: USNAP1 (BRICSAT2 NO-103)
-        Sat-Id: 44355
-        Link: Downlink
-        Modes: 1k2/9k6* FSK
-        Callsign: USNAP1-1
-        Status: Active
-    Amateur: True
-    Primary Allocation:
-        Amateur
-        Amateur-Satellite
-    Allocation Notes:
-        [5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.
+     Display: 435.890.000
+     Hz: 435,890,000
+     Khz: 435,890
+     Mhz: 435.89
+     Ghz: 0.43589
+     Wavelength: 68cm
+     ITU Band: 9 - UHF (Ultra High Frequency)
+     IEEE Band: UHF (Ultra High Frequency)
+     NATO Band: B
+     Waveguide Band: None
+     Microwave Band: None
+     Country: United States of America (US)
+     Broadcasting: False
+     Wifi: False
+     Amateur: True
+       Modes: Satellite only uplink/downlink
+       License: Tech, General, Extra
+       Power: MAX
+     Satellite: True
+       Name: JAS-2 (FO-29) [24278]
+       Link: Downlink
+       Modes: SSB CW (DigiTalker)
+       Status: Active
+     Fixed Station: False
+     Mobile Station: False
+     Primary Allocation:
+       - Radiolocation
+     Secondary Allocation:
+       - Amateur
+       - Earth Exploration-Satellite (Active) [5.279A]
+     Allocation Notes:
+       - [5.279A]: The use of the frequency band 432-438 MHz by sensors in the Earth exploration-satellite service (active) shall be in accordance with Recommendation ITU-R RS.1260-1. Additionally, the Earth exploration-satellite service (active) in the frequency band 432-438 MHz shall not cause harmful interference to the aeronautical radionavigation service in China. The provisions of this footnote in no way diminish the obligation of the Earth exploration-satellite service (active) to operate as a secondary service in accordance with Nos. 5.29 and 5.30. (WRC-15)
 
 
 Todo
