@@ -5,7 +5,7 @@ import json
 import sys
 
 import rf_info
-from colorama import Fore, Style, init, deinit
+from colorama import Fore, Style, deinit, init
 from iso3166 import countries
 
 
@@ -47,8 +47,10 @@ def display_results(frequency, unit, country):
     frequency_obj = get_frequency_obj(frequency, unit, country)
     fd = frequency_obj
     print(' ')
+
     # DISPLAY
     print(' {}Display: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.display, RESET))
+
     # UNITS
     print(' {}Hz: {}{:,}{}'.format(KEYCOLOR, VALUECOLOR, fd.units['hz'], RESET))
     if fd.units['khz'].is_integer():
@@ -64,33 +66,40 @@ def display_results(frequency, unit, country):
     else:
         print(' {}Ghz: {}{:,g}{}'.format(KEYCOLOR, VALUECOLOR, fd.units['ghz'], RESET))
     print(' {}Wavelength: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.wavelength, RESET))
+
     # ITU
     if fd.itu['number'] is not None:
         print(' {}ITU Band: {}{} - {} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.itu['number'], fd.itu['abbr'], fd.itu['band'], RESET))
-    # IEEE    
+
+    # IEEE
     if fd.ieee['band'] is not None:
         print(' {}IEEE Band: {}{} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.ieee['band'], fd.ieee['description'], RESET))
     else:
         print(' {}IEEE Band: {}None{}'.format(KEYCOLOR, FALSECOLOR, RESET))
-    # NATO    
+
+    # NATO
     if fd.nato['band'] is not None:
         print(' {}NATO Band: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.nato['band'], RESET))
     else:
         print(' {}NATO Band: {}None{}'.format(KEYCOLOR, FALSECOLOR, RESET))
-    # WAVEGUIDE    
+
+    # WAVEGUIDE
     if fd.waveguide['band'] is not None:
         print(' {}Waveguide Band: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.waveguide['band'], RESET))
     else:
         print(' {}Waveguide Band: {}None{}'.format(KEYCOLOR, FALSECOLOR, RESET))
-    # MICROWAVE    
+
+    # MICROWAVE
     if fd.microwave['band'] is not None:
         print(' {}Microwave Band: {}{} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.microwave['band'], fd.microwave['allocation'], RESET))
     else:
         print(' {}Microwave Band: {}None{}'.format(KEYCOLOR, FALSECOLOR, RESET))
     print(' {}Country: {}{} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.country['name'], fd.country['abbr'], RESET))
+
     # SERVICES
     if fd.services is not None:
         print(' {}Services: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.services, RESET))
+
     # BROADCASTING
     if fd.broadcasting['allocated']:
         if len(fd.broadcasting['details']) > 0:
@@ -99,13 +108,15 @@ def display_results(frequency, unit, country):
             print(' {}Broadcasting: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
     else:
         print(' {}Broadcasting: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
+
     # WIFI
     if fd.wifi['allocated']:
         print(' {}Wifi: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
         print('   - {}{}{}'.format(VALUECOLOR, fd.wifi['details'], RESET))
     else:
         print(' {}Wifi: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
-    # AMATEUR    
+
+    # AMATEUR
     if fd.amateur['allocated']:
         print(' {}Amateur: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
         if fd.amateur['modes'] is not None:
@@ -114,7 +125,8 @@ def display_results(frequency, unit, country):
             print('   {}Power: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.amateur['power'], RESET))
     else:
         print(' {}Amateur: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
-    # SATELLITE    
+
+    # SATELLITE
     if fd.satellite['allocated']:
         print(' {}Satellite: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
         if fd.satellite['name'] is not None:
@@ -124,28 +136,33 @@ def display_results(frequency, unit, country):
             print('   {}Status: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['status'], RESET))
     else:
         print(' {}Satellite: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
-    # FIXED STATION    
+
+    # FIXED STATION
     if fd.station['fixed']:
         print(' {}Fixed Station: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
     else:
         print(' {}Fixed Station: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
-    # MOBILE STATION    
+
+    # MOBILE STATION
     if fd.station['mobile']:
         print(' {}Mobile Station: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
     else:
         print(' {}Mobile Station: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
-    # PRIMARY ALLOCATION    
+
+    # PRIMARY ALLOCATION
     if fd.ieee_allocation['primary']:
         if len(fd.ieee_allocation['primary']) > 0:
             print(' {}Primary Allocation:{}'.format(KEYCOLOR, RESET))
             for each in fd.ieee_allocation['primary']:
                 print('   - {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
-    # SECONDARY ALLOCATION            
+
+    # SECONDARY ALLOCATION
     if fd.ieee_allocation['secondary']:
         if len(fd.ieee_allocation['secondary']) > 0:
             print(' {}Secondary Allocation:{}'.format(KEYCOLOR, RESET))
             for each in fd.ieee_allocation['secondary']:
                 print('   - {}{}{}'.format(ALLOCATIONCOLOR, each, RESET))
+
     # ALLOCATION_NOTES
     if fd.ieee_allocation['notes']:
         if len(fd.ieee_allocation['notes']) > 0:

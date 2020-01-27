@@ -78,7 +78,7 @@ class Frequency():
         self.display = dispfreq[::-1]
 
         # Unit frequencies
-        self.units = { 'hz': int(intfreq), 'khz': float(intfreq / 1000), 'mhz': float(intfreq / 1000000), 'ghz': float(intfreq / 1000000000) }
+        self.units = {'hz': int(intfreq), 'khz': float(intfreq / 1000), 'mhz': float(intfreq / 1000000), 'ghz': float(intfreq / 1000000000)}
 
         # Wavelength data
         meter = 300000000 / intfreq
@@ -95,46 +95,46 @@ class Frequency():
         # ITU data
         itu = ITU[intfreq]
         if itu:
-            self.itu = { 'number': itu[0], 'band': itu[2], 'abbr': itu[1] }
+            self.itu = {'number': itu[0], 'band': itu[2], 'abbr': itu[1]}
         else:
-            self.itu = { 'number': None, 'band': None, 'abbr': None }
+            self.itu = {'number': None, 'band': None, 'abbr': None}
 
         # IEEE data
         ieee = IEEE[intfreq]
         if ieee:
-            self.ieee = { 'band': ieee[0], 'description': ieee[1] }
+            self.ieee = {'band': ieee[0], 'description': ieee[1]}
         else:
-            self.ieee = { 'band': None, 'description': None }
+            self.ieee = {'band': None, 'description': None}
 
         # NATO data
         nato = NATO[intfreq]
         if nato:
-            self.nato = { 'band': nato[0] }
+            self.nato = {'band': nato[0]}
         else:
-            self.nato = { 'band': None }
+            self.nato = {'band': None}
 
         # ISM Band data
         if ISM[intfreq] is not None:
             keys = ['type', 'description']
             self.ism = dict(zip(keys, ISM[intfreq]))
         else:
-            self.ism = { 'band': None, 'description': None }
+            self.ism = {'band': None, 'description': None}
 
         # Waveguide data
         waveguide = WAVEGUIDE[intfreq]
         if waveguide:
-            self.waveguide = { 'band': waveguide[0] }
+            self.waveguide = {'band': waveguide[0]}
         else:
-            self.waveguide = { 'band': None }
+            self.waveguide = {'band': None}
 
         # Microwave data
         if MICROWAVE[intfreq] is None:
-            self.microwave = { 'band': None, 'allocation': None }
+            self.microwave = {'band': None, 'allocation': None}
         else:
-            self.microwave = { 'band': MICROWAVE[intfreq][0], 'allocation': MICROWAVE[intfreq][1] }
+            self.microwave = {'band': MICROWAVE[intfreq][0], 'allocation': MICROWAVE[intfreq][1]}
 
         # Set Country
-        self.country = { 'name': scountry.name, 'abbr': scountry.alpha2.upper() }
+        self.country = {'name': scountry.name, 'abbr': scountry.alpha2.upper()}
 
         # Broadcasting data
         broadcasting = ALLOCATIONS[intfreq][3]
@@ -143,24 +143,23 @@ class Frequency():
             if broadcasting:
                 if broadcast is not None:
                     if len(broadcast) > 0:
-                        self.broadcasting = { 'allocated': True, 'details': broadcast }
+                        self.broadcasting = {'allocated': True, 'details': broadcast}
                 else:
-                    self.broadcasting = { 'allocated': True, 'details': tuple()  }
+                    self.broadcasting = {'allocated': True, 'details': tuple()}
             else:
-                self.broadcasting = { 'allocated': False, 'details': tuple()  }
+                self.broadcasting = {'allocated': False, 'details': tuple()}
         else:
-            self.broadcasting = { 'allocated': False, 'details': tuple() }
+            self.broadcasting = {'allocated': False, 'details': tuple()}
 
         # Wifi data
         if 'WIFI' in locals():
             wifi = WIFI[intfreq]
             if wifi is not None:
-                    self.wifi = { 'allocated': True, 'details': wifi }
+                self.wifi = {'allocated': True, 'details': wifi}
             else:
-                    self.wifi = { 'allocated': False, 'details': None }
+                self.wifi = {'allocated': False, 'details': None}
         else:
-            self.wifi = { 'allocated': False, 'details': None }
-
+            self.wifi = {'allocated': False, 'details': None}
 
         # Amateur radio data
         amateur = ALLOCATIONS[intfreq][0]
@@ -168,27 +167,26 @@ class Frequency():
             amateurdetail = AMATEUR[intfreq]
             if amateur:
                 if amateurdetail is not None:
-                    self.amateur = { 'allocated': True, 'modes': amateurdetail[0], 'license': amateurdetail[1], 'power': amateurdetail[2] }
+                    self.amateur = {'allocated': True, 'modes': amateurdetail[0], 'license': amateurdetail[1], 'power': amateurdetail[2]}
                 else:
-                    self.amateur = { 'allocated': True, 'modes': None, 'license': None, 'power': None }
+                    self.amateur = {'allocated': True, 'modes': None, 'license': None, 'power': None}
             else:
-                self.amateur = { 'allocated': False, 'modes': None, 'license': None, 'power': None }
+                self.amateur = {'allocated': False, 'modes': None, 'license': None, 'power': None}
         else:
-            self.amateur = { 'allocated': False, 'modes': None, 'license': None, 'power': None }
+            self.amateur = {'allocated': False, 'modes': None, 'license': None, 'power': None}
 
         # Satellite data
         satellite = ALLOCATIONS[intfreq][4]
         if 'SATELLITES' in locals():
             satdetail = SATELLITES[intfreq]
-            if satellite:
-                if satdetail is not None:
-                    self.satellite = { 'allocated': True, 'name': satdetail[0], 'sat-id': satdetail[1], 'link': satdetail[2], 'modes': satdetail[3], 'callsign': satdetail[4], 'status': satdetail[5] }
-                else:
-                    self.satellite = { 'allocated': True, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None }
+            if satdetail is not None:
+                self.satellite = {'allocated': True, 'name': satdetail[0], 'sat-id': satdetail[1], 'link': satdetail[2], 'modes': satdetail[3], 'callsign': satdetail[4], 'status': satdetail[5]}
+            elif satellite:
+                self.satellite = {'allocated': True, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None}
             else:
-                self.satellite = { 'allocated': False, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None }
+                self.satellite = {'allocated': False, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None}
         else:
-            self.satellite = { 'allocated': False, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None }
+            self.satellite = {'allocated': False, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None}
 
         # Other Services data
         if 'SERVICES' in locals():
@@ -201,10 +199,10 @@ class Frequency():
             self.services = None
 
         # Fixed & Mobile station data
-        self.station = { 'fixed': ALLOCATIONS[intfreq][1], 'mobile': ALLOCATIONS[intfreq][2] }
+        self.station = {'fixed': ALLOCATIONS[intfreq][1], 'mobile': ALLOCATIONS[intfreq][2]}
 
         # IEEE Allocation
-        self.ieee_allocation = { 'primary': tuple(ALLOCATIONS[intfreq][5]), 'secondary': tuple(ALLOCATIONS[intfreq][6]), 'notes': tuple(ALLOCATIONS[intfreq][7]) }
+        self.ieee_allocation = {'primary': tuple(ALLOCATIONS[intfreq][5]), 'secondary': tuple(ALLOCATIONS[intfreq][6]), 'notes': tuple(ALLOCATIONS[intfreq][7])}
 
     def info(self):
         return self.__dict__
