@@ -6,6 +6,7 @@ import pytest
 from hypothesis import given
 from hypothesis.strategies import integers
 from rf_info import Frequency
+from rf_info.data.rangekeydict import RangeKeyDict
 
 MIN = 1
 MAX = 999999999999
@@ -237,9 +238,40 @@ def test_units():
         assert result.display == expected
 
 
+def test_range_key_dict_preserves_overlapping_ranges():
+    ranges = RangeKeyDict([
+        ((100, 200), 'wide'),
+        ((150, 151), 'narrow'),
+    ])
+
+    assert ranges[150] == 'wide'
+    assert ranges.get_all(150) == ('wide', 'narrow')
+    assert ranges[200] is None
+
+
+def test_range_key_dict_rejects_empty_ranges():
+    with pytest.raises(ValueError):
+        RangeKeyDict([((100, 100), 'empty')])
+
+
+def test_satellite_details_preserve_multiple_matches():
+    result = Frequency('436.888.000')
+    names = {entry['name'] for entry in result.satellite['details']}
+
+    assert result.satellite['allocated'] is True
+    assert 'SO-124' in names
+    assert 'UNNE-1' in names
+
+
+def test_current_us_wifi_6ghz_data():
+    result = Frequency('6.1', 'ghz', 'us')
+
+    assert result.wifi['allocated'] is True
+    assert any('Wi-Fi 6E/7' in detail for detail in result.wifi['details'])
+
+
 @given(integers(min_value=MIN, max_value=MAX))
 def test_elements(a):
-    NoneType = type(None)
     result = Frequency(a)
     assert isinstance(result.__dict__, dict)
     assert isinstance(result.units, dict)

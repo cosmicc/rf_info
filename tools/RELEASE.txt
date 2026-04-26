@@ -1,4 +1,4 @@
-git add *
+git add -A
 git commit -m <version>
 bump2version minor (or patch, major)
 git push --tags
@@ -6,11 +6,11 @@ git push
 
 github: pull request merge to master
 	delete old dev branch
-	this will trigger travis.ci build test
+	this will trigger GitHub Actions CI
 
 if tests pass    
 	
 github: create a release pointing to master
-	this will trigger travis.ci test to release to pypi
+	build the package and upload to PyPI with twine
 
 start a new dev branch    

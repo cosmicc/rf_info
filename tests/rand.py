@@ -4,6 +4,7 @@ import sys
 
 RAND_TESTS = 5
 
+
 def randomtest(min, max):
     rand_tests = RAND_TESTS
     while rand_tests > 0:
@@ -13,6 +14,7 @@ def randomtest(min, max):
         rand_tests -= 1
         print(' ')
         input('Return Code: {}'.format(output.returncode))
+
 
 randomtest(1, 50_000)
 randomtest(50_001, 100_000)
