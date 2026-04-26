@@ -2,6 +2,11 @@
 History
 =======
 
+0.9.1 (2026-04-26)
+------------------
+
+* Added GitHub Actions publishing support for PyPI releases.
+
 0.9.0 (2026-04-26)
 ------------------
 
