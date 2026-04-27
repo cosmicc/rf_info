@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import ast
+import json
+
 import pytest
 from rf_info import cli
 from hypothesis import given, settings
@@ -91,15 +94,97 @@ def test_cli():
         assert exit_status == 0
 
 
-def test_interactive():
+def test_cli_json_output_contains_structured_frequency_data(capsys):
+    exit_status = cli.main(['144.1', 'mhz', 'jpn', '--json'])
+    output = json.loads(capsys.readouterr().out)
+
+    assert exit_status == 0
+    assert output['display'] == '144.100.000'
+    assert output['units']['hz'] == 144100000
+    assert output['country']['abbr'] == 'JP'
+    assert output['amateur']['details'] == []
+    assert output['ieee_allocation']['primary']
+
+
+def test_cli_raw_output_is_python_literal(capsys):
+    exit_status = cli.main(['462.562.500', 'hz', 'us', '--raw'])
+    output = ast.literal_eval(capsys.readouterr().out)
+
+    assert exit_status == 0
+    assert output['display'] == '462.562.500'
+    assert output['services'] == (
+        'General Mobile Radio Service (GMRS) Channel 1 [5W]',
+        'General Mobile Radio Service (GMRS) Channel 15 [50W]',
+    )
+
+
+def test_cli_nocolor_output_has_no_ansi_sequences(capsys):
+    exit_status = cli.main(['300', 'mhz', 'us', '--nocolor'])
+    output = capsys.readouterr().out
+
+    assert exit_status == 0
+    assert '\x1b[' not in output
+    assert 'Display: 300.000.000' in output
+    assert 'Wavelength: 1m' in output
+
+
+def test_cli_country_lists_include_supported_countries(capsys):
+    assert cli.main(['--shortlist']) == 0
+    shortlist = capsys.readouterr().out
+    assert 'United States of America (US)' in shortlist
+    assert 'Japan (JP)' in shortlist
+
+    assert cli.main(['--list']) == 0
+    country_list = capsys.readouterr().out
+    assert 'United States of America (US)\n' in country_list
+    assert 'Japan (JP)\n' in country_list
+
+
+@pytest.mark.parametrize(
+    'country, expected',
+    (
+        ('US', 'us'),
+        ('USA', 'us'),
+        ('840', 'us'),
+        ('Japan', 'jp'),
+        ('JPN', 'jp'),
+        ('392', 'jp'),
+    ),
+)
+def test_verify_country_accepts_iso_aliases(country, expected):
+    assert cli.verify_country(country) == expected
+
+
+@pytest.mark.parametrize(
+    'country, message',
+    (
+        ('UK', 'Invalid Country Specified'),
+        ('AQ', 'Specified Country is Not Supported'),
+    ),
+)
+def test_verify_country_rejects_invalid_or_unsupported_values(country, message):
+    with pytest.raises(ValueError) as e:
+        cli.verify_country(country)
+    assert str(e.value) == message
+
+
+@pytest.mark.parametrize('flag', ('--json', '--raw'))
+def test_cli_serialized_output_requires_frequency(flag):
+    with pytest.raises(ValueError) as e:
+        cli.main([flag])
+    assert str(e.value) == 'You must specify a frequency'
+
+
+def test_interactive(monkeypatch):
     input_values = ['1', 'quit']
     output = []
 
     def mock_input(s):
         output.append(s)
         return input_values.pop(0)
-    cli.input = mock_input
-    cli.print = lambda s: output.append(s)
+
+    monkeypatch.setattr(cli, 'input', mock_input, raising=False)
+    monkeypatch.setattr(cli, 'print', lambda s: output.append(s), raising=False)
     cli.main(['-i', 'us'])
     assert output == [
         'Enter q to quit',

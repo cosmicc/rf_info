@@ -67,6 +67,6 @@ setup(
     packages=find_packages(include=['rf_info', 'rf_info.*']),
     data_files=data_files,
     url='https://github.com/cosmicc/rf_info',
-    version='0.9.1',
+    version='0.9.2',
     zip_safe=False,
 )

@@ -6,6 +6,7 @@ import pytest
 from hypothesis import given
 from hypothesis.strategies import integers
 from rf_info import Frequency
+from rf_info.rf_info import parse_freq
 from rf_info.data.rangekeydict import RangeKeyDict
 
 MIN = 1
@@ -205,6 +206,64 @@ def test_invalids():
     assert str(e.value) == "Invalid Unit Specified"
 
 
+@pytest.mark.parametrize(
+    'freq, unit, expected',
+    (
+        (' 1_234 567 ', 'hz', 1234567),
+        ('1,234.567_890', 'khz', 1234567890),
+        ('1 234.567 890', 'mhz', 1234567890),
+        ('999.999999999', 'ghz', MAX),
+    ),
+)
+def test_parse_freq_accepts_supported_grouping(freq, unit, expected):
+    assert parse_freq(freq, unit) == expected
+
+
+@pytest.mark.parametrize(
+    'freq, unit, message',
+    (
+        ('1i89', 'hz', 'Invalid Frequency Specified'),
+        ('189', 'watts', 'Invalid Unit Specified'),
+    ),
+)
+def test_parse_freq_rejects_invalid_input(freq, unit, message):
+    with pytest.raises(ValueError) as e:
+        parse_freq(freq, unit)
+    assert str(e.value) == message
+
+
+def test_frequency_boundaries():
+    lowest = Frequency(1)
+    highest = Frequency(MAX)
+    highest_from_ghz = Frequency('999.999999999', 'ghz')
+
+    assert lowest.display == '000.000.001'
+    assert lowest.units['hz'] == 1
+    assert highest.display == '999.999.999.999'
+    assert highest.units['hz'] == MAX
+    assert highest_from_ghz.units['hz'] == MAX
+
+    with pytest.raises(ValueError) as e:
+        Frequency(0)
+    assert str(e.value) == 'Frequency Out of Range'
+
+    with pytest.raises(ValueError) as e:
+        Frequency('1000', 'ghz')
+    assert str(e.value) == 'Frequency Out of Range'
+
+
+@pytest.mark.parametrize(
+    'freq, expected',
+    (
+        (300000000, '1m'),
+        (30000000000, '1cm'),
+        (300000000000, '1mm'),
+    ),
+)
+def test_wavelength_unit_boundaries(freq, expected):
+    assert Frequency(freq).wavelength == expected
+
+
 def test_display():
     template = '{0:20s} | {1:20s} | {2:2s}'
     print(' ')
@@ -249,9 +308,37 @@ def test_range_key_dict_preserves_overlapping_ranges():
     assert ranges[200] is None
 
 
+def test_range_key_dict_accepts_mapping_input_and_uses_half_open_ranges():
+    ranges = RangeKeyDict({
+        (10, 20): 'low',
+        (20, 30): 'high',
+    })
+
+    assert ranges[10] == 'low'
+    assert ranges[19] == 'low'
+    assert ranges[20] == 'high'
+    assert ranges[30] is None
+    assert ranges.get_all(5) == tuple()
+
+
 def test_range_key_dict_rejects_empty_ranges():
     with pytest.raises(ValueError):
         RangeKeyDict([((100, 100), 'empty')])
+
+
+@pytest.mark.parametrize(
+    'key, error',
+    (
+        ((100, 100), ValueError),
+        ((200, 100), ValueError),
+        ((100, 200, 300), ValueError),
+        ([100, 200], ValueError),
+        (('100', 200), TypeError),
+    ),
+)
+def test_range_key_dict_rejects_invalid_range_keys(key, error):
+    with pytest.raises(error):
+        RangeKeyDict([(key, 'value')])
 
 
 def test_satellite_details_preserve_multiple_matches():
@@ -268,6 +355,62 @@ def test_current_us_wifi_6ghz_data():
 
     assert result.wifi['allocated'] is True
     assert any('Wi-Fi 6E/7' in detail for detail in result.wifi['details'])
+
+
+def test_us_services_preserve_multiple_matches():
+    result = Frequency('462.562.500')
+
+    assert result.services == (
+        'General Mobile Radio Service (GMRS) Channel 1 [5W]',
+        'General Mobile Radio Service (GMRS) Channel 15 [50W]',
+    )
+
+
+@pytest.mark.parametrize(
+    'freq, expected',
+    (
+        ('89.900.000', 'FM Radio'),
+        ('55.500.000', 'VHF Television Channels 2-4'),
+        ('510.000.000', 'UHF Television Channels 14-36'),
+    ),
+)
+def test_us_broadcasting_details(freq, expected):
+    result = Frequency(freq)
+
+    assert result.broadcasting['allocated'] is True
+    assert expected in result.broadcasting['details']
+
+
+def test_dunder_methods_preserve_country_and_length():
+    result = Frequency('144.1', 'mhz', 'jpn')
+
+    assert repr(result) == "rf_info.Frequency('144.100.000', 'hz', 'jp')"
+    assert str(result) == '144.100.000 - 144100000 hz'
+    assert int(result) == 144100000
+    assert len(result) == 9
+
+
+def test_arithmetic_preserves_left_hand_country_and_rejects_bad_results():
+    base = Frequency(100, country='gb')
+
+    assert (base + Frequency(23)).units['hz'] == 123
+    assert (base + 23).country['abbr'] == 'GB'
+    assert (base + '23').country['abbr'] == 'GB'
+    assert (base - 23).country['abbr'] == 'GB'
+
+    with pytest.raises(TypeError):
+        base + 1.5
+
+    with pytest.raises(TypeError):
+        base - object()
+
+    with pytest.raises(ValueError) as e:
+        Frequency(1) - 1
+    assert str(e.value) == 'Frequency Out of Range'
+
+    with pytest.raises(ValueError) as e:
+        Frequency(MAX) + 1
+    assert str(e.value) == 'Frequency Out of Range'
 
 
 @given(integers(min_value=MIN, max_value=MAX))

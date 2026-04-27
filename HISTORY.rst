@@ -2,6 +2,11 @@
 History
 =======
 
+0.9.2 (2026-04-27)
+------------------
+
+* Expanded parser, range lookup, CLI output, and frequency arithmetic test coverage.
+
 0.9.1 (2026-04-26)
 ------------------
 
