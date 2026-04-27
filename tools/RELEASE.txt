@@ -1,16 +1,22 @@
-git add -A
-git commit -m <version>
-bump2version minor (or patch, major)
-git push --tags
-git push
+PyPI publishing is handled by GitHub Actions trusted publishing.
 
-github: pull request merge to master
-	delete old dev branch
-	this will trigger GitHub Actions CI
+PyPI trusted publisher settings for this project:
+	project: rf-info
+	owner: cosmicc
+	repository: rf_info
+	workflow: publish.yml
+	environment: leave blank
 
-if tests pass    
-	
-github: create a release pointing to master
-	build the package and upload to PyPI with twine
+Release steps:
+	git add -A
+	git commit -m <version>
+	bump2version minor (or patch, major)
+	git push
+	git push --tags
 
-start a new dev branch    
+Pushing a v*.*.* tag triggers .github/workflows/publish.yml, which runs tests,
+builds the package, checks the distributions with twine, and uploads to PyPI.
+
+github: create a release for the pushed tag after the publish workflow succeeds
+
+start a new dev branch
