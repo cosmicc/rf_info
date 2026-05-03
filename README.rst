@@ -9,27 +9,18 @@ rf-info
 .. image:: https://img.shields.io/pypi/v/rf_info.svg
         :target: https://pypi.org/project/rf-info/
 
-.. image:: https://pyup.io/repos/github/cosmicc/rf_info/python-3-shield.svg
-        :target: https://pyup.io/repos/github/cosmicc/rf_info/
-        :alt: Python 3
-
 .. image:: https://img.shields.io/github/license/cosmicc/rf_info.svg
         :target: https://github.com/cosmicc/rf_info
 
 .. image:: https://coveralls.io/repos/github/cosmicc/rf_info/badge.svg?branch=master
         :target: https://coveralls.io/github/cosmicc/rf_info?branch=master
 
-.. image:: https://img.shields.io/travis/cosmicc/rf_info.svg
-        :target: https://travis-ci.org/cosmicc/rf_info
+.. image:: https://github.com/cosmicc/rf_info/actions/workflows/ci.yml/badge.svg
+        :target: https://github.com/cosmicc/rf_info/actions/workflows/ci.yml
 
 .. image:: https://readthedocs.org/projects/rf-info/badge/?version=latest
         :target: https://rf-info.readthedocs.io/?badge=latest
         :alt: Documentation Status
-
-.. image:: https://pyup.io/repos/github/cosmicc/rf_info/shield.svg
-     :target: https://pyup.io/repos/github/cosmicc/rf_info/
-     :alt: Updates
-
 
 
 Command line & Python library for obtaining details about a radio frequency
@@ -37,7 +28,7 @@ Command line & Python library for obtaining details about a radio frequency
 
 * Free software: MIT license
 * Documentation: https://rf-info.readthedocs.io.
-* Python 3.5, 3.6, 3.7, 3.8 & pypy3 tested. Not compatible with Python 2.x
+* Python 3.10 through 3.14 tested. Not compatible with Python 2.x
 * Linux & Windows with color, json output, and interactive terminal support
 
 
@@ -61,10 +52,10 @@ Returns information about a radio frequency.
 - IEEE Primary Band Allocations
 - IEEE Secondary Band Allocations
 - Detailed IEEE footnotes for each band allocation
-- All active & upcomming satellite frequencys & details (406 Satellites as of 1/18/20)
+- Active, unknown, deep-space, weather, and upcoming satellite frequency records from the JE9PEL list (1,309 indexed records as of 2026-04-26)
 - Amateur Radio Modes, License Class, Max Power (US Only)
 - Broadcasting Band Number & Details (US Only)
-- WIFI Frequency Details (US Only)
+- Wi-Fi Frequency Details, including 6 GHz Wi-Fi 6E/7 ranges (US Only)
 - Other Services CB, GMRS, Aircraft Band, Etc (US Only)
 
 Currently supported band allocations for countries:
@@ -73,6 +64,12 @@ United States (US), Canada (CA), Brazil (BR), Spain (ES), United Kingdom (GB), R
 I can easily add support for more countries upon request
 
 Includes man pages and texinfo documentation
+
+
+Data Sources
+------------
+
+Satellite data is generated from the JE9PEL satellite list. US Wi-Fi, 5.9 GHz ITS/C-V2X, mobile broadband, and broadcast TV ranges are aligned with current FCC/eCFR band definitions. International allocation tables are stored by ITU region and can be regenerated from CSV exports with ``tools/parse_allocations.py``.
 
 
 Install
@@ -123,9 +120,15 @@ Python Library Usage
     >>> freq = Frequency('144.890.000')
     >>> freq.details()
 
-Returns a dictionary::
+Returns a dictionary with normalized fields::
 
-    >>> {'display': '144.890.000', 'units': {'hz': 144890000, 'khz': 144890.0, 'mhz': 144.89, 'ghz': 0.14489}, 'wavelength': '2m', 'itu': {'number': 8, 'band': 'Very High Frequency', 'abbr': 'VHF'}, 'ieee': {'band': 'VHF', 'description': 'Very High Frequency'}, 'nato': {'band': 'A'}, 'ism': {'band': None, 'description': None}, 'waveguide': {'band': None}, 'microwave': {'band': None, 'allocation': None}, 'country': {'name': 'United States of America', 'abbr': 'US'}, 'broadcasting': {'allocated': False, 'details': ()}, 'wifi': {'allocated': False, 'details': None}, 'amateur': {'allocated': True, 'modes': 'CW, Phone, Image, RTTY/Data', 'license': 'Tech, General, Extra', 'power': 'MAX'}, 'satellite': {'allocated': False, 'name': None, 'sat-id': None, 'link': None, 'modes': None, 'callsign': None, 'status': None}, 'services': None, 'station': {'fixed': False, 'mobile': False}, 'ieee_allocation': {'primary': ('Amateur', 'Amateur-Satellite'), 'secondary': (), 'notes': ('[5.216]: Additional allocation: in China, the band 144-146 MHz is also allocated to the aeronautical mobile (OR) service on a secondary basis.',)}}
+    >>> details = freq.details()
+    >>> details['display']
+    '144.890.000'
+    >>> details['amateur']['details']
+    ({'modes': 'CW, Phone, Image, RTTY/Data', 'license': 'Tech, General, Extra', 'power': 'MAX'}, {'modes': 'FM repeater inputs', 'license': 'Tech, General, Extra', 'power': 'MAX'})
+    >>> details['ieee_allocation']['primary']
+    ('Amateur', 'Amateur-Satellite')
 
 
 Or you can get individual items directly::
@@ -185,7 +188,7 @@ Output Example
 Todo
 -------
 
-- Add interactive terminal mode
+- Keep ITU/FCC allocation data synced with current regulatory publications
 
 
 Credits
