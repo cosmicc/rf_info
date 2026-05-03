@@ -1,252 +1,241 @@
 #!/usr/bin/env python3
 
 '''
-Dev tool for building country allocation files data parsed from:
-    http://www.ne.jp/asahi/hamradio/je9pel/satslist.csv
-
+Dev tool for building satellite data parsed from:
+    https://www.ne.jp/asahi/hamradio/je9pel/satslist.csv
 '''
 
 import argparse
 import csv
+import difflib
+import re
 import shutil
 from pathlib import Path
 
 import requests
 from rf_info.rf_info import parse_freq
 
-parser = argparse.ArgumentParser()
-args = parser.parse_args()
 
-data_file = Path('../rf_info/data/satellites.py')
-temp_file = Path('./satslist.tmp')
-dl_file = Path('./satslist.csv')
-
-
-def diff(file1, file2):
-    diffr = False
-    f1 = open(str(file1), "r")
-    f2 = open(str(file2), "r")
-    for line1 in f1:
-        for line2 in f2:
-            if line1 == line2:
-                pass
-            else:
-                print(f'{line1}{line2}')
-                diffr = True
-            break
-    f1.close()
-    f2.close()
-    return diffr
-
-
-def download_file():
-    fname = 'satslist.csv'
-    url = 'http://www.ne.jp/asahi/hamradio/je9pel/' + fname
-    try:
-        r = requests.get(url)
-    except:
-        print('Error downloading data {}'.format(url))
-        exit(1)
-    else:
-        open(fname, 'wb').write(r.content)
-        print('Satellite data downloaded')
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
+DATA_FILE = PROJECT_ROOT / 'rf_info' / 'data' / 'satellites.py'
+TEMP_FILE = BASE_DIR / 'satslist.tmp'
+DOWNLOAD_FILE = BASE_DIR / 'satslist.csv'
+SOURCE_URLS = (
+    'https://www.ne.jp/asahi/hamradio/je9pel/satslist.csv',
+    'http://www.ne.jp/asahi/hamradio/je9pel/satslist.csv',
+)
+INACTIVE_STATES = {
+    'inactive',
+    're-entered',
+    'failure',
+    'non-operational',
+    'launch failed',
+}
+STATE_VALUES = INACTIVE_STATES | {
+    'active',
+    'deep space',
+    'to be launched',
+    'unknown',
+    'weather sat',
+}
 
 
-def parse_line(pa):
-    newpa = []
-    for a in pa:
-        asp = a.strip().split(' ')
-        for each in asp:
-            if len(each) > 3:
-                if each[0] == '(' and each[1].isnumeric() and each[2] == '.':
-                    if each in asp:
-                        e = each.split(',')
-                        o = 0
-                        if len(e) > 1:
-                            n = ''
-                            for f in e:
-                                if o != len(e) - 1:
-                                    n = n + f + ']['
-                                else:
-                                    n = n + f
-                                o += 1
-                            neach = n
-                        else:
-                            neach = each
-                        asp[asp.index(each)] = neach.replace('(', '[').replace(')', ']')
+def file_diff(file1, file2):
+    old_lines = file2.read_text().splitlines()
+    new_lines = file1.read_text().splitlines()
+    diff = list(difflib.unified_diff(
+        old_lines,
+        new_lines,
+        fromfile=str(file2),
+        tofile=str(file1),
+        lineterm='',
+    ))
+    if diff:
+        print('\n'.join(diff))
+        return True
+    return False
 
-        if 'AMATEUR' in asp or 'AMATEUR-SATELITE' in asp:
-            amateur = True
-        if 'BROADCASTING' in asp:
-            broadcast = True
-        if 'FIXED' in asp:
-            fixed = True
-        if 'MOBILE' in asp:
-            mobile = True
-        a = ' '.join(asp)
-        if a.strip().lower() == 'fixed':
-            fixed = True
-        elif a.strip().lower() == 'mobile':
-            mobile = True
-        else:
-            newpa.append(a.strip().title())
-    if len(newpa) > 0:
-        if newpa[0] == '':
-            newpa = []
-    return newpa, amateur, fixed, mobile, broadcast
+
+def download_file(target):
+    last_error = None
+    for url in SOURCE_URLS:
+        try:
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+        except requests.RequestException as error:
+            last_error = error
+            continue
+        target.write_bytes(response.content)
+        return url
+    raise RuntimeError('Error downloading satellite data: {}'.format(last_error))
 
 
 def write_header(file):
     with file.open(mode='w') as f:
         print('from rf_info.data.rangekeydict import RangeKeyDict', file=f)
-        print(' ', file=f)
-        print('SATELLITES = RangeKeyDict({', file=f)
+        print('', file=f)
+        print('SATELLITES = RangeKeyDict([', file=f)
 
 
 def write_footer(file):
     with file.open(mode='a') as f:
-        print('})', file=f)
+        print('])', file=f)
 
 
 def write_line(minfreq, maxfreq, name, satid, mode, callsign, state, link):
-    with temp_file.open(mode='a') as f:
-        print(f'    ({int(minfreq)}, {int(maxfreq)}): ("{name}", "{satid}", "{link.capitalize()}", "{mode}", "{callsign}", "{state}"),', file=f)
+    values = (
+        name.strip(),
+        satid.strip(),
+        link.capitalize(),
+        mode.strip(),
+        callsign.strip(),
+        state,
+    )
+    with TEMP_FILE.open(mode='a') as f:
+        print('    (({}, {}), {}),'.format(int(minfreq), int(maxfreq), repr(values)), file=f)
 
 
 def validate_freq(freq):
-    valid = True
     freq = freq.strip()
+    if not freq:
+        return None
+
     unit = 'mhz'
-    if 'x' in freq:
-        valid = False
-    if '~' in freq:
-        valid = False
-    if not freq[0].isnumeric():
-        valid = False
-    if '*' in freq:
-        freq = freq.replace('*', '')
+    lowered = freq.lower()
+    if 'x' in lowered or '~' in freq or not freq[0].isnumeric():
+        return None
+
+    freq = freq.replace('*', '')
     if '(' in freq:
         freq = freq.split('(')[0]
-    if 'GHz' in freq:
-        freq = freq.split('GHz')[0]
+    if re.fullmatch(r'\d+\s+\d+', freq):
+        freq = re.sub(r'\s+', '.', freq, count=1)
+    if 'ghz' in lowered:
+        freq = re.sub('ghz', '', freq, flags=re.IGNORECASE)
         unit = 'ghz'
-    if valid:
-        return parse_freq(freq, unit)
     else:
-        return False
+        freq = re.sub('mhz', '', freq, flags=re.IGNORECASE)
+
+    try:
+        return parse_freq(freq.strip(), unit)
+    except ValueError:
+        return None
 
 
-print(' ')
-download_file()
+def iter_frequencies(raw_value):
+    if not raw_value:
+        return
 
-if not dl_file.exists():
-    print('Cannot find satslist.csv file to process')
-    exit(1)
-
-write_header(temp_file)
-
-csv_header = 'name;sat-id;uplink;downlink;beacon;mode;callsign;state\n'
-
-
-with open(str(dl_file), "r+") as file:
-    lines = file.readlines()
-    lines.insert(0, csv_header)
-    file.seek(0)
-    file.writelines(lines)
-
-
-with open(str(dl_file)) as csv_file:
-    csv_reader = csv.DictReader(csv_file, delimiter=';')
-    line_count = 0
-    for row in csv_reader:
-        if row['state'] != 'inactive' and row['state'] != 're-entered' and row['state'] != 'failure' and row['state'] != 'Non-Operational' and row['state'] != 'Launch failed':
-            line_count += 1
-            if row['uplink'] is not None:
-
-                if '/' in row['uplink']:
-                    usplit = row['uplink'].split('/')
-                    for each in usplit:
-                        if '-' in each:
-                            nusplit = each.split('-')
-                            minfreq = validate_freq(nusplit[0])
-                            maxfreq = validate_freq(nusplit[1])
-                            if minfreq and maxfreq:
-                                if minfreq > maxfreq:
-                                    minfreq, maxfreq = maxfreq, minfreq
-                                write_line(minfreq, maxfreq + 1, row['name'], row['sat-id'], row['mode'], row['callsign'], row['state'].title(), 'uplink')
-                        else:
-                            minfreq = validate_freq(each)
-                            if minfreq:
-                                write_line(minfreq, minfreq + 1, row['name'], row['sat-id'], row['mode'], row['callsign'], row['state'].title(), 'uplink')
-
-                elif '-' in row['uplink']:
-                    usplit = row['uplink'].split('-')
-                    minfreq = validate_freq(usplit[0])
-                    maxfreq = validate_freq(usplit[1])
-                    if minfreq and maxfreq:
-                        if minfreq > maxfreq:
-                            minfreq, maxfreq = maxfreq, minfreq
-                        write_line(minfreq, maxfreq + 1, row['name'], row['sat-id'], row['mode'], row['callsign'], row['state'].title(), 'uplink')
-
-                elif '.' in row['uplink'] or row['uplink'].isnumeric():
-                    minfreq = validate_freq(row['uplink'])
-                    if minfreq:
-                        write_line(minfreq, minfreq + 1, row['name'], row['sat-id'], row['mode'], row['callsign'], row['state'].title(), 'uplink')
-            if row['downlink'] is not None:
-
-                if '/' in row['downlink']:
-                    usplit = row['downlink'].split('/')
-                    for each in usplit:
-                        if '-' in each:
-                            nusplit = each.split('-')
-                            minfreq = validate_freq(nusplit[0])
-                            maxfreq = validate_freq(nusplit[1])
-                            if minfreq and maxfreq:
-                                if minfreq > maxfreq:
-                                    minfreq, maxfreq = maxfreq, minfreq
-                                write_line(minfreq, maxfreq + 1, row['name'], row['sat-id'], row['mode'], row['callsign'], row['state'].title(), 'downlink')
-                        else:
-                            minfreq = validate_freq(each)
-                            if minfreq:
-                                write_line(minfreq, minfreq + 1, row['name'], row['sat-id'], row['mode'], row['callsign'], row['state'].title(), 'downlink')
-
-                elif '-' in row['downlink']:
-                    usplit = row['downlink'].split('-')
-                    minfreq = validate_freq(usplit[0])
-                    maxfreq = validate_freq(usplit[1])
-                    if minfreq and maxfreq:
-                        if minfreq > maxfreq:
-                            minfreq, maxfreq = maxfreq, minfreq
-                        write_line(minfreq, maxfreq + 1, row['name'], row['sat-id'], row['mode'], row['callsign'], row['state'].title(), 'downlink')
-
-                elif '.' in row['downlink'] or row['downlink'].isnumeric():
-                    if 'x' not in row['downlink']:
-                        minfreq = validate_freq(row['downlink'])
-                        if minfreq:
-                            write_line(minfreq, minfreq + 1, row['name'], row['sat-id'], row['mode'], row['callsign'], row['state'].title(), 'downlink')
-
-write_footer(temp_file)
-print(f'{line_count} Entries')
-
-if not data_file.exists():
-    assert temp_file.is_file()
-    shutil.copy(str(temp_file), str(data_file))
-    print(f'Replaced: {str(data_file)}')
-else:
-    diffr = diff(temp_file, data_file)
-    if diffr:
-        answer = input("Replace Data File? {y/N]} ")
-        if answer.lower() == 'y':
-            shutil.copy(str(temp_file), str(data_file))
-            print(f'Replaced: {str(data_file)}')
+    for part in raw_value.split('/'):
+        part = part.strip()
+        if '-' in part:
+            low, high = part.split('-', 1)
+            minfreq = validate_freq(low)
+            maxfreq = validate_freq(high)
+            if minfreq and maxfreq:
+                if minfreq > maxfreq:
+                    minfreq, maxfreq = maxfreq, minfreq
+                yield minfreq, maxfreq + 1
         else:
-            print('Not saving changes.')
-    else:
-        print('No changes to save')
+            minfreq = validate_freq(part)
+            if minfreq:
+                yield minfreq, minfreq + 1
 
-temp_file.unlink()
-if dl_file.exists():
-    dl_file.unlink()
-    pass
 
-print('Complete')
+def add_header_to_download(file):
+    csv_header = 'name;sat-id;uplink;downlink;beacon;mode;callsign;state\n'
+    lines = file.read_text().splitlines(True)
+    if lines and lines[0].startswith('name;'):
+        return
+    file.write_text(csv_header + ''.join(lines))
+
+
+def normalize_row(row):
+    normalized = {
+        key: (value or '').strip()
+        for key, value in row.items()
+        if key is not None
+    }
+    state = normalized.get('state', '').lower()
+
+    # A small number of upstream rows have the mode and callsign columns
+    # shifted right after a duplicated beacon frequency.
+    shifted_mode = validate_freq(normalized.get('mode', '')) is not None
+    if shifted_mode and normalized.get('callsign') and state in STATE_VALUES:
+        normalized['mode'] = normalized['callsign']
+        normalized['callsign'] = ''
+
+    return normalized
+
+
+def build_data_file(download, temp_file):
+    write_header(temp_file)
+    add_header_to_download(download)
+
+    with download.open() as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=';')
+        line_count = 0
+        for row in csv_reader:
+            row = normalize_row(row)
+            state_value = (row.get('state') or '').strip()
+            if not state_value or state_value.lower() in INACTIVE_STATES:
+                continue
+
+            line_count += 1
+            state = state_value.title()
+            for minfreq, maxfreq in iter_frequencies(row.get('uplink')):
+                write_line(minfreq, maxfreq, row.get('name', ''), row.get('sat-id', ''), row.get('mode', ''), row.get('callsign', ''), state, 'uplink')
+            for minfreq, maxfreq in iter_frequencies(row.get('downlink')):
+                write_line(minfreq, maxfreq, row.get('name', ''), row.get('sat-id', ''), row.get('mode', ''), row.get('callsign', ''), state, 'downlink')
+            for minfreq, maxfreq in iter_frequencies(row.get('beacon')):
+                write_line(minfreq, maxfreq, row.get('name', ''), row.get('sat-id', ''), row.get('mode', ''), row.get('callsign', ''), state, 'beacon')
+
+    write_footer(temp_file)
+    return line_count
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--yes', '-y', action='store_true', help='replace data file without prompting')
+    args = parser.parse_args(argv)
+
+    print('')
+    source_url = download_file(DOWNLOAD_FILE)
+    print('Satellite data downloaded from {}'.format(source_url))
+
+    try:
+        line_count = build_data_file(DOWNLOAD_FILE, TEMP_FILE)
+        print('{} Entries'.format(line_count))
+
+        if not DATA_FILE.exists():
+            if not TEMP_FILE.is_file():
+                raise RuntimeError('Temporary satellite data file was not created')
+            shutil.copy(str(TEMP_FILE), str(DATA_FILE))
+            print('Replaced: {}'.format(DATA_FILE))
+        else:
+            different = file_diff(TEMP_FILE, DATA_FILE)
+            if different:
+                if args.yes:
+                    answer = 'y'
+                else:
+                    answer = input('Replace Data File? {y/N]} ')
+                if answer.lower() == 'y':
+                    shutil.copy(str(TEMP_FILE), str(DATA_FILE))
+                    print('Replaced: {}'.format(DATA_FILE))
+                else:
+                    print('Not saving changes.')
+            else:
+                print('No changes to save')
+    finally:
+        if TEMP_FILE.exists():
+            TEMP_FILE.unlink()
+        if DOWNLOAD_FILE.exists():
+            DOWNLOAD_FILE.unlink()
+
+    print('Complete')
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

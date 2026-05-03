@@ -47,7 +47,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	flake8 rf_info tests
+	flake8 rf_info tools tests
 
 test: ## run tests quickly with the default Python
 	pytest
@@ -72,8 +72,8 @@ docs: ## generate Sphinx HTML documentation, including API docs
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
-release: dist ## package and upload a release
-	twine upload dist/*
+release: dist ## build release artifacts; PyPI upload runs from GitHub Actions
+	@echo "Push a v*.*.* tag to publish through .github/workflows/publish.yml"
 
 dist: clean ## builds source and wheel package
 	python3 setup.py sdist
