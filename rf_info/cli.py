@@ -5,7 +5,7 @@ import json
 import sys
 
 import rf_info
-from colorama import Fore, Style, deinit, init
+from colorama import Fore, Style, init
 from iso3166 import countries
 
 
@@ -26,21 +26,26 @@ def display_json(frequency_obj):
 def country_shortlist():
     from .countrymap import COUNTRY_MAP
     clist = []
-    for key, value in COUNTRY_MAP.items():
+    for key in COUNTRY_MAP:
         clist.append('{} ({})'.format(countries.get(key).name, countries.get(key).alpha2))
     print(', '.join(clist))
 
 
 def country_list():
     from .countrymap import COUNTRY_MAP
-    for key, value in COUNTRY_MAP.items():
+    for key in COUNTRY_MAP:
         print('{} ({})'.format(countries.get(key).name, countries.get(key).alpha2))
 
 
 def verify_country(country):
     from .countrymap import COUNTRY_MAP
-    if country.upper() not in COUNTRY_MAP:
+    try:
+        scountry = countries.get(country)
+    except KeyError:
+        raise ValueError('Invalid Country Specified')
+    if scountry.alpha2.upper() not in COUNTRY_MAP:
         raise ValueError('Specified Country is Not Supported')
+    return scountry.alpha2.lower()
 
 
 def display_results(frequency, unit, country):
@@ -97,7 +102,7 @@ def display_results(frequency, unit, country):
     print(' {}Country: {}{} ({}){}'.format(KEYCOLOR, VALUECOLOR, fd.country['name'], fd.country['abbr'], RESET))
 
     # SERVICES
-    if fd.services is not None:
+    if fd.services:
         print(' {}Services: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.services, RESET))
 
     # BROADCASTING
@@ -112,7 +117,8 @@ def display_results(frequency, unit, country):
     # WIFI
     if fd.wifi['allocated']:
         print(' {}Wifi: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
-        print('   - {}{}{}'.format(VALUECOLOR, fd.wifi['details'], RESET))
+        for each in fd.wifi['details']:
+            print('   - {}{}{}'.format(VALUECOLOR, each, RESET))
     else:
         print(' {}Wifi: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
 
@@ -129,11 +135,11 @@ def display_results(frequency, unit, country):
     # SATELLITE
     if fd.satellite['allocated']:
         print(' {}Satellite: {}True{}'.format(KEYCOLOR, TRUECOLOR, RESET))
-        if fd.satellite['name'] is not None:
-            print('   {}Name: {}{} [{}]{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['name'], fd.satellite['sat-id'], RESET))
-            print('   {}Link: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['link'], RESET))
-            print('   {}Modes: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['modes'], RESET))
-            print('   {}Status: {}{}{}'.format(KEYCOLOR, VALUECOLOR, fd.satellite['status'], RESET))
+        for each in fd.satellite['details']:
+            print('   {}Name: {}{} [{}]{}'.format(KEYCOLOR, VALUECOLOR, each['name'], each['sat-id'], RESET))
+            print('   {}Link: {}{}{}'.format(KEYCOLOR, VALUECOLOR, each['link'], RESET))
+            print('   {}Modes: {}{}{}'.format(KEYCOLOR, VALUECOLOR, each['modes'], RESET))
+            print('   {}Status: {}{}{}'.format(KEYCOLOR, VALUECOLOR, each['status'], RESET))
     else:
         print(' {}Satellite: {}False{}'.format(KEYCOLOR, FALSECOLOR, RESET))
 
@@ -226,18 +232,17 @@ def main(argv=None):
         display_raw(get_frequency_obj(args.frequency, args.unit, args.country))
         return 0
     elif args.interactive:
-        verify_country(args.interactive)
+        interactive_country = verify_country(args.interactive)
         answer = ''
-        unit = 'hz'
         print('Enter q to quit')
         while answer.lower() != 'quit' and answer.lower() != 'exit' and answer.lower() != 'q':
             answer = input("Frequency ({})> ".format(args.interactive.lower()))
             if answer != '' and answer.lower() != 'quit' and answer.lower() != 'exit' and answer.lower() != 'q':
-                if len(answer.split(' ')) > 1:
-                    answer = answer.split(' ')[0]
-                    unit = answer.split(' ')[1]
+                values = answer.split()
+                frequency = values[0]
+                unit = values[1] if len(values) > 1 else 'hz'
                 try:
-                    display_results(answer, unit, args.country)
+                    display_results(frequency, unit, interactive_country)
                 except Exception as e:
                     print('{}{}{}'.format(VALUECOLOR, e, RESET))
 
@@ -245,7 +250,7 @@ def main(argv=None):
         return 0
     else:
         if args.country:
-            verify_country(args.country)
+            args.country = verify_country(args.country)
         display_results(args.frequency, args.unit, args.country)
         return 0
 
